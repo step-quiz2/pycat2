@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 6 — Parell o senar | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 6 — Intermedi</span>
+      <h1>Parell o senar</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi un nombre enter i mostri <code>Parell</code> si és parell o <code>Senar</code> si és senar.</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: 4   →  Parell
+Entrada: 7   →  Senar
+Entrada: 0   →  Parell
+Entrada: -3  →  Senar</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos nombres, inclòs el zero i nombres negatius.</p>
+
+      <div class="simulador"
+           data-code="# Repte 6: Parell o senar
+# Llegeix un nombre i mostra si és parell o senar
+
+n = int(input(&quot;Escriu un número: &quot;))
+"
+           data-tests='[
+             {"stdin":"4","expected":"Parell"},
+             {"stdin":"7","expected":"Senar"},
+             {"stdin":"0","expected":"Parell"},
+             {"stdin":"-3","expected":"Senar"},
+             {"stdin":"1","expected":"Senar"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-6"
+           data-height="320">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        L'operador <code>%</code> retorna el residu d'una divisió. Si <code>n % 2 == 0</code>, el nombre és parell.
+        Fes servir un <code>if</code>/<code>else</code>.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-5.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-7.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(6);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

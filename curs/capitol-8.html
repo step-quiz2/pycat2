@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 8 — Llistes | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 8</span>
+        <h1>Llistes</h1>
+        <p class="chapter-lead">Una llista guarda diversos valors en una sola variable, en ordre.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Crear una llista
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Crear una llista</h2>
+
+        <p>Fins ara cada variable guardava un sol valor. <br>Una <strong>llista</strong> (en anglès, <em>list</em>) pot guardar-ne molts.</p>
+
+        <div class="simulador"
+             data-code='numeros = [3, 7, 2, 9, 4]
+print(numeros)
+
+fruites = ["poma", "pera", "plàtan"]
+print(fruites)'
+             data-readonly="true"
+             data-height="230">
+        </div>
+
+        <p>Una llista pot contenir valors de qualsevol tipus: enters, decimals, textos, o fins i tot una barreja. També pot estar buida:</p>
+
+        <div class="simulador"
+             data-code='buida = []
+print(buida)         
+print(len(buida))    
+
+llista_mixta = [1, "hola", 3.14, True]
+print(llista_mixta)'
+             data-readonly="true"
+             data-height="250">
+        </div>
+
+        <p>Exercici. Prova a modificar la llista i, posteriorment, mostra-la:</p>
+
+        <div class="simulador"
+             data-code='colors = ["vermell", "verd", "blau"]
+print(colors)'
+             data-height="200">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Indexació i len()
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Accedir a elements: indexació i <code>len()</code></h2>
+
+        <p>Els elements d'una llista s'indexen exactament igual que els caràcters d'un text: amb <code>[0]</code> per al primer, <code>[-1]</code> per a l'últim, i <code>len()</code> per saber quants n'hi ha:</p>
+
+        <div class="simulador"
+             data-code='planetes = ["Mercuri", "Venus", "Terra", "Mart"]
+print(planetes[0])      
+print(planetes[2])       
+print(planetes[-1])      
+print(len(planetes))     '
+             data-readonly="true"
+             data-height="270">
+        </div>
+
+        <p>Pots llegir i modificar un element concret assignant-li un valor nou:</p>
+
+        <div class="simulador"
+             data-code='notes = [6, 8, 5, 9]
+print("Abans:", notes)
+
+notes[2] = 7   # corregim la tercera nota
+print("Després:", notes)'
+             data-height="240">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Afegir i treure elements
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Afegir i treure elements</h2>
+
+        <p><strong><code>.append(valor)</code></strong> afegeix un element al final de la llista. És el mètode que faràs servir més sovint per construir llistes dinàmicament:</p>
+
+        <div class="simulador"
+             data-code='compra = ["pa", "llet"]
+compra.append("ous")
+compra.append("fruita")
+print(compra)   '
+             data-readonly="true"
+             data-height="230">
+        </div>
+
+        <p><strong><code>.pop()</code></strong> treu i retorna l'últim element. Si li passes un índex, treu el de la posició indicada:</p>
+
+        <div class="simulador"
+             data-code='numeros = [10, 20, 30, 40]
+darrer = numeros.pop()
+print("He tret aquest valor:", darrer)       
+print("Queden aquests valors:", numeros)     
+
+primer = numeros.pop(0)              
+print("Ara he tret aquest valor:", primer)       
+print("I només queden aquests valors:", numeros)     
+'
+             data-readonly="true"
+             data-height="280">
+        </div>
+
+        <p><strong><code>del llista[i]</code></strong> esborra l'element de la posició <code>i</code> sense retornar-lo:</p>
+
+        <div class="simulador"
+             data-code='animals = ["gat", "gos", "ocell", "peix"]
+del animals[1]   # esborra "gos"
+print(animals)'
+             data-height="220">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Recórrer amb for x in llista
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Recórrer una llista amb <code>for</code></h2>
+
+        <p>La manera més senzilla de visitar tots els elements d'una llista és <code>for x in llista:</code>. En cada iteració, <code>x</code> pren el valor de l'element corresponent:</p>
+
+        <div class="simulador"
+             data-code='fruites = ["poma", "pera", "plàtan", "maduixa"]
+for fruita in fruites:
+    print(fruita)'
+             data-readonly="true"
+             data-height="230">
+        </div>
+
+        <p>Pots operar amb cada element dins del bucle. Per exemple, sumar tots els valors d'una llista de nombres:</p>
+
+        <div class="simulador"
+             data-code='preus = [4.5, 2.0, 7.3, 1.8]
+total = 0
+for preu in preus:
+    total = total + preu
+print("Total:", total)'
+             data-height="260">
+        </div>
+
+        <p>De fet, Python ja té funcions integrades per a les operacions més habituals sobre llistes numèriques: <code>sum()</code>, <code>min()</code> i <code>max()</code>:</p>
+
+        <div class="simulador"
+             data-code='notes = [7, 5, 9, 8, 6]
+print("Suma:", sum(notes))     
+print("Mínima:", min(notes))   
+print("Màxima:", max(notes))   '
+             data-readonly="true"
+             data-height="250">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Recórrer amb índex
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Recórrer amb índex: <code>for i in range(len(...))</code></h2>
+
+        <p>De vegades no sols vols el valor, sinó també saber a quina posició és. Pots combinar <code>range()</code> i <code>len()</code> per obtenir l'índex a cada pas:</p>
+
+        <div class="simulador"
+             data-code='alumnes = ["Anna", "Bernat", "Carla", "David"]
+for i in range(len(alumnes)):
+    print(i + 1, ".", alumnes[i])'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Tenir l'índex també et permet modificar elements mentre recorres la llista. Per exemple, doblar tots els valors:</p>
+
+        <div class="simulador"
+             data-code='numeros = [3, 7, 2, 9]
+for i in range(len(numeros)):
+    numeros[i] = numeros[i] * 2
+print(numeros)   '
+             data-height="240">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Llistes de strings i split()
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Llistes de textos i <code>.split()</code></h2>
+
+        <p>Recordes <code>.split()</code> del capítol anterior? Divideix un text i retorna una <strong>llista de paraules</strong>. Ara que coneixes les llistes, pots treballar amb el resultat com vulguis:</p>
+
+        <div class="simulador"
+             data-code='frase = "El cel és blau i clar"
+paraules = frase.split()
+print(paraules)
+print("Nombre de paraules:", len(paraules))
+print("Primera paraula:", paraules[0])
+print("Última paraula:", paraules[-1])'
+             data-readonly="true"
+             data-height="290">
+        </div>
+
+        <p>Pots passar-li un separador diferent de l'espai. Per exemple, per dividir una data en parts:</p>
+
+        <div class="simulador"
+             data-code='data = "19/03/2027"
+parts = data.split("/")
+print("Dia:", parts[0])
+print("Mes:", parts[1])
+print("Any:", parts[2])'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>La funció inversa és <code>", ".join(llista)</code>, que uneix els elements amb un separador:</p>
+
+        <div class="simulador"
+             data-code='ingredients = ["farina", "ous", "sucre", "llet"]
+recepta = ", ".join(ingredients)
+print(recepta)   '
+             data-height="210">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 7 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics</h2>
+
+        <p><strong>1. IndexError: accedir a un índex que no existeix</strong> — si la llista té 3 elements, els índexs vàlids van de <code>0</code> a <code>2</code>. Qualsevol altre valor donarà error:</p>
+
+        <div class="simulador"
+             data-code='colors = ["vermell", "verd", "blau"]
+print(colors[5])   '
+             data-readonly="true"
+             data-height="200">
+        </div>
+
+        <p><strong>2. Oblidar que <code>.append()</code> no retorna res útil</strong> — un error molt freqüent és assignar el resultat de <code>.append()</code> a la pròpia llista, cosa que la sobreescriu amb <code>None</code>:</p>
+
+        <div class="simulador"
+             data-code='numeros = [1, 2, 3]
+numeros = numeros.append(4)   # Es crearà un error
+print(numeros)                '
+             data-readonly="true"
+             data-height="210">
+        </div>
+
+        <p><strong>3. Modificar una llista mentre la recorres</strong> — afegir o esborrar elements dins d'un <code>for x in llista:</code> pot saltar-se elements o donar IndexError. Si has de modificar la llista, usa <code>range(len(llista))</code> o treballa amb una còpia:</p>
+
+        <div class="simulador"
+             data-code='# És bona estratègia recórrer la llista d&apos;aquesta manera
+numeros = [1, 2, 3, 4, 5]
+for i in range(len(numeros)):
+    numeros[i] = numeros[i] + 10
+print(numeros)   '
+             data-height="230">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Escriu un programa que llegeixi 5 nombres enters (un per línia) i mostri la seva mitjana amb un decimal. Utilitza una llista per guardar els nombres llegits.
+        </div>
+
+        <p>Per exemple, si l'usuari introdueix <code>10</code>, <code>20</code>, <code>30</code>, <code>40</code> i <code>50</code>, la sortida ha de ser <code>30.0</code>.</p>
+
+        <p>Pista: guarda cada nombre llegit a la llista amb <code>.append()</code>. Quan tinguis els 5, calcula la mitjana amb <code>sum()</code> i <code>len()</code>.</p>
+
+        <div class="simulador"
+             data-code="numeros = []"
+             data-tests='[
+               {"stdin": "10\n20\n30\n40\n50", "expected": "30.0"},
+               {"stdin": "1\n2\n3\n4\n5", "expected": "3.0"},
+               {"stdin": "0\n0\n0\n0\n10", "expected": "2.0"}
+             ]'
+             data-interactive="true"
+             data-goal-id="cap-8-ex"
+             data-height="360">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li>Una llista s'escriu entre claudàtors: <code>[1, 2, 3]</code>. Pot estar buida (<code>[]</code>) i contenir qualsevol tipus de valor.</li>
+          <li><code>llista[i]</code> accedeix a l'element de la posició <code>i</code>; els índexs negatius compten des del final. <code>len(llista)</code> retorna el nombre d'elements.</li>
+          <li><code>.append(valor)</code> afegeix un element al final; <code>.pop()</code> en treu l'últim (o el de la posició indicada); <code>del llista[i]</code> esborra l'element <code>i</code> sense retornar-lo.</li>
+          <li><code>for x in llista:</code> visita tots els elements; <code>for i in range(len(llista)):</code> t'dóna l'índex a cada pas.</li>
+          <li><code>sum()</code>, <code>min()</code> i <code>max()</code> funcionen directament sobre llistes numèriques.</li>
+          <li><code>text.split()</code> retorna una llista de paraules; <code>sep.join(llista)</code> fa el camí invers.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-7.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-9.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(8);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

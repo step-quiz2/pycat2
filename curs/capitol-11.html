@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 11 — Posant-ho tot junt | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 11</span>
+        <h1>Combinar tot el que s'ha après</h1>
+        <p class="chapter-lead">Hora de combinar tot el que has après en un programa de veritat.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           INTRODUCCIÓ
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>El projecte: un quiz de cultura general</h2>
+
+        <p>Aquest capítol és diferent dels anteriors. En lloc d'un concepte nou, construirem un programa complet pas a pas: un <strong>quiz de cultura general</strong>. El programa farà preguntes en ordre aleatori, comprovarà les respostes i mostrarà una nota final.</p>
+
+        <p>
+          Per a cada peça que afegim faràs servir coses que ja coneixes: llistes, funcions, bucles <code>for</code>, condicionals, <code>input()</code> i el mòdul <code>random</code>.
+          <br>L'objectiu és aprendre com tots els elements treballen junts en un programa real.
+        </p>
+
+        <p>Aquí tens un resum del que construirem:</p>
+
+        <ul>
+          <li>Una llista de parelles pregunta–resposta, com a <strong>dades</strong> del programa.</li>
+          <li>Una funció <code>pregunta()</code> que fa una pregunta i diu si l'usuari ha encertat.</li>
+          <li>Una iteració principal que recorre totes les preguntes en <strong>ordre aleatori</strong>.</li>
+          <li>Un comptador d'encerts i un <strong>missatge final</strong>, segons la puntuació obtinguda.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Les dades
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peça 1: les dades</h2>
+
+        <p>Comencem desant les preguntes i les respostes. Cada element de la llista és una altra llista de dos elements: el text de la pregunta i la resposta correcta, en minúscules.</p>
+
+        <div class="simulador"
+             data-code='preguntes = [
+    ["Quina es la capital de Franca?", "paris"],
+    ["Quants dies te un any de traspos?", "366"],
+    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
+    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+]
+
+print("El quiz te", len(preguntes), "preguntes.")
+print()
+for p, r in preguntes:
+    print("-", p)'
+             data-readonly="true"
+             data-height="350">
+        </div>
+
+        <p>
+          Fixa't en la intrucció del codi anterior: <code>for p, r in preguntes:</code>. Com que cada element és una llista de dos valors, Python desempaqueta automàticament el primer valor a <code>p</code> i el segon a <code>r</code>.
+          <br>Dit d'una altra manera, ja no cal escriure <code>preguntes[i][0]</code> i <code>preguntes[i][1]</code>.
+        </p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — La funció pregunta()
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peça 2: la funció <code>pregunta()</code></h2>
+
+        <p>Tot el procediment de "fer una pregunta", el posem en una funció independent. Així el nostre programa principal queda net, i la funció es pot provar sola:</p>
+
+        <div class="simulador"
+             data-code='def pregunta(text, resposta_correcta):
+    resposta = input(text + " ")
+    if resposta.lower().strip() == resposta_correcta:
+        print("Correcte!")
+        return True
+    else:
+        print("Incorrecte. La resposta era:", resposta_correcta)
+        return False
+
+# Aquesta línia és només per provar la funció
+pregunta("Quina es la capital de Franca?", "paris")'
+             data-interactive="true"
+             data-height="320">
+        </div>
+
+        <p>
+          La funció <code>pregunta</code> rep dos paràmetres: el text de la pregunta i la resposta correcta.
+          <br>La funció fa servir <code>input()</code> per obtenir la resposta de l'usuari; posteriorment, la normalitza fent servir <code>.lower().strip()</code> (és a dir, converteix a minúscules i treu espais dels extrems). Finalment, retorna <code>True</code> o <code>False</code>, segons l'usuari l'hagi encertat, i així el codi que l'ha cridat sabrà si s'ha encertat.
+        </p>
+
+        <p>Pots provar, a continuació, la funció <code>pregunta</code> amb una resposta incorrecta i veuràs el missatge que retorna:</p>
+
+        <div class="simulador"
+             data-code='def pregunta(text, resposta_correcta):
+    resposta = input(text + " ")
+    if resposta.lower().strip() == resposta_correcta:
+        print("Correcte!")
+        return True
+    else:
+        print("Incorrecte. La resposta era:", resposta_correcta)
+        return False
+
+pregunta("Quants dies te un any de traspos?", "366")'
+             data-interactive="true"
+             data-height="310">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — El bucle principal
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peça 3: la iteració principal i el comptador</h2>
+
+        <p>Ara combinem la llista de preguntes amb la funció. Una iteració principal <code>for</code> recorre totes les preguntes, crida la funció per a cadascuna i compta els encerts:</p>
+
+        <div class="simulador"
+             data-code='def pregunta(text, resposta_correcta):
+    resposta = input(text + " ")
+    if resposta.lower().strip() == resposta_correcta:
+        print("Correcte!")
+        return True
+    else:
+        print("Incorrecte. La resposta era:", resposta_correcta)
+        return False
+
+preguntes = [
+    ["Quina es la capital de Franca?", "paris"],
+    ["Quants dies te un any de traspos?", "366"],
+    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+]
+
+encerts = 0
+for p, r in preguntes:
+    if pregunta(p, r):
+        encerts = encerts + 1
+
+print()
+print("Has encertat", encerts, "de", len(preguntes), "preguntes.")'
+             data-interactive="true"
+             data-height="430">
+        </div>
+
+        
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — L'ordre aleatori
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peça 4: l'ordre aleatori</h2>
+
+        <p>
+          Un quiz que sempre fa les preguntes en el mateix ordre és fàcil de memoritzar. El mòdul <code>random</code> de Python té la funció <code>shuffle()</code>, que barreja una llista al seu lloc. Atenció, modifica directament la llista, és a dir, no retorna una còpia nova.
+          <br> Cal afegir una funcionalitat a Python per tal que pugui fer operacions aleatòries. Per aquest motiu, comencem amb la instrucció <code>import random</code>.
+        </p>
+
+        <div class="simulador"
+             data-code='import random
+
+preguntes = [
+    ["Quina es la capital de Franca?", "paris"],
+    ["Quants dies te un any de traspos?", "366"],
+    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
+    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+]
+
+random.shuffle(preguntes)
+
+# Mostra l&apos;ordre resultant (cada execucio sera diferent):
+for p, r in preguntes:
+    print("-", p)'
+             data-height="360">
+        </div>
+
+        <p>Pots executar el codi anterior diverses vegades i observaràs com canvia l'ordre de les preguntes.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — El missatge final
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peça 5: el missatge final</h2>
+
+        <p>L'última peça és mostrar un missatge diferent segons la puntuació obtinguda. Fem servir <code>if / elif / else</code> per cobrir els diferents rangs de resultats:</p>
+
+        <div class="simulador"
+             data-code='# Simulem que l&apos;usuari ha encertat 3 de 5
+encerts = 3
+total = 5
+
+print("Has encertat", encerts, "de", total, "preguntes.")
+print()
+
+if encerts == total:
+    print("Excel·lent! Puntuacio perfecta!")
+elif encerts >= total * 0.8:
+    print("Molt be! Gairebe perfecte.")
+elif encerts >= total * 0.6:
+    print("Be! Pero encara pots millorar.")
+else:
+    print("Anim! Torna-ho a intentar.")'
+             data-readonly="true"
+             data-height="310">
+        </div>
+
+        <p>Fixa't que en lloc de valors fixos com <code>4</code> o <code>3</code>, fem servir <code>total * 0.8</code> i <code>total * 0.6</code>. Així el missatge s'adapta automàticament si canvies el nombre de preguntes del quiz.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — El programa complet
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>El programa complet</h2>
+
+        <p>
+          Ara agrupem totes les peces i en l'ordre adequat.
+          <br>Pots executa el programa i pots respondre directament les preguntes al simulador:
+        </p>
+
+        <div class="simulador"
+             data-code='import random
+
+# ── Funcio ──────────────────────────────────────
+def pregunta(text, resposta_correcta):
+    resposta = input(text + " ")
+    if resposta.lower().strip() == resposta_correcta:
+        print("Correcte!")
+        return True
+    else:
+        print("Incorrecte. La resposta era:", resposta_correcta)
+        return False
+
+# ── Dades ───────────────────────────────────────
+preguntes = [
+    ["Quina es la capital de Franca?", "paris"],
+    ["Quants dies te un any de traspos?", "366"],
+    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
+    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+]
+
+# ── Joc ─────────────────────────────────────────
+random.shuffle(preguntes)
+print("=== Quiz de cultura general ===")
+print()
+
+encerts = 0
+for p, r in preguntes:
+    if pregunta(p, r):
+        encerts = encerts + 1
+    print()
+
+# ── Resultat ─────────────────────────────────────
+total = len(preguntes)
+print("=== Resultat ===")
+print("Has encertat", encerts, "de", total, "preguntes.")
+print()
+
+if encerts == total:
+    print("Excel·lent! Puntuacio perfecta!")
+elif encerts >= total * 0.8:
+    print("Molt be! Gairebe perfecte.")
+elif encerts >= total * 0.6:
+    print("Be! Pero encara pots millorar.")
+else:
+    print("Anim! Torna-ho a intentar.")'
+             data-interactive="true"
+             data-height="500">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           REPTE OBERT
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Repte obert</h2>
+
+        <p>Tens el programa complet. Aquí tens algunes idees per ampliar-lo. No hi ha validació automàtica: és la teva oportunitat d'experimentar lliurement.</p>
+
+        <ul>
+          <li><strong>Afegeix preguntes.</strong> Allarga la llista <code>preguntes</code> amb 5 o 10 preguntes noves sobre els temes que més t'agradin.</li>
+          <li><strong>Permet tornar a jugar.</strong> Al final del quiz, pregunta a l'usuari si vol repetir i, si diu que sí, torna a barrejar i a fer les preguntes (pista: fes servir <code>while</code>).</li>
+          <li><strong>Mostra la puntuació en percentatge.</strong> En lloc de "3 de 5", mostra "60%". Pots calcular-ho amb <code>encerts / total * 100</code>.</li>
+          <li><strong>Accepta sinònims.</strong> Modifica la funció <code>pregunta()</code> perquè admeti diverses respostes correctes (pista: guarda les respostes en una llista i comprova si <code>resposta in respostes_correctes</code>).</li>
+        </ul>
+
+        <div class="simulador"
+             data-code='import random
+
+def pregunta(text, resposta_correcta):
+    resposta = input(text + " ")
+    if resposta.lower().strip() == resposta_correcta:
+        print("Correcte!")
+        return True
+    else:
+        print("Incorrecte. La resposta era:", resposta_correcta)
+        return False
+
+preguntes = [
+    ["Quina es la capital de Franca?", "paris"],
+    ["Quants dies te un any de traspos?", "366"],
+    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
+    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+]
+
+random.shuffle(preguntes)
+print("=== Quiz de cultura general ===")
+print()
+
+encerts = 0
+for p, r in preguntes:
+    if pregunta(p, r):
+        encerts = encerts + 1
+    print()
+
+total = len(preguntes)
+print("Has encertat", encerts, "de", total, "preguntes.")'
+             data-interactive="true"
+             data-height="500">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           I ARA QUÈ?
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>I ara què?</h2>
+
+        <p>Has completat el curs de PyCat. Saps escriure programes que llegeixen dades, prenen decisions, repeteixen accions, treballen amb textos i llistes, i organitzen el codi en funcions. Però Python té molt més a oferir.</p>
+
+        <p>Aquí tens alguns temes que podries explorar a continuació:</p>
+
+        <ul>
+          <li><strong>Diccionaris (<code>dict</code>).</strong> Una estructura com les llistes, però on cada element s'identifica per una clau en lloc d'un índex numèric. Perfectes per guardar dades relacionades, com ara <code>{"nom": "Anna", "edat": 14}</code>.</li>
+          <li><strong>Fitxers.</strong> Llegir i escriure dades en fitxers de text amb <code>open()</code>, perquè el programa recordi informació entre execucions.</li>
+          <li><strong>Mòduls i llibreries.</strong> Python té milers de mòduls que pots importar: <code>math</code> per a funcions matemàtiques, <code>datetime</code> per a dates i hores, <code>os</code> per al sistema de fitxers, i molts més. La comunitat ha creat llocs com <code>requests</code> (per a internet) o <code>pygame</code> (per a jocs).</li>
+          <li><strong>Classes i objectes.</strong> Una manera d'agrupar dades i funcions relacionades en un sol concepte, que és la base de la programació orientada a objectes.</li>
+        </ul>
+
+        <p>Per continuar aprenent, els millors recursos en català i castellà per a principiants són <strong>python.org/doc</strong> (documentació oficial, en anglès) i les nombroses plataformes d'exercicis en línia com Codewars o Exercism. La millor manera d'aprendre és escriure molts programes petits sobre coses que t'interessin.</p>
+
+        <p>Bona sort, i segueix programant!</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum del curs</h2>
+        <ul>
+          <li>Un programa es construeix combinant peces petites: dades en llistes, lògica en funcions, repetició en bucles i decisions en condicionals.</li>
+          <li><code>import random</code> dona accés a funcions d'aleatorietat; <code>random.shuffle(llista)</code> barreja una llista al seu lloc.</li>
+          <li><code>for p, r in llista_de_parelles:</code> desempaqueta cada element en dues variables d'un sol cop, fent el codi més net.</li>
+          <li>Separar les <em>dades</em> (la llista de preguntes), la <em>lògica</em> (la funció <code>pregunta()</code>) i el <em>flux</em> (el bucle principal) facilita llegir, provar i modificar el programa.</li>
+          <li>Els programes reals no usen cap concepte "màgic": combinen les mateixes instruccions bàsiques que has après en aquest curs.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-10.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="index.html" class="btn-nav btn-nav--next">Tornar a l'índex →</a>
+      </nav>
+
+      <section class="chapter-section" style="margin-top:2rem; padding:1.5rem; border:2px dashed #3776AB; border-radius:8px; text-align:center;">
+        <h2>Vols mes diversio?</h2>
+        <p>Ara que has completat el curs, hi ha un <strong>capitol extra</strong> esperant-te: programar el classic joc de taula <strong>4 en ratlla</strong> amb Python. Tu contra la maquina!</p>
+        <p><a href="capitol-12.html" class="btn-nav btn-nav--next" style="display:inline-block;">Jugar a 4 en ratlla &rarr;</a></p>
+      </section>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(11);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

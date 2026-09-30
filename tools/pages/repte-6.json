@@ -1,0 +1,35 @@
+{
+  "type": "repte",
+  "num": 6,
+  "titol": "Parell o senar",
+  "difficulty": "intermedi",
+  "prev": { "url": "repte-5.html", "label": "← Repte anterior" },
+  "next": { "url": "repte-7.html", "label": "Repte següent →" },
+  "hint": "<p>L'operador <code>%</code> retorna el residu d'una divisió. Si <code>n % 2 == 0</code>, el nombre és parell. Fes servir un <code>if</code>/<code>else</code>.</p>",
+  "sections": [
+    {
+      "parts": [
+        {
+          "h2": "Objectiu",
+          "body": "<p>Escriu un programa que llegeixi un nombre enter i mostri <code>Parell</code> si és parell o <code>Senar</code> si és senar.</p>\n<p>Exemples:</p>\n<pre class=\"code-example\">Entrada: 4   →  Parell\nEntrada: 7   →  Senar\nEntrada: 0   →  Parell\nEntrada: -3  →  Senar</pre>"
+        },
+        {
+          "h2": "Simulador",
+          "body": "<p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos nombres, inclòs el zero i nombres negatius.</p>",
+          "simulador": {
+            "goalId": "repte-6",
+            "code": "# Repte 6: Parell o senar\n# Llegeix un nombre i mostra si és parell o senar\n\nn = int(input())\n",
+            "tests": [
+              { "stdin": "4",  "expected": "Parell" },
+              { "stdin": "7",  "expected": "Senar" },
+              { "stdin": "0",  "expected": "Parell" },
+              { "stdin": "-3", "expected": "Senar" },
+              { "stdin": "1",  "expected": "Senar" }
+            ],
+            "height": 320
+          }
+        }
+      ]
+    }
+  ]
+}

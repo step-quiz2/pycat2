@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>PyCat — Test Runner d'exercicis</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 980px;
+      margin: 24px auto;
+      padding: 0 16px;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.4rem; border-bottom: 1px solid #444; padding-bottom: 8px; }
+    #status {
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 6px;
+      margin: 12px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+    #summary {
+      padding: 12px;
+      border-radius: 6px;
+      margin: 12px 0;
+      font-weight: 700;
+      display: none;
+    }
+    #summary.ok { background: #1b3d1b; color: #7fdf7f; display: block; }
+    #summary.ko { background: #3d1b1b; color: #ff9999; display: block; }
+    button {
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .exercise {
+      border: 1px solid #333;
+      border-radius: 6px;
+      margin: 10px 0;
+      padding: 12px;
+      background: #222;
+    }
+    .exercise.pass { border-color: #2a6e2a; }
+    .exercise.fail { border-color: #8b2a2a; }
+    .exercise.pending { border-color: #555; opacity: 0.7; }
+    .exercise h3 {
+      margin: 0 0 8px 0;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .badge.pass { background: #2a6e2a; color: #fff; }
+    .badge.fail { background: #8b2a2a; color: #fff; }
+    .badge.pending { background: #444; color: #aaa; }
+    .test-case {
+      margin: 6px 0;
+      padding: 6px 10px;
+      background: #1a1a1a;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .test-case.pass { border-left: 3px solid #2a6e2a; }
+    .test-case.fail { border-left: 3px solid #8b2a2a; }
+    .diff { color: #ff9999; }
+    details { margin-top: 6px; }
+    summary { cursor: pointer; color: #89b4fa; font-size: 0.85rem; }
+    .hint { color: #888; font-size: 0.85rem; margin: 8px 0; }
+    code {
+      background: #333;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧪 PyCat — Test Runner d'exercicis</h1>
+
+<p class="hint">
+  Aquesta pàgina carrega Pyodide i executa la solució de referència de cada exercici
+  (definida a <code>tests/solutions.js</code>) contra els seus test cases extrets
+  directament de les pàgines del curs. No es mostra a la navegació del curs — és una
+  eina de desenvolupament per detectar regressions.
+</p>
+
+<div>
+  <button id="btn-run" disabled>▶ Executa tots els tests</button>
+  <button id="btn-run-one">▶ Executa un exercici…</button>
+</div>
+
+<div id="status">Carregant Pyodide…</div>
+<div id="summary"></div>
+<div id="results"></div>
+
+<!-- Carrega les solucions -->
+<script src="solutions.js"></script>
+
+<script>
+// ════════════════════════════════════════════════════════
+// test-exercises.js — Lògica del test runner
+// ════════════════════════════════════════════════════════
+
+const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.7/full/';
+const CURS_DIR = '../curs/';
+
+// Pàgines del curs que contenen exercicis
+const COURSE_PAGES = [
+  'capitol-1.html', 'capitol-2.html', 'capitol-3.html', 'capitol-4.html',
+  'capitol-5.html', 'capitol-6.html', 'capitol-7.html', 'capitol-8.html',
+  'capitol-9.html', 'capitol-10.html',
+  'repte-1.html',  'repte-2.html',  'repte-3.html',  'repte-4.html',
+  'repte-5.html',  'repte-6.html',  'repte-7.html',  'repte-8.html',
+  'repte-9.html',  'repte-10.html', 'repte-11.html', 'repte-12.html',
+  'repte-13.html', 'repte-14.html', 'repte-15.html'
+];
+
+let pyodide = null;
+
+// ── Extreu els exercicis de les pàgines del curs ────────
+async function extractExercises() {
+  const exercises = [];
+  for (const page of COURSE_PAGES) {
+    let html;
+    try {
+      const resp = await fetch(CURS_DIR + page);
+      if (!resp.ok) continue;
+      html = await resp.text();
+    } catch (e) {
+      console.warn('No s\'ha pogut carregar', page, e);
+      continue;
+    }
+
+    // Parseja amb DOMParser per extreure els data-* de cada .simulador
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const sims = doc.querySelectorAll('.simulador[data-goal-id]');
+    sims.forEach(sim => {
+      exercises.push({
+        file:     page,
+        goalId:   sim.getAttribute('data-goal-id'),
+        code:     sim.getAttribute('data-code')     || '',
+        stdin:    sim.getAttribute('data-stdin')    || null,
+        expected: sim.getAttribute('data-expected') || null,
+        tests:    sim.getAttribute('data-tests')    || null,
+        testcode: sim.getAttribute('data-testcode') || null,
+      });
+    });
+  }
+  return exercises;
+}
+
+// ── Parseja els tests d'un exercici ─────────────────────
+function parseTests(ex) {
+  if (ex.tests) {
+    try { return JSON.parse(ex.tests); } catch(e) {
+      console.warn('Tests invàlids per', ex.goalId, e);
+      return null;
+    }
+  }
+  if (ex.expected !== null) {
+    return [{ stdin: ex.stdin, expected: ex.expected }];
+  }
+  return null;
+}
+
+// ── Executa Python amb un stdin prepoblat i captura stdout ──
+async function runPython(code, stdin) {
+  // Configura StringIO per stdin/stdout i executa
+  pyodide.runPython(`
+import sys
+from io import StringIO
+_cap_out = StringIO()
+_cap_err = StringIO()
+_orig_out = sys.stdout
+_orig_err = sys.stderr
+_orig_in  = sys.stdin
+sys.stdout = _cap_out
+sys.stderr = _cap_err
+`);
+  if (stdin !== null && stdin !== undefined && stdin !== '') {
+    pyodide.runPython('sys.stdin = StringIO(' + JSON.stringify(stdin) + ')');
+  } else {
+    pyodide.runPython('sys.stdin = StringIO("")');
+  }
+  let err = null;
+  try {
+    await pyodide.runPythonAsync(code);
+  } catch (e) {
+    err = String(e.message || e);
+  }
+  const stdout = pyodide.runPython('_cap_out.getvalue()');
+  const stderr = pyodide.runPython('_cap_err.getvalue()');
+  pyodide.runPython('sys.stdout = _orig_out; sys.stderr = _orig_err; sys.stdin = _orig_in');
+  return { stdout, stderr, error: err };
+}
+
+function normalize(s) {
+  return String(s == null ? '' : s).replace(/\r\n/g, '\n').trim();
+}
+
+// ── UI ───────────────────────────────────────────────────
+const statusEl  = document.getElementById('status');
+const resultsEl = document.getElementById('results');
+const summaryEl = document.getElementById('summary');
+const btnRun    = document.getElementById('btn-run');
+const btnRunOne = document.getElementById('btn-run-one');
+
+function setStatus(msg) { statusEl.textContent = msg; }
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderExerciseCard(ex, result) {
+  const div = document.createElement('div');
+  div.className = 'exercise ' + (result.allPass ? 'pass' : 'fail');
+  div.id = 'ex-' + ex.goalId;
+
+  const passCount  = result.tests.filter(t => t.pass).length;
+  const totalCount = result.tests.length;
+
+  let html = `<h3>
+    <span class="badge ${result.allPass ? 'pass' : 'fail'}">
+      ${result.allPass ? '✓ PASS' : '✗ FAIL'}
+    </span>
+    <span>${escapeHtml(ex.goalId)}</span>
+    <span style="color:#888; font-weight:400; font-size:0.85rem">
+      (${passCount}/${totalCount} — ${escapeHtml(ex.file)})
+    </span>
+  </h3>`;
+
+  for (let i = 0; i < result.tests.length; i++) {
+    const t = result.tests[i];
+    if (t.pass) {
+      html += `<div class="test-case pass">✓ Test ${i + 1}: stdin=${escapeHtml(JSON.stringify(t.stdin || ''))} → ${escapeHtml(JSON.stringify(t.expected))}</div>`;
+    } else {
+      html += `<div class="test-case fail">
+✗ Test ${i + 1}:
+  stdin:    ${escapeHtml(JSON.stringify(t.stdin || ''))}
+  expected: ${escapeHtml(JSON.stringify(t.expected))}
+  actual:   <span class="diff">${escapeHtml(JSON.stringify(t.actual))}</span>
+${t.error ? '  error:    ' + escapeHtml(t.error) : ''}</div>`;
+    }
+  }
+
+  div.innerHTML = html;
+  resultsEl.appendChild(div);
+  return div;
+}
+
+function renderSkippedCard(ex, reason) {
+  const div = document.createElement('div');
+  div.className = 'exercise pending';
+  div.innerHTML = `<h3>
+    <span class="badge pending">SKIP</span>
+    <span>${escapeHtml(ex.goalId)}</span>
+    <span style="color:#888; font-weight:400; font-size:0.85rem">
+      (${escapeHtml(ex.file)})
+    </span>
+  </h3>
+  <div class="test-case">${escapeHtml(reason)}</div>`;
+  resultsEl.appendChild(div);
+}
+
+// ── Executa tots els exercicis ──────────────────────────
+async function runAllTests(filterGoalId) {
+  btnRun.disabled = true;
+  btnRunOne.disabled = true;
+  resultsEl.innerHTML = '';
+  summaryEl.style.display = 'none';
+
+  setStatus('Extraient exercicis de les pàgines del curs…');
+  const exercises = await extractExercises();
+  setStatus(`Trobats ${exercises.length} exercicis. Executant tests…`);
+
+  let total = 0, passed = 0, failed = 0, skipped = 0;
+
+  for (const ex of exercises) {
+    if (filterGoalId && ex.goalId !== filterGoalId) continue;
+
+    const solution = window.SOLUTIONS[ex.goalId];
+    if (!solution) {
+      renderSkippedCard(ex, 'Cap solució a solutions.js per «' + ex.goalId + '».');
+      skipped++;
+      continue;
+    }
+
+    const tests = parseTests(ex);
+    if (!tests) {
+      renderSkippedCard(ex, 'No hi ha test cases definits o el JSON és invàlid.');
+      skipped++;
+      continue;
+    }
+
+    const finalCode = ex.testcode
+      ? solution + '\n\n# ── Tests ──\n' + ex.testcode
+      : solution;
+
+    const results = [];
+    let allPass = true;
+    for (let i = 0; i < tests.length; i++) {
+      setStatus(`[${ex.goalId}] Test ${i + 1}/${tests.length}…`);
+      const tc = tests[i];
+      const r = await runPython(finalCode, tc.stdin);
+      const got = normalize(r.stdout);
+      const exp = normalize(tc.expected);
+      const pass = !r.error && got === exp;
+      results.push({
+        pass,
+        stdin: tc.stdin,
+        expected: tc.expected,
+        actual: r.stdout,
+        error: r.error,
+      });
+      total++;
+      if (pass) passed++;
+      else { failed++; allPass = false; }
+    }
+
+    renderExerciseCard(ex, { tests: results, allPass });
+  }
+
+  // Summary
+  summaryEl.className = failed === 0 ? 'ok' : 'ko';
+  summaryEl.textContent = failed === 0
+    ? `🎉 ${passed}/${total} tests passen. (${skipped} exercicis omesos)`
+    : `❌ ${failed} de ${total} tests fallen, ${passed} passen. (${skipped} omesos)`;
+  setStatus('Completat.');
+  btnRun.disabled = false;
+  btnRunOne.disabled = false;
+}
+
+// ── Inicialització ───────────────────────────────────────
+async function init() {
+  try {
+    setStatus('Descarregant Pyodide de ' + PYODIDE_CDN + '…');
+    // importScripts no està disponible al main thread — usem un script tag
+    await new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = PYODIDE_CDN + 'pyodide.js';
+      s.onload = resolve;
+      s.onerror = () => reject(new Error('No s\'ha pogut carregar ' + s.src));
+      document.head.appendChild(s);
+    });
+    setStatus('Inicialitzant Pyodide…');
+    pyodide = await loadPyodide({ indexURL: PYODIDE_CDN });
+    setStatus('Pyodide llest. Prem «Executa tots els tests» per començar.');
+    btnRun.disabled = false;
+  } catch (e) {
+    setStatus('❌ Error carregant Pyodide: ' + e.message);
+  }
+}
+
+btnRun.addEventListener('click', () => runAllTests(null));
+btnRunOne.addEventListener('click', () => {
+  const id = prompt('goalId a executar (p.ex. cap-4-ex o repte-15):');
+  if (id && id.trim()) runAllTests(id.trim());
+});
+
+init();
+</script>
+
+</body>
+</html>

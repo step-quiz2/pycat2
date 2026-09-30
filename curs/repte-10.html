@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 10 — Comptar paraules | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 10 — Intermedi</span>
+      <h1>Comptar paraules</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi una frase i mostri quantes paraules conté. Es considera que les paraules estan separades per espais.</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: Hola món          →  Paraules: 2
+Entrada: Python és divertit →  Paraules: 3
+Entrada: hola               →  Paraules: 1</pre>
+
+      <p><strong>Pista conceptual:</strong> els strings tenen el mètode <code>.split()</code>, que divideix un text per espais i retorna una llista de paraules. La funció <code>len()</code> et dona la longitud d'una llista.</p>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses frases.</p>
+
+      <div class="simulador"
+           data-code="# Repte 10: Comptar paraules
+# Llegeix una frase i mostra quantes paraules té
+
+frase = input(&quot;Escriu una frase: &quot;)
+"
+           data-tests='[
+             {"stdin":"Hola món","expected":"Paraules: 2"},
+             {"stdin":"Python és divertit","expected":"Paraules: 3"},
+             {"stdin":"hola","expected":"Paraules: 1"},
+             {"stdin":"el cel és blau avui","expected":"Paraules: 5"},
+             {"stdin":"un dos tres quatre","expected":"Paraules: 4"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-10"
+           data-height="340">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        <code>paraules = frase.split()</code> retorna una llista de paraules. Després <code>len(paraules)</code> et dona el nombre. Finalment <code>print(f"Paraules: {len(paraules)}")</code>.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-9.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-11.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(10);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

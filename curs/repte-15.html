@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 15 — FizzBuzz | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fee2e2; color: #991b1b;">⚡ Repte 15 — Difícil</span>
+      <h1>FizzBuzz</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi un nombre enter <code>n</code> i mostri els nombres de l'1 al <code>n</code>, un per línia, amb aquestes regles:</p>
+      <ul>
+        <li>Si el nombre és múltiple de 3, escriu <code>Fizz</code> en lloc del nombre.</li>
+        <li>Si és múltiple de 5, escriu <code>Buzz</code>.</li>
+        <li>Si és múltiple de 3 <strong>i</strong> de 5 alhora, escriu <code>FizzBuzz</code>.</li>
+        <li>Si no és cap dels anteriors, escriu el nombre tal qual.</li>
+      </ul>
+      <p>Exemple per a <code>n = 15</code>:</p>
+      <pre class="code-example">1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+FizzBuzz</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos valors de <code>n</code>.</p>
+
+      <div class="simulador"
+           data-code="# Repte 15: FizzBuzz
+# Llegeix n i mostra els nombres de l'1 al n amb les regles
+
+n = int(input(&quot;Fins a quin número? &quot;))
+"
+           data-tests='[
+             {"stdin":"1","expected":"1"},
+             {"stdin":"5","expected":"1\n2\nFizz\n4\nBuzz"},
+             {"stdin":"15","expected":"1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz"},
+             {"stdin":"3","expected":"1\n2\nFizz"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-15"
+           data-height="420">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Comença per la condició més restrictiva: si el nombre és múltiple de 15 (és a dir, de 3 i de 5 alhora), és <code>FizzBuzz</code>.
+        Després comprova si és múltiple de 3, després de 5, i si no és cap, mostra el nombre.
+        Recorda: <code>i % 3 == 0</code> comprova si <code>i</code> és múltiple de 3.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-14.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="capitol-1.html" class="btn-nav btn-nav--next">Torna als capítols →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(15);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

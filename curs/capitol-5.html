@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 5 — Repetir amb while | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 5</span>
+        <h1>Repetir amb <code>while</code></h1>
+        <p class="chapter-lead">Quan no saps quantes vegades has de repetir una cosa, fas servir <code>while</code>.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Què és un bucle
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Què és una iteració?</h2>
+
+        <p>Imagina que has d'imprimir els números de l'1 al 5. Ho podries fer amb cinc <code>print()</code> separats, però si fossin cent números? Una <strong>iteració</strong> (en anglès, <em>loop</em>) és un bloc de codi que es repeteix automàticament mentre es compleixi una condició:</p>
+
+        <div class="simulador"
+             data-code='i = 1
+while i <= 5:
+    print(i)
+    i = i + 1'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Llegeix-ho en veu alta: «<em>mentre <code>i</code> sigui menor o igual a 5, imprimeix <code>i</code> i augmenta'l en 1</em>». Quan <code>i</code> arriba a 6, la condició és falsa i el bucle s'atura.</p>
+
+        <p>Les dues peces clau del <code>while</code> són exactament les mateixes que al <code>if</code>: els <strong>dos punts</strong> <code>:</code> al final de la línia i la <strong>indentació</strong> del bloc interior.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — while amb comptador
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>while</code> amb comptador</h2>
+
+        <p>El patró anterior —inicialitzar un comptador, comprovar-lo, avançar-lo— és el més habitual per repetir un bloc un nombre concret de vegades:</p>
+
+        <div class="simulador"
+             data-code='# Comptem fins a 10 de dos en dos
+i = 0
+while i <= 10:
+    print(i)
+    i = i + 2'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>Pots usar un <strong>acumulador</strong> —una variable que creix a cada iteració— per fer sumes o productes progressives:</p>
+
+        <div class="simulador"
+             data-code='# Suma dels números de l1 al 10
+total = 0
+i = 1
+while i <= 10:
+    total = total + i
+    i = i + 1
+print("La suma és:", total)'
+             data-height="280">
+        </div>
+
+        <p>Executa el codi i comprova el resultat. Després prova de canviar el límit per calcular la suma fins al 100.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — while amb condició de l'usuari
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>while</code> controlat per l'usuari</h2>
+
+        <p>Quan el nombre de repeticions depèn de l'usuari —per exemple, seguir preguntant fins que respongui correctament—, el <code>while</code> és la única eina adequada:</p>
+
+        <div class="simulador"
+             data-code='resposta = ""
+while resposta != "sí":
+    resposta = input("Vols continuar? (sí/no): ")
+print("Endavant!")'
+             data-interactive="true"
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>La iteració s'executa una primera vegada perquè <code>resposta</code> comença buida (<code>""</code>), que és diferent de <code>"sí"</code>. Quan l'usuari escriu <code>"sí"</code>, la condició es torna falsa i el programa continua.</p>
+
+        <p>Aquest tipus d'teració s'anomena <strong>sentinella</strong>: el valor <code>"sí"</code>, en aquest cas, actua com a senyal de parada.</p>
+
+        <div class="simulador"
+             data-code='# Seguim llegint números fins que lusuari escrigui 0
+total = 0
+num = int(input("Escriu un número (0 per acabar): "))
+while num != 0:
+    total = total + num
+    num = int(input("Escriu un número (0 per acabar): "))
+print("Suma total:", total)'
+             data-interactive="true"
+             data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Bucles infinits i break
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Iteracions infinites i <code>break</code></h2>
+
+        <p>Si la condició del <code>while</code> mai es torna falsa, la iteració no s'atura mai. Això s'anomena <strong>iteració infinita</strong> i normalment és un error. Però en alguns casos pot ser convenient, si s'usa amb <code>break</code>:</p>
+
+        <div class="simulador"
+             data-code='# Iteració infinita controlada amb break
+while True:
+    resposta = input("Escriu \"adeu\" per sortir: ")
+    if resposta == "adeu":
+        break
+    print("Has dit:", resposta)
+print("Fins aviat!")'
+             data-interactive="true"
+             data-readonly="true"
+             data-height="300">
+        </div>
+
+        <p><code>while True:</code> mai s'atura per si sol, perquè <code>True</code> sempre és cert. La instrucció <code>break</code> surt del bucle immediatament, salti a on salti. Fixa't que el <code>print("Fins aviat!")</code> s'executa perquè és <em>fora</em> del bucle.</p>
+
+        <p>Hi ha també <code>continue</code>, que en comptes de sortir de la iteració, el que fa és tornar a començar-la:</p>
+
+        <div class="simulador"
+             data-code='# Imprimir només els parells de l1 al 10
+i = 1
+while i <= 10:
+    if i % 2 != 0:
+        i = i + 1
+        continue   # torna al while sense imprimir
+    print(i)
+    i = i + 1'
+             data-readonly="true"
+             data-height="300">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Bucles que no s'executen mai
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Iteracions que no s'executen mai</h2>
+
+        <p>Si la condició del <code>while</code> ja és falsa des del principi, el bloc interior no s'executa ni una sola vegada:</p>
+
+        <div class="simulador"
+             data-code='i = 10
+while i < 5:
+    print("Això no es veurà mai")
+print("El programa continua aquí")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>No és un error, és un comportament vàlid. De vegades és el resultat que vols: si el comptador ja ha superat el límit, no cal repetir res.</p>
+
+        <p>Contrasteu-ho amb el cas habitual. Proveu de canviar el valor de <code>i</code> per veure quan s'executa el bloc i quan no:</p>
+
+        <div class="simulador"
+             data-code='i = 3
+while i < 5:
+    print("Iteració:", i)
+    i = i + 1
+print("Fi del bucle")'
+             data-height="260">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics</h2>
+
+        <p>Aquests tres errors apareixen sovint quan es fa servir <code>while</code>.</p>
+
+        <p><strong>1. Oblidar avançar el comptador</strong> — conseqüència: la iteració mai acaba.</p>
+
+        <div class="simulador"
+             data-code='i = 0
+while i < 3:
+    print(i)
+    # ERROR: falta i = i + 1
+    # Aquest codi és un bucle infinit!'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>⚠️ No executis aquest codi: bloquejarà la pàgina. Afegeix <code>i = i + 1</code> a l'interior de la iteració, per arreglar-ho.</p>
+
+        <p><strong>2. Condició que mai es compleix pel valor inicial</strong>:</p>
+
+        <div class="simulador"
+             data-code='# Volem comptar enrere de 5 a 1, però la condició és al revés
+i = 5
+while i < 10:   # ERROR: hauria de ser i > 0
+    print(i)
+    i = i - 1'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p><strong>3. Oblidar els dos punts <code>:</code></strong></p>
+
+        <div class="simulador"
+             data-code='i = 0
+while i < 3
+    print(i)
+    i = i + 1'
+             data-readonly="true"
+             data-height="220">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          L'ordinador té un número secret fixat a <strong>7</strong>. L'usuari ha d'intentar endevinar-lo: el programa llegeix un número i diu <strong>Més gran!</strong> si el número secret és major que l'intento, <strong>Més petit!</strong> si és menor, o <strong>Encertat!</strong> quan l'encerta i acaba.
+        </div>
+
+        <p>El programa ha de seguir demanant números fins que l'usuari encertin el 7. Les paraules de la sortida han de ser <strong>exactament</strong> com s'indica (amb accent i majúscula inicial).</p>
+
+        <div class="simulador"
+             data-code="secret = 7
+intent = int(input(&quot;Endevina el número: &quot;))
+# Escriu el bucle while aquí:
+"
+             data-tests='[
+               {"stdin": "7",        "expected": "Encertat!"},
+               {"stdin": "3\n9\n7",  "expected": "Més gran!\nMés petit!\nEncertat!"},
+               {"stdin": "1\n7",     "expected": "Més gran!\nEncertat!"}
+             ]'
+             data-interactive="true"
+             data-goal-id="cap-5-ex"
+             data-height="360">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li><code>while condició:</code> repeteix el bloc mentre la condició sigui certa; quan és falsa, el programa continua per sota.</li>
+          <li>El patró més habitual és un <strong>comptador</strong>: inicialitza'l, comprova'l a la condició i avança'l dins del bucle.</li>
+          <li>Un <strong>acumulador</strong> és una variable que s'actualitza a cada iteració per acumular un resultat (suma, producte, etc.).</li>
+          <li>Si la condició mai és falsa, la iteració és <strong>infinita</strong>. Pots sortir d'ella amb <code>break</code>.</li>
+          <li><code>continue</code> salta la resta de la iteració actual i torna al principi del bucle.</li>
+          <li>Si la condició ja és falsa des del principi, el bloc no s'executa ni un cop.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-4.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-6.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(5);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

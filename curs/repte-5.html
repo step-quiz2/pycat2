@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 5 — Canvi de moneda | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #d1fae5; color: #065f46;">⚡ Repte 5 — Fàcil</span>
+      <h1>Canvi de moneda</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi una quantitat en euros (pot tenir decimals) i mostri l'equivalent en dòlars amb un canvi fix de <strong>1.08</strong>. La sortida ha de mostrar els dòlars amb exactament 2 decimals.</p>
+      <p>Per exemple, si l'entrada és <code>50</code>, la sortida ha de ser:</p>
+      <pre class="code-example">50.0 € = 54.00 $</pre>
+      <p>Si l'entrada és <code>7.5</code>:</p>
+      <pre class="code-example">7.5 € = 8.10 $</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses quantitats.</p>
+
+      <div class="simulador"
+           data-code="# Repte 5: Canvi de moneda
+# Llegeix euros i converteix a dòlars (canvi: 1.08)
+
+euros = float(input(&quot;Quantitat en euros: &quot;))
+"
+           data-tests='[
+             {"stdin":"50","expected":"50.0 € = 54.00 $"},
+             {"stdin":"100","expected":"100.0 € = 108.00 $"},
+             {"stdin":"7.5","expected":"7.5 € = 8.10 $"},
+             {"stdin":"0","expected":"0.0 € = 0.00 $"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-5"
+           data-height="320">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Fes servir <code>float(input("text"))</code> per llegir i una f-string amb format per als decimals:
+        <code>f"{euros} € = {dolars:.2f} $"</code>. El <code>:.2f</code> força exactament 2 decimals.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-4.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-6.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(5);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

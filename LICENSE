@@ -1,0 +1,56 @@
+Copyright (c) 2026 David Arso Civil
+
+Aquest projecte té dues llicències, segons el tipus de fitxer.
+
+═══════════════════════════════════════════════════════════════════════
+CONTINGUT PEDAGÒGIC — CC BY-NC-SA 4.0
+═══════════════════════════════════════════════════════════════════════
+
+S'hi inclou tot el material didàctic: textos, exercicis, enunciats,
+solucions, imatges, fitxes i documents PDF.
+
+Es pot compartir i adaptar, també per a usos no comercials, sempre que
+se n'atribueixi l'autoria i que el material derivat es publiqui amb
+aquesta mateixa llicència.
+
+Text complet:
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.ca
+
+Resum llegible:
+https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca
+
+═══════════════════════════════════════════════════════════════════════
+CODI — MIT
+═══════════════════════════════════════════════════════════════════════
+
+S'hi inclou el codi font: fitxers .js, .py, .css, plantilles HTML i
+eines de construcció.
+
+MIT License
+
+Copyright (c) 2026 David Arso Civil
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+═══════════════════════════════════════════════════════════════════════
+ATRIBUCIÓ
+═══════════════════════════════════════════════════════════════════════
+
+Material desenvolupat per David Arso Civil per al Departament de Matemàtiques
+de l'INS Miquel Tarradell.

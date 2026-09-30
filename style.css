@@ -1,0 +1,847 @@
+/* ════════════════════════════════════════════════════════
+   style.css — PyCat
+════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:         #000000;
+  --surface:    #141414;
+  --border:     #2a2a2a;
+  --text:       #ddddd8;
+  --muted:      #8a8a85;
+  --accent:     #a8a8a2;
+  --accent-dim: rgba(168,168,162,0.13);
+  --error:      #ff5252;
+  --error-dim:  rgba(255,82,82,0.13);
+  --ok:         #4ade80;
+  --ok-dim:     rgba(74,222,128,0.10);
+  --mono:       'Space Mono','Courier New',monospace;
+  --topbar-h:   46px;
+  --ed-font-size:   0.8rem;
+  --ed-line-height: 1.75;
+  --ed-pad-top:     12px;
+  --ed-pad-x:       14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+/* ── MODE CLAR ─────────────────────────────────────── */
+body.light {
+  --bg:         #ffffff;
+  --surface:    #f5f5f5;
+  --border:     #d0d0d0;
+  --text:       #1a1a1a;
+  --muted:      #4b5563;
+  --accent:     #2563eb;
+  --accent-dim: rgba(37,99,235,0.08);
+  --error:      #dc2626;
+  --error-dim:  rgba(220,38,38,0.08);
+  --ok:         #16a34a;
+  --ok-dim:     rgba(22,163,74,0.08);
+}
+body.light { background: var(--bg); color: var(--text); }
+
+body {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   CAPÇALERA
+══════════════════════════════════════════════════════ */
+
+.topbar {
+  height: var(--topbar-h);
+  min-height: var(--topbar-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 0.9rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+.logo-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+/* Navegació global */
+.topbar-nav {
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+}
+.topbar-nav-link {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 4px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--muted);
+  transition: background 0.15s, color 0.15s;
+}
+.topbar-nav-link:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.topbar-nav-link.active {
+  background: var(--accent);
+  color: #fff;
+}
+body.light .topbar-nav-link       { color: var(--muted); }
+body.light .topbar-nav-link:hover { background: var(--accent); color: #fff; }
+body.light .topbar-nav-link.active{ background: var(--accent); color: #fff; }
+
+/* Amaga la nav en mode embed (iframes del curs) */
+body.embed .topbar-nav { display: none; }
+
+@media (max-width: 500px) {
+  .topbar-nav-link { font-size: 0.6rem; padding: 3px 7px; }
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* Botó glossari */
+.btn-glossari {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.btn-glossari:hover { color: var(--text); border-color: var(--text); }
+body.embed .btn-glossari { display: none; }
+
+
+/* ══════════════════════════════════════════════════════
+   BOTONS
+══════════════════════════════════════════════════════ */
+
+.btn {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.p { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.p:hover { filter: brightness(1.15); }
+.btn.r { background: var(--error); color: #fff; border-color: var(--error); }
+.btn.r:hover { filter: brightness(1.15); }
+
+body.light .btn { border-color: var(--border); background: #fff; color: var(--text); }
+body.light .btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.light .btn.p { background: var(--accent); color: #fff; }
+body.light .btn.r { background: var(--error); color: #fff; }
+
+.btn-theme {
+  padding: 5px 8px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   TOOLBAR — Fila de controls d'execució
+══════════════════════════════════════════════════════ */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.toolbar-spacer { flex: 1; }
+
+.btn-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn-file:hover { color: var(--text); border-color: var(--text); }
+.btn-file svg { flex-shrink: 0; }
+
+body.embed .btn-file { display: none; }
+
+@media (max-width: 500px) {
+  .btn-file-label { display: none; }
+  .btn-file { padding: 4px 7px; }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT PRINCIPAL — Editor (esquerra) + Consola (dreta)
+══════════════════════════════════════════════════════ */
+
+.main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+
+/* ── COLUMNA ESQUERRA: EDITOR DE CODI ────────────── */
+
+.code-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+
+.editor-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Números de línia */
+#line-numbers {
+  width: 36px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding-top: var(--ed-pad-top);
+  overflow: hidden;
+  text-align: right;
+  user-select: none;
+}
+#line-numbers .ln {
+  font-size: var(--ed-font-size);
+  line-height: var(--ed-line-height);
+  padding-right: 8px;
+  color: var(--muted);
+}
+
+/* Contenidor interior (textarea + highlight overlay) */
+.editor-inner {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#code-editor,
+#code-highlight,
+#line-bg {
+  position: absolute;
+  inset: 0;
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: var(--ed-line-height);
+  padding: var(--ed-pad-top) var(--ed-pad-x);
+  tab-size: 4;
+  white-space: pre;
+  overflow: auto;
+}
+
+#code-editor {
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text);
+  border: none;
+  outline: none;
+  resize: none;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+#code-highlight {
+  z-index: 1;
+  pointer-events: none;
+  color: var(--text);
+  background: var(--bg);
+  margin: 0;
+}
+
+#line-bg {
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Fons de línia activa/error */
+.lbg-row {
+  height: calc(var(--ed-font-size) * 1.75);
+  line-height: calc(var(--ed-font-size) * 1.75);
+}
+.lbg-row.active { background: var(--accent-dim); }
+.lbg-row.error  { background: var(--error-dim); }
+
+/* Ressaltat sintàctic */
+.hl-kw   { color: #c084fc; }  /* keywords: morat */
+.hl-cmd  { color: #60a5fa; }  /* builtins: blau */
+.hl-str  { color: #4ade80; }  /* strings: verd */
+.hl-num  { color: #fbbf24; }  /* números: groc */
+.hl-cm   { color: #6b7280; font-style: italic; }  /* comentaris: gris */
+.hl-br   { color: var(--muted); }  /* puntuació */
+.hl-user { color: var(--text); }   /* identificadors */
+
+body.light .hl-kw  { color: #7c3aed; }
+body.light .hl-cmd { color: #2563eb; }
+body.light .hl-str { color: #16a34a; }
+body.light .hl-num { color: #d97706; }
+body.light .hl-cm  { color: #9ca3af; }
+
+
+/* ══════════════════════════════════════════════════════
+   COLUMNA DRETA: CONSOLA
+══════════════════════════════════════════════════════ */
+
+.console-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.console-header {
+  padding: 6px 12px;
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.console-header span { letter-spacing: 0.5px; text-transform: uppercase; }
+
+.console-area {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 14px;
+  background: var(--bg);
+}
+
+#console-output {
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: 1.7;
+}
+
+/* Línies de consola */
+.con-line     { white-space: pre-wrap; word-break: break-all; }
+.con-line.out { color: var(--text); }
+.con-line.err { color: var(--error); }
+.con-line.ok  { color: var(--ok); }
+.con-line.dim { color: var(--muted); }
+
+
+/* ══════════════════════════════════════════════════════
+   MODE EMBED — Per a iframes dins del curs
+══════════════════════════════════════════════════════ */
+
+body.embed .topbar { display: none; }
+body.embed { font-size: 12px; }
+
+
+/* ══════════════════════════════════════════════════════
+   GLOSSARI (modal)
+══════════════════════════════════════════════════════ */
+
+.glossari-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+}
+.glossari-overlay.is-open { display: flex; }
+
+.glossari-modal {
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  width: min(540px, 92vw);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.glossari-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+}
+
+.glossari-title {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
+}
+
+.glossari-close {
+  background: none;
+  border: 1px solid #d0d0d0;
+  color: #6b7280;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+.glossari-close:hover { color: #1a1a1a; border-color: #1a1a1a; }
+
+.glossari-body {
+  padding: 16px 18px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glossari-section { margin-bottom: 18px; }
+.glossari-section:last-child { margin-bottom: 0; }
+
+.glossari-section h3 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.glossari-hint {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: #6b7280;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.glossari-hint code {
+  color: #2563eb;
+  font-weight: 700;
+  background: none;
+  padding: 0;
+}
+
+.glossari-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 14px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+.glossari-grid > code {
+  color: #2563eb;
+  white-space: nowrap;
+  background: none;
+  padding: 0;
+}
+.glossari-grid > span { color: #4b5563; }
+.glossari-grid > span code {
+  color: #2563eb;
+  background: none;
+  padding: 0;
+  font-size: 0.95em;
+}
+
+.glossari-example {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.glossari-rules .glossari-rule {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: #1a1a1a;
+  line-height: 1.8;
+}
+.glossari-rules .glossari-rule code {
+  color: #2563eb;
+  font-weight: 700;
+  background: none;
+  padding: 0;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   AUTOCOMPLETAT
+══════════════════════════════════════════════════════ */
+
+.autocomplete-dropdown {
+  display: none;
+  position: fixed;
+  z-index: 500;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  min-width: 170px;
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.autocomplete-dropdown.visible { display: block; }
+
+.ac-item {
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: var(--ed-font-size);
+  font-family: var(--mono);
+  color: var(--text);
+  white-space: nowrap;
+  line-height: 1.6;
+}
+.ac-item:hover,
+.ac-item.selected {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+/* Keyword = morat, builtin = blau */
+.ac-item[data-kind="kw"]      { color: #c084fc; }
+.ac-item[data-kind="builtin"] { color: #60a5fa; }
+.ac-item.selected,
+.ac-item:hover                { background: var(--accent-dim); }
+
+body.light .autocomplete-dropdown { box-shadow: 0 4px 14px rgba(0,0,0,.15); background: #ffffff; border-color: #d0d0d0; }
+body.light .ac-item[data-kind="kw"]      { color: #7c3aed; }
+body.light .ac-item[data-kind="builtin"] { color: #2563eb; }
+
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — Mòbil
+══════════════════════════════════════════════════════ */
+
+@media (max-width: 700px) {
+  .main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .code-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .glossari-overlay { align-items: stretch; overflow: hidden; }
+  .glossari-modal {
+    width: 100vw; max-height: 100dvh; max-height: 100vh;
+    height: 100%; border-radius: 0; border: none; overflow: hidden;
+  }
+  .glossari-body {
+    flex: 1 1 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; touch-action: pan-y; padding: 14px 16px 24px;
+  }
+  .glossari-grid { font-size: 0.63rem; gap: 2px 10px; }
+  .glossari-example { font-size: 0.62rem; padding: 6px 10px; }
+}
+
+@media (max-width: 400px) {
+  .topbar { padding: 0 8px; gap: 8px; }
+  .toolbar { padding: 4px 8px; }
+}
+
+
+/* ── Input interactiu (mode SAB) ────────────────────── */
+.console-input-wrap {
+  display: flex;
+  padding: 4px 10px 6px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.console-input {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 4px 8px;
+  outline: none;
+  caret-color: var(--accent);
+}
+.console-input:focus {
+  border-color: var(--ok);
+  box-shadow: 0 0 0 2px var(--ok-dim);
+}
+.console-input::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* Línia d'input de l'alumne (mostra el que ha escrit) */
+.con-line.in {
+  color: var(--accent);
+  font-style: italic;
+}
+.con-line.in::before {
+  content: '▸ ';
+  opacity: 0.5;
+}
+
+/* Línia parcial (prompt d'input() sense newline) */
+.con-line.partial {
+  /* No afegeix newline visual — la línia està "oberta" */
+}
+
+/* ── Panell stdin (fallback sense SAB) ──────────────── */
+.stdin-panel {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: 6px 10px 8px;
+}
+.stdin-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.stdin-hint {
+  font-size: 0.65rem;
+  opacity: 0.7;
+}
+.stdin-textarea {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  resize: vertical;
+  min-height: 40px;
+  outline: none;
+}
+.stdin-textarea:focus {
+  border-color: var(--accent);
+}
+
+
+/* ── Teclat virtual mòbil (kbd-accessory.js) ────────── */
+
+.kbd-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  /* Amaga per defecte; es mostra amb .visible quan l'editor té el focus */
+  transform: translateY(100%);
+  transition: transform 0.15s ease;
+  /* Marge segur per a iPhones amb barra de gestos */
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.kbd-bar.visible {
+  transform: translateY(0);
+}
+
+.kbd-scroll {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  /* Amaga la scrollbar visual */
+  scrollbar-width: none;
+}
+.kbd-scroll::-webkit-scrollbar { display: none; }
+
+.kbd-key {
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  min-width: 34px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  /* Feedback tàctil: evita el delay de 300ms */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.kbd-key:active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Separador visual entre grups de tecles */
+.kbd-sep {
+  flex-shrink: 0;
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 2px;
+}
+
+/* Quan el teclat és visible, reserva espai perquè
+   la consola/editor no quedi tapat */
+body.kbd-active .main {
+  /* Alçada reduïda per fer lloc a la barra. El teclat del sistema
+     ja desplaça el viewport, però la barra necessita espai propi. */
+  padding-bottom: 42px;
+}
+
+/* Amaga en mode embed i en escriptoris grans */
+body.embed .kbd-bar { display: none; }
+@media (min-width: 701px) and (hover: hover) {
+  .kbd-bar { display: none; }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   INDICADOR OFFLINE-READY (Service Worker)
+══════════════════════════════════════════════════════ */
+
+#offline-indicator {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10000;
+  background: #2a6e2a;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+}
+
+#offline-indicator.fade {
+  opacity: 0;
+}
+
+/* Amaga en mode embed (iframes del curs) */
+body.embed #offline-indicator { display: none; }
+
+
+/* ══════════════════════════════════════════════════════
+   EDITOR: EDITABLE vs READONLY
+   Distinció visual perquè l'alumne sàpiga d'un cop
+   d'ull si pot modificar el codi o no.
+══════════════════════════════════════════════════════ */
+
+/* ── Editable (per defecte): barra d'accent a l'esquerra ── */
+.code-col {
+  border-left: 3px solid var(--accent);
+}
+
+/* ── Readonly: sense barra, fons atenuat ── */
+body.is-readonly .code-col {
+  border-left: 3px solid transparent;
+}
+
+body.is-readonly #code-highlight {
+  background: var(--surface);
+}
+
+body.is-readonly #line-numbers {
+  background: var(--surface);
+}
+
+/* ── Toast "No editable" ── */
+.readonly-toast {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: var(--border);
+  color: var(--muted);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.readonly-toast.visible {
+  opacity: 1;
+}

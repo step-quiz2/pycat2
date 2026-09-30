@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 14 — És palíndrom? | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fee2e2; color: #991b1b;">⚡ Repte 14 — Difícil</span>
+      <h1>És palíndrom?</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Un <strong>palíndrom</strong> és una paraula que es llegeix igual del dret i del revés (ignorant majúscules). Per exemple, <em>radar</em> i <em>Anna</em> són palíndroms.</p>
+      <p>Escriu una funció <code>es_palindrom(text)</code> que retorni <code>True</code> si el text és un palíndrom i <code>False</code> si no ho és. Després, llegeix una paraula amb <code>input()</code> i mostra <code>Sí</code> o <code>No</code>.</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: radar  →  Sí
+Entrada: Anna   →  Sí
+Entrada: hola   →  No
+Entrada: a      →  Sí</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses paraules.</p>
+
+      <div class="simulador"
+           data-code="# Repte 14: És palíndrom?
+# Defineix la funció i després llegeix una paraula
+
+def es_palindrom(text):
+    # Retorna True si és palíndrom, False si no
+    pass
+
+paraula = input(&quot;Escriu una paraula: &quot;)
+"
+           data-tests='[
+             {"stdin":"radar","expected":"Sí"},
+             {"stdin":"Anna","expected":"Sí"},
+             {"stdin":"hola","expected":"No"},
+             {"stdin":"a","expected":"Sí"},
+             {"stdin":"Python","expected":"No"},
+             {"stdin":"Aba","expected":"Sí"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-14"
+           data-height="420">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Dins la funció, compara <code>text.lower()</code> amb <code>text.lower()[::-1]</code>.
+        Després de la funció, fes servir un <code>if</code> per mostrar <code>"Sí"</code> o <code>"No"</code>.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-13.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-15.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(14);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

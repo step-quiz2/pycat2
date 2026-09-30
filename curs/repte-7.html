@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 7 — El més gran de tres | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 7 — Intermedi</span>
+      <h1>El més gran de tres</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi tres nombres enters (un per línia) i mostri el més gran dels tres.</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: 3, 7, 5   →  7
+Entrada: 10, 10, 2  →  10
+Entrada: -5, -1, -9 →  -1</pre>
+      <p>Fixa't que pot haver-hi empats i que els nombres poden ser negatius.</p>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos trios de nombres.</p>
+
+      <div class="simulador"
+           data-code="# Repte 7: El més gran de tres
+# Llegeix tres nombres i mostra el més gran
+
+a = int(input(&quot;Primer número: &quot;))
+b = int(input(&quot;Segon número: &quot;))
+c = int(input(&quot;Tercer número: &quot;))
+"
+           data-tests='[
+             {"stdin":"3\n7\n5","expected":"7"},
+             {"stdin":"10\n10\n2","expected":"10"},
+             {"stdin":"-5\n-1\n-9","expected":"-1"},
+             {"stdin":"0\n0\n0","expected":"0"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-7"
+           data-height="340">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Pots fer servir <code>if</code>/<code>elif</code>/<code>else</code> per comparar els tres nombres,
+        o més curt: la funció <code>max(a, b, c)</code> retorna directament el més gran.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-6.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-8.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(7);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

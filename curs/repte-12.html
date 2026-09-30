@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 12 — Paraula al revés | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fee2e2; color: #991b1b;">⚡ Repte 12 — Difícil</span>
+      <h1>Paraula al revés</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi una paraula i la mostri primer tal com és i després invertida, en dues línies amb el format:</p>
+      <pre class="code-example">Original: hola
+Invertida: aloh</pre>
+      <p>Un altre exemple, amb l'entrada <code>Python</code>:</p>
+      <pre class="code-example">Original: Python
+Invertida: nohtyP</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses paraules.</p>
+
+      <div class="simulador"
+           data-code="# Repte 12: Paraula al revés
+# Llegeix una paraula i mostra-la original i invertida
+
+paraula = input(&quot;Escriu una paraula: &quot;)
+"
+           data-tests='[
+             {"stdin":"hola","expected":"Original: hola\nInvertida: aloh"},
+             {"stdin":"Python","expected":"Original: Python\nInvertida: nohtyP"},
+             {"stdin":"a","expected":"Original: a\nInvertida: a"},
+             {"stdin":"radar","expected":"Original: radar\nInvertida: radar"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-12"
+           data-height="340">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        El slicing té un truc: <code>paraula[::-1]</code> retorna el text del revés.
+        També es pot fer amb un <code>for</code> recorrent de dreta a esquerra i acumulant en una variable.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-11.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-13.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(12);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

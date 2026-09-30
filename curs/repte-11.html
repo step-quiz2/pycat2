@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 11 — La funció saluda | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 11 — Intermedi</span>
+      <h1>La funció saluda</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Defineix una funció <code>saluda(nom)</code> que rebi un nom com a paràmetre i <strong>retorni</strong> (no imprimeixi) el string <code>"Hola, [nom]! Benvingut/da a Python."</code>.</p>
+      <p>Després, el programa ha de llegir un nom per teclat, cridar la funció i imprimir el resultat.</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: Ada    →  Hola, Ada! Benvingut/da a Python.
+Entrada: PyCat  →  Hola, PyCat! Benvingut/da a Python.</pre>
+
+      <p>La diferència entre <code>return</code> i <code>print()</code> dins d'una funció és important: <code>return</code> <em>retorna</em> el valor perquè el codi que ha cridat la funció el pugui usar; <code>print()</code> el mostra directament però no retorna res útil.</p>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos noms.</p>
+
+      <div class="simulador"
+           data-code="# Repte 11: La funció saluda
+# Defineix la funció i després llegeix un nom i imprimeix el resultat
+
+def saluda(nom):
+    pass  # substitueix pass pel return correcte
+
+nom = input(&quot;Com et dius? &quot;)
+print(saluda(nom))
+"
+           data-tests='[
+             {"stdin":"Ada","expected":"Hola, Ada! Benvingut/da a Python."},
+             {"stdin":"PyCat","expected":"Hola, PyCat! Benvingut/da a Python."},
+             {"stdin":"Món","expected":"Hola, Món! Benvingut/da a Python."},
+             {"stdin":"Python","expected":"Hola, Python! Benvingut/da a Python."}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-11"
+           data-height="380">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Dins de <code>saluda</code>, usa <code>return f"Hola, {nom}! Benvingut/da a Python."</code>. Recorda que <code>return</code> envia el valor de tornada; <code>print(saluda(nom))</code> al final és qui l'imprimeix.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-10.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-12.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(11);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

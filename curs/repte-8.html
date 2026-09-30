@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 8 — Compte enrere | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 8 — Intermedi</span>
+      <h1>Compte enrere</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi un nombre enter <code>n</code> i mostri el compte enrere des de <code>n</code> fins a <code>0</code>, un nombre per línia. Al final, escriu <code>Boom!</code>.</p>
+      <p>Per exemple, si l'entrada és <code>3</code>:</p>
+      <pre class="code-example">3
+2
+1
+0
+Boom!</pre>
+      <p>Si l'entrada és <code>0</code>, la sortida ha de ser simplement:</p>
+      <pre class="code-example">0
+Boom!</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos valors.</p>
+
+      <div class="simulador"
+           data-code="# Repte 8: Compte enrere
+# Llegeix n i fes el compte enrere fins a 0
+
+n = int(input(&quot;Des de quin número? &quot;))
+"
+           data-tests='[
+             {"stdin":"3","expected":"3\n2\n1\n0\nBoom!"},
+             {"stdin":"5","expected":"5\n4\n3\n2\n1\n0\nBoom!"},
+             {"stdin":"0","expected":"0\nBoom!"},
+             {"stdin":"1","expected":"1\n0\nBoom!"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-8"
+           data-height="340">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Comença amb <code>i = n</code> i fes un <code>while i >= 0:</code> que mostri <code>i</code> i el redueixi en 1.
+        Després del bucle, fes <code>print("Boom!")</code>.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-7.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-9.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(8);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

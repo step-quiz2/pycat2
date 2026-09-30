@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 1 — Hola, Python! | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA DEL CAPÍTOL
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 1</span>
+        <h1>Hola, Python!</h1>
+        <p class="chapter-lead">En aquest curs aprendràs a escriure codi <strong>Python real</strong>.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — print()
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>print()</code></h2>
+
+        <p><code>print()</code> és la instrucció més bàsica de Python. Rep un text entre cometes i el mostra a la consola.</p>
+
+        <p>Prem <strong>▶ Executa</strong> i observa què apareix a la consola:</p>
+
+        <div class="simulador"
+             data-code='print("Hola, món!")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>La consola mostra <code>Hola, món!</code> — exactament el text que hi havia dins de les cometes. El text que va entre cometes s'anomena <strong>string</strong> (és a dir, cadena de caràcters).</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Strings i cometes
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Strings i cometes</h2>
+
+        <p>Un string sempre va envoltat de cometes. Pots fer servir cometes dobles <code>"text"</code> o cometes simples <code>'text'</code> — el resultat és idèntic. Tria les que et siguin més còmodes.</p>
+
+        <p>Executa l'exemple i comprova que les dues línies funcionen exactament igual:</p>
+
+        <div class="simulador"
+             data-code='print("Hola amb cometes dobles")
+print(&apos;Hola amb cometes simples&apos;)'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>Una regla important: si el teu text conté una apòstrof (com a «m'agrada»), fes servir cometes dobles per envoltar-lo. Així Python comprèn bé la sintaxi.</p>
+
+        <div class="simulador"
+             data-code='print("M&apos;agrada programar!")'
+             data-readonly="true"
+             data-height="200">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Seqüència
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Seqüència: un <code>print()</code> rere l'altre</h2>
+
+        <p>Pots encadenar diversos <code>print()</code>. Python els executa en ordre, de dalt a baix. Cada <code>print()</code> escriu en una línia nova.</p>
+
+        <div class="simulador"
+             data-code='print("Primera línia")
+print("Segona línia")
+print("Tercera línia")'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>L'ordre importa, és a dir, que la seqüència d'instruccions determina el resultat. Si canvies l'ordre dels <code>print()</code>, canvia l'ordre de les línies a la consola.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Comentaris
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comentaris: <code>#</code></h2>
+
+        <p>Tot el que va després d'un <code>#</code> és ignorat pel programa. Els comentaris són notes per a tu (i per a qui llegeixi el teu codi).</p>
+
+        <div class="simulador"
+             data-code='# Això és un comentari, Python ho ignora
+print("Això sí que es mostra")
+# print("Això NO es mostra, està comentat")'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Comentar una línia de codi és útil per desactivar-la temporalment sense esborrar-la. Només cal posar <code>#</code> al davant.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Els errors
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Els errors no són fracassos</h2>
+
+        <p>Quan escrius codi incorrecte, Python s'atura i mostra un missatge d'error a la consola. L'error indica <em>exactament</em> què ha passat. Què cal fer? Es llegeix, es corregeix i es torna a provar.</p>
+
+        <p>L'exemple següent té un error deliberat — falta una cometa de tancament. Executa'l i observa el missatge d'error:</p>
+
+        <div class="simulador"
+             data-code='print("Hola, món!)'
+             data-readonly="false"
+             data-height="220">
+        </div>
+
+        <p>Corregeix l'error afegint la cometa que falta i torna a executar. Quan programes, veuràs errors constantment — és completament normal.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — print() buit i print() amb números
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Més usos de <code>print()</code></h2>
+
+        <p><code>print()</code> pot mostrar moltes coses, no només text. Pot mostrar nombres directament, és a dir, no cal fer ús de les cometes.</p>
+
+        <div class="simulador"
+             data-code='print(42)
+print(3.14)
+print("La resposta és", 42)'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Fixa't en la tercera línia: si passes diversos valors a <code>print()</code> separats per comes, Python els mostra tots en la mateixa línia, amb un espai entre ells.</p>
+
+        <p>A més, <code>print()</code> sense cap argument imprimeix una línia buida. Això és útil per a separar visualment la sortida:</p>
+
+        <div class="simulador"
+             data-code='print("Bloc 1")
+print()
+print("Bloc 2")'
+             data-readonly="true"
+             data-height="230">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Escriu un programa que imprimeixi <strong>exactament</strong> aquestes quatre línies. Fixa't que la tercera línia és buida:
+        </div>
+
+        <pre class="code-example">Em dic PyCat.
+Tinc 0 anys.
+
+Aprendrem Python junts!</pre>
+
+        <div class="simulador"
+             data-code="# Escriu el teu codi aquí:
+
+"
+             data-expected="Em dic PyCat.
+Tinc 0 anys.
+
+Aprendrem Python junts!"
+             data-goal-id="cap-1-ex"
+             data-height="320">
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <p>Has après quatre coses en aquest capítol:</p>
+        <ul>
+          <li><code>print("text")</code> — mostra text a la consola.</li>
+          <li>Els strings van entre cometes dobles <code>"..."</code> o simples <code>'...'</code>.</li>
+          <li><code>#</code> — marca un comentari (Python l'ignora).</li>
+          <li>Pots passar diversos valors a <code>print()</code> separats per comes.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="index.html" class="btn-nav btn-nav--prev">← Índex</a>
+        <a href="capitol-2.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(1);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

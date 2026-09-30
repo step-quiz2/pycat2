@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 10 — Diccionaris | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 10</span>
+        <h1>Diccionaris</h1>
+        <p class="chapter-lead">Les llistes guarden valors ordenats per posició. Els <strong>diccionaris</strong> guarden valors per <strong>clau</strong> — com un diccionari real, on busques una paraula (clau) i trobes la definició (valor).</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Crear i accedir
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Crear un diccionari i accedir-hi</h2>
+
+        <p>Un diccionari s'escriu amb claus <code>{}</code>. Cada entrada és un parell <code>clau: valor</code>, separat per comes:</p>
+
+        <div class="simulador"
+             data-code='persona = {"nom": "Ada", "edat": 16, "ciutat": "Barcelona"}
+print(persona["nom"])
+print(persona["edat"])'
+             data-readonly="true"
+             data-height="250">
+        </div>
+
+        <p>Per accedir a un valor, escrius el nom del diccionari seguit de la clau entre claudàtors <code>[]</code>. Les claus solen ser cadenes de caràcters; els valors poden ser qualsevol tipus de dades.</p>
+
+        <p>A diferència de les llistes, l'ordre no importa: no busques per posició (0, 1, 2…), sinó per nom.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Afegir, modificar i eliminar
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Afegir, modificar i eliminar entrades</h2>
+
+        <p>Pots afegir una entrada nova simplement assignant-li un valor. Si la clau ja existia, el valor s'actualitza:</p>
+
+        <div class="simulador"
+             data-code='colors = {"cel": "blau", "herba": "verd"}
+colors["sol"] = "groc"        # afegim una entrada
+colors["cel"] = "gris"        # modifiquem una entrada
+print(colors)'
+             data-readonly="true"
+             data-height="250">
+        </div>
+
+        <p>Per eliminar una entrada, usa <code>del</code>:</p>
+
+        <div class="simulador"
+             data-code='colors = {"cel": "blau", "herba": "verd", "sol": "groc"}
+del colors["sol"]
+print(colors)'
+             data-readonly="true"
+             data-height="230">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Mètodes útils
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Mètodes útils: keys(), values(), items()</h2>
+
+        <p>Els diccionaris tenen tres mètodes fonamentals per inspeccionar-los:</p>
+
+        <div class="simulador"
+             data-code='nota = {"Maria": 9, "Joan": 7, "Laia": 8}
+
+print(list(nota.keys()))    # totes les claus
+print(list(nota.values()))  # tots els valors
+print(list(nota.items()))   # parelles (clau, valor)'
+             data-readonly="true"
+             data-height="270">
+        </div>
+
+        <p>El <code>list()</code> converteix el resultat en una llista normal per poder-lo imprimir. A la secció següent veuràs com recórrer-los directament sense convertir.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Recórrer un diccionari
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Recórrer les entrades d'un diccionari</h2>
+
+        <p>La manera més pràctica de recórrer un diccionari és amb <code>.items()</code> i fent una doble iteració amb la instrucció <code>for</code>:</p>
+
+        <div class="simulador"
+             data-code='preus = {"pa": 1.20, "llet": 0.95, "ou": 2.50}
+
+for producte, preu in preus.items():
+    print(f"{producte}: {preu:.2f} €")'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Comprovar si una clau existeix
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprovar si una clau existeix</h2>
+
+        <p>Si intentes accedir a una clau que no existeix, Python dona un <code>KeyError</code>. Per evitar-ho, fes servir la instrucció <code>in</code>:</p>
+
+        <div class="simulador"
+             data-code='capitals = {"França": "París", "Alemanya": "Berlín"}
+
+pais = "Espanya"
+if pais in capitals:
+    print(f"La capital de {pais} és {capitals[pais]}")
+else:
+    print(f"No tinc informació sobre {pais}")'
+             data-readonly="true"
+             data-height="280">
+        </div>
+
+        <p>Alternativament, el mètode <code>.get(clau, valor_per_defecte)</code> retorna el valor si existeix, o el valor per defecte si no:</p>
+
+        <div class="simulador"
+             data-code='capitals = {"França": "París", "Alemanya": "Berlín"}
+print(capitals.get("França", "desconeguda"))
+print(capitals.get("Japó", "desconeguda"))'
+             data-readonly="true"
+             data-height="240">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics</h2>
+
+        <p>El <code>KeyError</code> és l'error més freqüent amb diccionaris. Executa l'exemple i observa l'error:</p>
+
+        <div class="simulador"
+             data-code='alumne = {"nom": "Pol", "edat": 15}
+print(alumne["correu"])'
+             data-readonly="false"
+             data-height="220">
+        </div>
+
+        <p>Corregeix el codi perquè no doni error (pots usar <code>in</code> o <code>.get()</code>).</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Crea un diccionari <code>puntuacions</code> amb exactament aquestes tres entrades: <code>"Anna"</code> → <code>85</code>, <code>"Bernat"</code> → <code>92</code>, <code>"Carla"</code> → <code>78</code>. Després, recorre el diccionari amb <code>for</code> i imprimeix cada línia en el format <code>Nom: X punts</code>.
+        </div>
+
+        <pre class="code-example">Anna: 85 punts
+Bernat: 92 punts
+Carla: 78 punts</pre>
+
+        <div class="simulador"
+             data-code=''
+             data-expected="Anna: 85 punts
+Bernat: 92 punts
+Carla: 78 punts"
+             data-goal-id="cap-10-ex"
+             data-height="320">
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li>Un <strong>diccionari</strong> guarda parelles clau-valor: <code>{"clau": valor}</code>.</li>
+          <li>S'accedeix per clau: <code>d["clau"]</code>. Si no existeix: <code>KeyError</code>.</li>
+          <li>Afegir o modificar: <code>d["nova"] = valor</code>. Eliminar: <code>del d["clau"]</code>.</li>
+          <li>Mètodes útils: <code>.keys()</code>, <code>.values()</code>, <code>.items()</code>.</li>
+          <li>Recórrer: <code>for clau, valor in d.items():</code></li>
+          <li>Comprovar si existeix: <code>if "clau" in d:</code> o <code>d.get("clau", defecte)</code>.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-9.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-11.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(10);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curs de Python — PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-index-hero">
+  <h1>Aprèn Python de veritat<br>des del navegador</h1>
+  <p>
+    Capítols curts, exemples executables i reptes amb validació automàtica.
+    Tot sense instal·lar res.
+  </p>
+</div>
+
+<ul class="capitols-list" id="capitols-list"></ul>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script src="../js/sw-register.js"></script>
+<script>
+  injectCursLogo();
+
+  // Genera la llista de capítols i reptes
+  (function renderIndex() {
+    const list = document.getElementById('capitols-list');
+    if (!list) return;
+
+    let html = '';
+
+    // Capítols
+    for (const c of CAPITOLS_DATA) {
+      html += `
+        <li class="capitol-card">
+          <a href="${c.arxiu}">
+            <span class="capitol-card-num">${c.num}</span>
+            <span class="capitol-card-titol">${c.titol}</span>
+            <span class="capitol-card-arrow">→</span>
+          </a>
+        </li>`;
+    }
+
+    // Separador visual
+    html += '<li style="margin:1.2rem 0;border-top:1px solid #d0d0d0"></li>';
+
+    // Reptes
+    for (const r of REPTES_DATA) {
+      html += `
+        <li class="capitol-card">
+          <a href="${r.arxiu}">
+            <span class="capitol-card-num">⚡${r.num}</span>
+            <span class="capitol-card-titol">${r.titol}</span>
+            <span class="capitol-card-arrow">→</span>
+          </a>
+        </li>`;
+    }
+
+    list.innerHTML = html;
+  })();
+</script>
+
+</body>
+</html>

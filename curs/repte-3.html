@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 3 — La calculadora ràpida | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #d1fae5; color: #065f46;">⚡ Repte 3 — Fàcil</span>
+      <h1>La calculadora ràpida</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi dos nombres enters (un per línia) i mostri la seva suma, resta, producte i divisió, en aquest format exacte:</p>
+      <pre class="code-example">Suma: 12
+Resta: 8
+Producte: 20
+Divisió: 5.0</pre>
+      <p>L'exemple anterior correspon a l'entrada <code>10</code> i <code>2</code>. Fixa't que la divisió sempre mostra un decimal (és el comportament per defecte de <code>/</code> a Python).</p>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos parells de nombres.</p>
+
+      <div class="simulador"
+           data-code="# Repte 3: La calculadora ràpida
+# Llegeix dos nombres i mostra les 4 operacions
+
+a = int(input(&quot;Primer número: &quot;))
+b = int(input(&quot;Segon número: &quot;))
+"
+           data-tests='[
+             {"stdin":"10\n2","expected":"Suma: 12\nResta: 8\nProducte: 20\nDivisió: 5.0"},
+             {"stdin":"15\n5","expected":"Suma: 20\nResta: 10\nProducte: 75\nDivisió: 3.0"},
+             {"stdin":"0\n4","expected":"Suma: 4\nResta: -4\nProducte: 0\nDivisió: 0.0"},
+             {"stdin":"7\n1","expected":"Suma: 8\nResta: 6\nProducte: 7\nDivisió: 7.0"}
+           ]'
+           data-interactive="true"
+           data-goal-id="repte-3"
+           data-height="380">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Recorda que <code>input()</code> retorna text. Has de convertir-lo amb <code>int()</code> abans d'operar.
+        Després fes quatre <code>print()</code>, un per cada operació, amb el format exacte: <code>print(f"Suma: {a + b}")</code>.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-2.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-4.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(3);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 13 — La mitjana | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fee2e2; color: #991b1b;">⚡ Repte 13 — Difícil</span>
+      <h1>La mitjana</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi nombres enters, un per línia, fins que l'usuari escrigui <code>fi</code>. Aleshores, mostra la mitjana dels nombres llegits amb exactament 2 decimals.</p>
+      <p>Si l'usuari escriu <code>fi</code> sense haver introduït cap nombre, mostra <code>Cap nombre</code>.</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: 2, 4, 6, fi  →  Mitjana: 4.00
+Entrada: 5, fi         →  Mitjana: 5.00
+Entrada: 1, 2, fi      →  Mitjana: 1.50
+Entrada: fi             →  Cap nombre</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses seqüències de nombres.</p>
+
+      <div class="simulador"
+           data-code="# Repte 13: La mitjana
+# Llegeix nombres fins que l'usuari escrigui 'fi'
+# Després mostra la mitjana amb 2 decimals
+
+"
+           data-tests='[
+             {"stdin":"fi","expected":"Cap nombre"},
+             {"stdin":"5\nfi","expected":"Mitjana: 5.00"},
+             {"stdin":"2\n4\n6\nfi","expected":"Mitjana: 4.00"},
+             {"stdin":"1\n2\nfi","expected":"Mitjana: 1.50"},
+             {"stdin":"10\n20\n30\nfi","expected":"Mitjana: 20.00"}
+           ]'
+           data-goal-id="repte-13"
+           data-height="400">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Crea una llista buida. Fes un <code>while True:</code> que llegeixi una línia i faci <code>break</code> quan vegi <code>"fi"</code>.
+        Si no és <code>"fi"</code>, converteix a <code>int()</code> i afegeix-lo a la llista amb <code>.append()</code>.
+        Al final, <code>sum(llista) / len(llista)</code> és la mitjana.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-12.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-14.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(13);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

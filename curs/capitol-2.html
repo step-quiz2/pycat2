@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 2 — Variables | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 2</span>
+        <h1>Variables</h1>
+        <p class="chapter-lead">Fins ara, cada valor que mostràvem amb <code>print()</code> era escrit directament al codi. Ara aprendrem a <strong>guardar valors</strong> perquè els puguem reutilitzar. El lloc on guardem un valor s'anomena <strong>variable</strong>.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Què és una variable
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Què és una variable</h2>
+
+        <p>Una variable és com una capsa amb un nom. Hi poses un valor a dins, i després pots fer servir el nom per recuperar-lo. Per crear una variable, escrius el nom, el signe <code>=</code> i el valor:</p>
+
+        <div class="simulador"
+             data-code='missatge = "Hola, món!"
+print(missatge)'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>El signe <code>=</code> en programació no vol dir «és igual a», sinó que vol dir <strong>«guarda aquest valor amb aquest nom»</strong>. Primer es calcula el que hi ha a la dreta del <code>=</code>, i després es guarda amb el nom de l'esquerra.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Noms de variables
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Noms de variables</h2>
+
+        <p>Pots triar el nom que vulguis per a una variable, però hi ha unes regles:</p>
+        <ul>
+          <li>Només pot contenir lletres, números i guions baixos (<code>_</code>).</li>
+          <li>No pot començar per un número.</li>
+          <li>No pot ser una paraula reservada de Python (com <code>if</code>, <code>for</code>, <code>print</code>).</li>
+          <li>Les majúscules i minúscules es tenen en compte. Per exemple, <code>Nom</code> i <code>nom</code> són variables diferents.</li>
+        </ul>
+
+        <p>Per convenció, els noms de variables en Python s'escriuen en minúscules, amb guions baixos si tenen diversos mots: <code>nom_alumne</code>, <code>edat_maxima</code>, <code>total_punts</code>. Aquesta convenció s'anomena <em>snake_case</em> i és un estàndard mundial.</p>
+
+        <div class="simulador"
+             data-code='nom = "Maria"
+edat = 16
+ciutat = "Barcelona"
+print(nom, "té", edat, "anys i viu a", ciutat)'
+             data-readonly="true"
+             data-height="250">
+        </div>
+
+        <p>Fixa't com podem passar variables directament a <code>print()</code>, barrejades amb text literal, separant-les per comes.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Tipus de dades
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Tipus de dades</h2>
+
+        <p>No tots els valors són iguals. Python distingeix entre diversos <strong>tipus</strong>:</p>
+
+        <ul>
+          <li><code>int</code> — nombre enter: <code>42</code>, <code>-7</code>, <code>0</code></li>
+          <li><code>float</code> — nombre amb decimals: <code>3.14</code>, <code>-0.5</code>, <code>2.0</code></li>
+          <li><code>str</code> — cadena de text (string): <code>"Hola"</code>, <code>'Python'</code></li>
+          <li><code>bool</code> — cert o fals: <code>True</code>, <code>False</code></li>
+        </ul>
+
+        <p>Pots preguntar a Python de quin tipus és un valor amb la funció <code>type()</code>:</p>
+
+        <div class="simulador"
+             data-code='print(type(42))
+print(type(3.14))
+print(type("Hola"))
+print(type(True))'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>De moment, els tipus que més faràs servir són enters i cadenes de caràcters:  <code>int</code> i <code>str</code>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Les variables poden canviar
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Les variables poden canviar</h2>
+
+        <p>Una variable es diu «variable» precisament perquè el seu valor pot <strong>variar</strong>. Pots assignar-li un nou valor en qualsevol moment — el valor anterior serà subtituït.</p>
+
+        <div class="simulador"
+             data-code='x = 10
+print("x val", x)
+x = 25
+print("Ara x val", x)
+x = x + 5
+print("I ara x val", x)'
+             data-readonly="true"
+             data-height="280">
+        </div>
+
+        <p>L'última línia és especialment important: <code>x = x + 5</code>. Primer calcula <code>x + 5</code> (que és <code>25 + 5 = 30</code>), i després guarda el resultat a <code>x</code>. No és una equació matemàtica, sinó que és una assignació «calcula i desa».</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — f-strings
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Barrejar text i variables: f-strings</h2>
+
+        <p>Passar molts valors a <code>print()</code> separats per comes funciona, però queda una mica desmanegat. Python té una eina millor: les <strong>f-strings</strong>. Posa una <code>f</code> davant de les cometes i pots inserir variables directament dins del text amb claus <code>{}</code>:</p>
+
+        <div class="simulador"
+             data-code='nom = "Arnau"
+edat = 16
+print(f"{nom} té {edat} anys")'
+             data-readonly="true"
+             data-height="230">
+        </div>
+
+        <p>Compara els dos mètodes:</p>
+        <pre class="code-example"># Sense f-string (més confús)
+print(nom, "té", edat, "anys")
+
+# Amb f-string (més clar)
+print(f"{nom} té {edat} anys")</pre>
+
+        <p>Dins de les claus <code>{}</code> pots posar qualsevol expressió, no només noms de variables:</p>
+
+        <div class="simulador"
+             data-code='preu = 12
+quantitat = 3
+print(f"Total: {preu * quantitat} euros")'
+             data-readonly="true"
+             data-height="230">
+        </div>
+
+        <p>Dins de les claus <code>{}</code> també pots afegir un <strong>format especial</strong> per als números. El més útil és <code>:.2f</code>, que força que un decimal sempre es mostri amb exactament 2 xifres decimals — ideal per a preus i mesures:</p>
+
+        <div class="simulador"
+             data-code='preu = 9.5
+print(f"Preu: {preu:.2f} €")
+
+resultat = 1 / 3
+print(f"Un terç és aproximadament {resultat:.2f}")'
+             data-readonly="true"
+             data-height="250">
+        </div>
+
+        <p>El <code>:.2f</code> es llegeix com «format de coma flotant amb 2 decimals». El número s'arrodoneix automàticament si cal. Tingues en compte que, encara que diguem coma flotant, en Python s'usa el punt decimal en lloc de la coma decimal.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics amb variables</h2>
+
+        <p>L'error més freqüent és intentar fer servir una variable que no existeix (perquè t'has equivocat en el nom, o perquè no l'has creada). Executa l'exemple i observa l'error:</p>
+
+        <div class="simulador"
+             data-code='missatje = "Hola"
+print(missatge)'
+             data-readonly="false"
+             data-height="220">
+        </div>
+
+        <p>El nom <code>missatje</code> (amb jota) i <code>missatge</code> (amb ge) són variables diferents. Python no pot endevinar què volies dir — per això és important escriure els noms amb cura.</p>
+
+        <p>Corregeix l'error perquè el programa funcioni.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Crea tres variables: <code>nom</code> amb el valor <code>"Ada"</code>, <code>edat</code> amb el valor <code>16</code>, i <code>llenguatge</code> amb el valor <code>"Python"</code>. Després, fes servir una f-string per imprimir <strong>exactament</strong> aquesta frase:
+        </div>
+
+        <pre class="code-example">Em dic Ada, tinc 16 anys i estic aprenent Python</pre>
+
+        <div class="simulador"
+             data-code='# Crea les tres variables aquí:
+
+
+# Imprimeix la frase amb una f-string:
+
+'
+             data-expected="Em dic Ada, tinc 16 anys i estic aprenent Python"
+             data-goal-id="cap-2-ex"
+             data-height="300">
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li>Una <strong>variable</strong> desa un valor: <code>x = 42</code>.</li>
+          <li>El signe <code>=</code> vol dir «desa», no «és igual a».</li>
+          <li>Python té diversos <strong>tipus</strong>: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>.</li>
+          <li>Les <strong>f-strings</strong> permeten barrejar text i variables: <code>f"Hola, {nom}"</code>. Amb <code>:.2f</code> pots controlar els decimals: <code>f"{preu:.2f} €"</code>.</li>
+          <li>Les variables poden canviar de valor: <code>x = x + 1</code>.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-1.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-3.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(2);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 4 — Decisions: if, elif, else | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 4</span>
+        <h1>Decisions: <code>if</code>, <code>elif</code>, <code>else</code></h1>
+        <p class="chapter-lead">La majoria de programes informàtics prenen decisions: fan una cosa o una altra segons les dades.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Comparacions
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comparacions</h2>
+
+        <p>Abans de decidir, un programa ha de comparar valors. Les comparacions retornen sempre <code>True</code> (cert) o <code>False</code> (fals):</p>
+
+        <div class="simulador"
+             data-code='print(5 > 3)
+print(5 < 3)
+print(10 == 10)
+print(10 != 10)
+print(7 >= 7)
+print(7 <= 6)'
+             data-readonly="true"
+             data-height="300">
+        </div>
+
+        <p>Aquí tens tots els operadors de comparació:</p>
+
+        <ul>
+          <li><code>==</code> — igual a (<strong>atenció</strong>dos signes d'igual, no un)</li>
+          <li><code>!=</code> — diferent de</li>
+          <li><code>&lt;</code> — menor que</li>
+          <li><code>&gt;</code> — major que</li>
+          <li><code>&lt;=</code> — menor o igual</li>
+          <li><code>&gt;=</code> — major o igual</li>
+        </ul>
+
+        <p>Fixa't bé: <code>=</code> assigna un valor a una variable, i <code>==</code> compara dos valors. Confondre'ls és un dels errors més freqüents en Python.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — if simple
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>El <code>if</code> simple</h2>
+
+        <p>Amb <code>if</code> pots fer que un bloc de codi s'executi <em>només si</em> una condició és certa:</p>
+
+        <div class="simulador"
+             data-code='nota = 8
+if nota >= 5:
+    print("Aprovat!")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>Dues coses imprescindibles: els <strong>dos punts</strong> <code>:</code> al final de la línia del <code>if</code>, i la <strong>indentació</strong> (4 espais) al bloc interior. Prova de canviar <code>nota = 8</code> per <code>nota = 3</code> i torna a executar — el programa no imprimeix res.</p>
+
+        <div class="simulador"
+             data-code='nota = 8
+if nota >= 5:
+    print("Aprovat!")'
+             data-height="220">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — if / else
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>if</code> / <code>else</code></h2>
+
+        <p>Si vols fer una cosa quan la condició és certa i una altra quan és falsa, afegeix <code>else</code>:</p>
+
+        <div class="simulador"
+             data-code='nota = 3
+if nota >= 5:
+    print("Aprovat!")
+else:
+    print("Suspens.")'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>L'<code>else</code> no porta cap condició — s'executa simplement quan el <code>if</code> no s'ha complert. Canvia la nota i comprova que el programa sempre imprimeix exactament una de les dues línies.</p>
+
+        <div class="simulador"
+             data-code='nota = 3
+if nota >= 5:
+    print("Aprovat!")
+else:
+    print("Suspens.")'
+             data-height="260">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — if / elif / else
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>if</code> / <code>elif</code> / <code>else</code></h2>
+
+        <p>Quan hi ha més de dues possibilitats, afegeixes tants <code>elif</code> (contracció de «else if») com calgui. Python comprova les condicions de dalt a baix i executa el primer bloc que es compleix:</p>
+
+        <div class="simulador"
+             data-code='nota = 7
+if nota >= 9:
+    print("Excel·lent")
+elif nota >= 7:
+    print("Notable")
+elif nota >= 5:
+    print("Aprovat")
+else:
+    print("Suspens")'
+             data-readonly="true"
+             data-height="320">
+        </div>
+
+        <p>L'ordre importa. Si posessis primer <code>nota >= 5</code>, un <code>9</code> imprimiria «Aprovat» perquè la primera condició ja seria certa. Python s'atura en el primer <code>if</code>/<code>elif</code> que es compleix i <strong>no mira els de sota</strong>.</p>
+
+        <p>Prova valors com <code>4</code>, <code>5</code>, <code>7</code>, <code>9</code> i <code>10</code>:</p>
+
+        <div class="simulador"
+             data-code='nota = 7
+if nota >= 9:
+    print("Excel·lent")
+elif nota >= 7:
+    print("Notable")
+elif nota >= 5:
+    print("Aprovat")
+else:
+    print("Suspens")'
+             data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — and / or / not
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Condicions compostes: <code>and</code>, <code>or</code>, <code>not</code></h2>
+
+        <p>Pots combinar dues comparacions en una sola condició:</p>
+
+        <div class="simulador"
+             data-code='edat = 17
+te_carnet = False
+
+if edat >= 18 and te_carnet:
+    print("Pots conduir.")
+else:
+    print("No pots conduir.")'
+             data-readonly="true"
+             data-height="280">
+        </div>
+
+        <p><code>and</code> exigeix que les <em>dues</em> condicions siguin certes. <code>or</code> n'exigeix almenys una:</p>
+
+        <div class="simulador"
+             data-code='dia = "dissabte"
+if dia == "dissabte" or dia == "diumenge":
+    print("Cap de setmana!")
+else:
+    print("Entre dilluns i divendres.")'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p><code>not</code> inverteix una condició: <code>not True</code> és <code>False</code>, i viceversa. S'usa per fer el codi més llegible quan la condició negativa és la natural:</p>
+
+        <div class="simulador"
+             data-code='plou = False
+if not plou:
+    print("Sortim a passejar!")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics</h2>
+
+        <p>Aquests tres errors els comet tothom alguna vegada. Llegeix els missatges d'error — Python t'indica exactament on és el problema.</p>
+
+        <p><strong>1. Oblidar els dos punts <code>:</code></strong></p>
+
+        <div class="simulador"
+             data-code='nota = 8
+if nota >= 5
+    print("Aprovat!")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><strong>2. Indentació incorrecta</strong> — el bloc interior ha d'anar amb 4 espais:</p>
+
+        <div class="simulador"
+             data-code='nota = 8
+if nota >= 5:
+print("Aprovat!")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><strong>3. Usar <code>=</code> en lloc de <code>==</code> per comparar</strong></p>
+
+        <div class="simulador"
+             data-code='nota = 8
+if nota = 5:
+    print("Cinc!")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Escriu un programa que llegeixi una nota enter (de 0 a 10) i imprimeixi la qualificació corresponent, seguint aquest criteri: de 0 a 4, <strong>Suspens</strong>; de 5 a 6, <strong>Aprovat</strong>; de 7 a 8, <strong>Notable</strong>; de 9 a 10, <strong>Excel·lent</strong>.
+        </div>
+
+        <p>El programa ha de funcionar per qualsevol nota vàlida. La sortida ha de ser <strong>exactament</strong> una d'aquestes quatre paraules (amb accent on calgui).</p>
+
+        <div class="simulador"
+             data-code="nota = int(input(&quot;Escriu la nota (0-10): &quot;))
+# Escriu les condicions aquí:
+"
+             data-tests='[
+               {"stdin": "3",  "expected": "Suspens"},
+               {"stdin": "5",  "expected": "Aprovat"},
+               {"stdin": "8",  "expected": "Notable"},
+               {"stdin": "10", "expected": "Excel·lent"}
+             ]'
+             data-interactive="true"
+             data-goal-id="cap-4-ex"
+             data-height="340">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li><code>if condició:</code> executa un bloc si la condició és certa.</li>
+          <li><code>else:</code> s'executa quan cap <code>if</code>/<code>elif</code> anterior s'ha complert.</li>
+          <li><code>elif condició:</code> permet encadenar més de dues branques; Python s'atura en la primera certa.</li>
+          <li>Les comparacions (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>) retornen <code>True</code> o <code>False</code>.</li>
+          <li><code>and</code> / <code>or</code> / <code>not</code> combinen o inverteixen condicions.</li>
+          <li>Tots els blocs <code>if</code>/<code>elif</code>/<code>else</code> acaben amb <code>:</code> i el seu contingut va indentat 4 espais.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-3.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-5.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(4);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>

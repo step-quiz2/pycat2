@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 3 — Operacions i input | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 3</span>
+        <h1>Operacions i input</h1>
+        <p class="chapter-lead">Python pot fer càlculs. A més, pot demanar dades a l'usuari amb la instrucció <code>input()</code>. Combinant les dues coses, podràs fer programes que rebin informació numèrica, la processin i mostrin el resultat.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Operacions aritmètiques
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Operacions aritmètiques</h2>
+
+        <p>Python pot fer les operacions matemàtiques habituals. Les escrius com ho faries en una calculadora:</p>
+
+        <div class="simulador"
+             data-code='print(10 + 3)
+print(10 - 3)
+print(10 * 3)
+print(10 / 3)'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>Fixa't que la divisió <code>/</code> sempre retorna un <code>float</code> (nombre amb decimals), fins i tot si el resultat és exacte. En aquest sentit, existeixen dues operacions que poden ser molt útils:</p>
+
+        <div class="simulador"
+             data-code='print(10 // 3)   # Divisió entera (sense decimals)
+print(10 % 3)    # Residu (el residu de la divisó euclidiana)
+print(2 ** 10)   # Potència (en aquest cas, 2 elevat a 10)'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>La divisió entera <code>//</code> talla els decimals. El residu <code>%</code> retorna el que sobra. La potència <code>**</code> fa l'exponenciació habitual.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Operacions amb variables
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Operacions amb variables</h2>
+
+        <p>Les operacions es poden fer directament amb variables. Això és el que converteix Python en una eina poderosa — pots guardar dades, operar-hi i mostrar el resultat:</p>
+
+        <div class="simulador"
+             data-code='base = 5
+altura = 3
+area = base * altura
+print(f"Un rectangle de {base}x{altura} té àrea {area}")'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>Primer es creen les variables <code>base</code> i <code>altura</code>. Després es calcula <code>base * altura</code> i es guarda el resultat a <code>area</code>. Finalment, es mostra tot amb una f-string.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Operacions amb strings
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Operacions amb strings</h2>
+
+        <p>Podem realitzar operacions amb cadenes de caràcters, però els símbols tenen un significat diferent:</p>
+
+        <div class="simulador"
+             data-code='nom = "Py"
+cognom = "Cat"
+print(nom + cognom)
+print(nom + " " + cognom)
+print("Ha! " * 3)'
+             data-readonly="true"
+             data-height="280">
+        </div>
+
+        <p>El <code>+</code> entre cadenes de caràcters les <strong>concatena</strong> (els enganxa). El <code>*</code> entre una cadena de caràcters i un nombre té l'efecte de <strong>repetir</strong>.</p>
+
+        <p>Atenció: no pots sumar una cadena de caràcters amb un nombre. Executa l'exemple i observa l'error:</p>
+
+        <div class="simulador"
+             data-code='edat = 16
+print("Tinc " + edat + " anys")'
+             data-readonly="false"
+             data-height="220">
+        </div>
+
+        <p>Python no sap com sumar el text <code>"Tinc "</code> amb el número <code>16</code>. Per solucionar-ho, pots convertir el número a string amb <code>str()</code>, o millor encara, fer servir una f-string: <code>f"Tinc {edat} anys"</code>. Corregeix l'error amb qualsevol de les dues maneres.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — input()
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Demanar dades: <code>input()</code></h2>
+
+        <p>Fins ara tots els valors estaven escrits directament al codi. Però un programa de veritat sovint necessita rebre dades de fora. La funció <code>input()</code> llegeix una línia de text que l'usuari escriu. Pots passar-li un missatge perquè l'usuari sàpiga què ha d'escriure: <code>input("Com et dius? ")</code>.</p>
+
+        <p>En l'exemple següent, prova d'escriure un nom (per exemple <code>Ada</code>) quan el programa ho demani:</p>
+
+        <div class="simulador"
+             data-code='nom = input("Com et dius? ")
+print(f"Hola, {nom}!")'
+             data-interactive="true"
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><code>input()</code> <strong>sempre retorna un string</strong>, encara que l'usuari escrigui un número. Això és molt important i és la font de molts errors.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Convertir tipus
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Convertir tipus: <code>int()</code> i <code>float()</code></h2>
+
+        <p>Si vols fer operacions matemàtiques amb un valor que prové de la instrucció <code>input()</code>, en primer lloc l'has de <strong>convertir</strong> a nombre. Tens dues opcions per a fer-ho:</p>
+
+        <ul>
+          <li><code>int("42")</code> — converteix el string <code>"42"</code> al nombre enter <code>42</code>.</li>
+          <li><code>float("3.14")</code> — converteix el string <code>"3.14"</code> al nombre decimal <code>3.14</code>.</li>
+        </ul>
+
+        <p>L'exemple següent demana un nombre com a entrada, i en calcula el doble. Prova d'escriure <code>7</code>:</p>
+
+        <div class="simulador"
+             data-code='text = input("Escriu un nombre: ")
+numero = int(text)
+doble = numero * 2
+print(f"El doble de {numero} és {doble}")'
+             data-interactive="true"
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>Podem escriure-ho de forma més compacta, fent la conversió directament:</p>
+
+        <div class="simulador"
+             data-code='n = int(input("Escriu un nombre: "))
+print(f"El doble de {n} és {n * 2}")'
+             data-interactive="true"
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>La forma <code>int(input("text"))</code> és un patró que veuràs molt sovint: mostra un missatge a l'usuari, llegeix la resposta i la converteix a enter en un sol pas.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Múltiples inputs
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Múltiples inputs</h2>
+
+        <p>Cada crida a <code>input()</code> llegeix una línia nova. Si necessites dos valors, fas dues crides. Prova d'escriure dos nombres, per exemple <code>5</code> i <code>3</code>:</p>
+
+        <div class="simulador"
+             data-code='a = int(input("Primer nombre: "))
+b = int(input("Segon nombre: "))
+suma = a + b
+print(f"{a} + {b} = {suma}")'
+             data-interactive="true"
+             data-readonly="true"
+             data-height="260">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 7 — Posant-ho tot junt
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Posant-ho tot junt</h2>
+
+        <p>Ara ja tens les peces per fer un programa complet: llegir dades, operar-hi i mostrar el resultat. L'exemple següent calcula l'àrea d'un rectangle. Prova d'escriure una base (per exemple <code>8</code>) i una altura (per exemple <code>5</code>):</p>
+
+        <div class="simulador"
+             data-code='base = int(input("Base del rectangle: "))
+altura = int(input("Altura del rectangle: "))
+area = base * altura
+perimetre = 2 * (base + altura)
+print(f"Rectangle {base}x{altura}")
+print(f"Àrea: {area}")
+print(f"Perímetre: {perimetre}")'
+             data-interactive="true"
+             data-readonly="true"
+             data-height="320">
+        </div>
+
+        <p>Fixa't en l'estructura: <strong>llegir → calcular → mostrar</strong>.<br>Molts programes segueixen aquest patró.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Escriu un programa que llegeixi dos nombres enters (un per línia) i imprimeixi la seva suma, la seva diferència i el seu producte, amb el format exacte que veus a sota.
+        </div>
+
+        <p>El programa rebrà com a input els nombres <code>12</code> i <code>4</code>. La sortida ha de ser <strong>exactament</strong>:</p>
+
+        <pre class="code-example">Suma: 16
+Diferència: 8
+Producte: 48</pre>
+
+        <div class="simulador"
+             data-code="# Llegeix els dos nombres:
+
+
+# Calcula i mostra els resultats:
+
+"
+             data-stdin="12
+4"
+             data-expected="Suma: 16
+Diferència: 8
+Producte: 48"
+             data-interactive="true"
+             data-goal-id="cap-3-ex"
+             data-height="340">
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li>Python fa aritmètica amb <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>, <code>**</code>.</li>
+          <li>Amb strings, <code>+</code> concatena i <code>*</code> repeteix.</li>
+          <li><code>input("missatge")</code> mostra un missatge i llegeix una línia de text (sempre retorna un <code>str</code>).</li>
+          <li><code>int()</code> i <code>float()</code> converteixen strings a nombres.</li>
+          <li>El patró <code>int(input("text"))</code> demana, llegeix i converteix en un sol pas.</li>
+          <li>Estructura típica d'un programa: <strong>llegir → calcular → mostrar</strong>.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-2.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-4.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(3);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>
