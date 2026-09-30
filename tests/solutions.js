@@ -54,6 +54,16 @@ while intent != secret:
 print("Encertat!")
 `,
 
+  'cap-5-try': `while True:
+    text = input()
+    try:
+        n = int(text)
+        break
+    except ValueError:
+        print("No és un número")
+print("Correcte:", n)
+`,
+
   'cap-6-ex': `n = int(input())
 for i in range(1, n + 1):
     print("*" * i)

@@ -11,7 +11,9 @@
 #   2. la solució supera TOTS els casos de prova de la pàgina;
 #   3. el codi inicial de l'exercici NO els supera (si no, l'exercici
 #      es resol sense fer res);
-#   4. cada goalId és únic i els de curs/capitols.js existeixen a les pàgines.
+#   4. cada goalId és únic i els de curs/capitols.js existeixen a les pàgines;
+#   5. la solució compleix els requisits de data-requires (js/pycat_requires.py);
+#   6. cap data-code conté HTML (senyal d'una cometa de tancament oblidada).
 #
 # Imita el simulador (js/pyworker.js, mode batch): input() llegeix de
 # l'stdin del cas de prova sense imprimir la pregunta, cada execució té
@@ -28,6 +30,10 @@ import re
 import subprocess
 import sys
 from html.parser import HTMLParser
+
+sys.dont_write_bytecode = True   # no deixis js/__pycache__
+sys.path.insert(0,os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'js'))
+from pycat_requires import pycat_requisits_que_falten  # noqa: E402  (mateix codi que el simulador)
 
 ARREL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPS_MAXIM = 10  # segons per execució (com P.EXEC_TIMEOUT)
@@ -112,6 +118,10 @@ def main():
             p = Simuladors()
             p.feed(open(pagina, encoding='utf-8').read())
             for sim in p.sims:
+                # Una cometa de tancament oblidada fa que l'atribut s'empassi
+                # l'HTML de la pàgina (va passar al capítol 12)
+                if re.search(r'</?(p|div|section|h2|li|ul)\b', sim.get('data-code', '')):
+                    errors.append(f"{nom}: un data-code conté HTML (falta la cometa de tancament?)")
                 goal = sim.get('data-goal-id')
                 if not goal:
                     continue
@@ -138,6 +148,15 @@ def main():
                         detall = f"error: {error}" if error else f"ha tret {sortida.strip()!r}"
                         errors.append(f"{nom} [{goal}]: la solució falla el cas {i + 1} "
                                       f"(stdin {cas['stdin']!r}): esperava {cas['expected'].strip()!r}, {detall}")
+
+                if sol is not None and sim.get('data-requires'):
+                    try:
+                        falten = pycat_requisits_que_falten(sol, sim['data-requires'])
+                    except ValueError as e:
+                        errors.append(f"{nom} [{goal}]: {e}")
+                    else:
+                        if falten:
+                            errors.append(f"{nom} [{goal}]: la solució no fa servir: {', '.join(falten)}")
 
                 inicial = sim.get('data-code', '')
                 if supera(afegeix(inicial), casos, tmp)[0]:

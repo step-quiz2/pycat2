@@ -49,16 +49,16 @@
       <section class="chapter-section">
         <h2>El joc</h2>
 
-        <p><strong>4 en ratlla</strong> (en angles, <em>Connect Four</em>) es un joc de taula per a dos jugadors. El tauler te 7 columnes i 6 files. Cada torn, un jugador deixa caure una fitxa per una columna i la fitxa cau fins a la posicio mes baixa disponible, com per gravetat. Guanya el primer que aconsegueix alinear <strong>4 fitxes seguides</strong> en horitzontal, vertical o diagonal.</p>
+        <p><strong>4 en ratlla</strong> (en anglès, <em>Connect Four</em>) és un joc de taula per a dos jugadors. El tauler té 7 columnes i 6 files. Cada torn, un jugador deixa caure una fitxa per una columna i la fitxa cau fins a la posició més baixa disponible, com per gravetat. Guanya el primer que aconsegueix alinear <strong>4 fitxes seguides</strong> en horitzontal, vertical o diagonal.</p>
 
-        <p>Es un joc perfecte per al simulador de PyCat perque es <strong>per torns</strong>: el jugador tria una columna, la fitxa cau, i despres juga la maquina.</p>
+        <p>És un joc perfecte per al simulador de PyCat perquè és <strong>per torns</strong>: el jugador tria una columna, la fitxa cau, i després juga la màquina.</p>
 
         <p>Construirem el joc pas a pas:</p>
 
         <ul>
           <li>El <strong>tauler</strong>, guardat com una llista de llistes i dibuixat amb Unicode.</li>
-          <li>La <strong>gravetat</strong>: la fitxa cau fins a la fila mes baixa buida.</li>
-          <li>La <strong>detecció</strong> de 4 en ratlla (la part mes enginyosa).</li>
+          <li>La <strong>gravetat</strong>: la fitxa cau fins a la fila més baixa buida.</li>
+          <li>La <strong>detecció</strong> de 4 en ratlla (la part més enginyosa).</li>
           <li><strong>L'estratègia</strong> de la màquina per intentar guanyar la partida.</li>
         </ul>
       </section>
@@ -71,10 +71,10 @@
         <h2>Peça 1: el tauler</h2>
 
         <p>
-          El tauler es una llista de 6 files, i cada fila es una llista de 7 valors. Fem servir cadenes de caràcters per representar cada casella.
+          El tauler és una llista de 6 files, i cada fila és una llista de 7 valors. Fem servir cadenes de caràcters per representar cada casella.
           <br><code>"\u00b7"</code> per buida ( · ), 
           <br><code>"\u25cf"</code> per la fitxa del jugador (●)
-          <br><code>"\u25cb"</code> per la de la maquina (○)
+          <br><code>"\u25cb"</code> per la de la màquina (○)
         </p>
 
         <div class="simulador"
@@ -95,7 +95,7 @@ def dibuixa():
             linia += " " + tauler[fila][col]
         print("\u2551" + linia + " \u2551")
     print("\u255a" + "\u2550" * (COLS * 2 + 1) + "\u255d")
-    # Numeros de columna
+    # Números de columna
     nums = ""
     for col in range(COLS):
         nums += " " + str(col + 1)
@@ -116,7 +116,7 @@ dibuixa()'
       <section class="chapter-section">
         <h2>Peça 2: la gravetat</h2>
 
-        <p>Quan un jugador tria una columna, la fitxa no queda a dalt sinó que directament <strong>cau</strong> fins a la fila mes baixa que estigui buida. Per trobar aquesta altura que ha de caure, recorrem la columna de baix a dalt:</p>
+        <p>Quan un jugador tria una columna, la fitxa no queda a dalt sinó que directament <strong>cau</strong> fins a la fila més baixa que estigui buida. Per trobar aquesta altura que ha de caure, recorrem la columna de baix a dalt:</p>
 
         <div class="simulador"
              data-code='FILES = 6
@@ -178,9 +178,9 @@ dibuixa()'
       <section class="chapter-section">
         <h2>Peça 3: qui ha guanyat?</h2>
 
-        <p>Cada cop que es col·loca una fitxa, hem de comprovar si forma una linia de 4. En lloc de mirar tot el tauler, nomes comprovem des de la fitxa acabada de posar en <strong>4 direccions</strong>: horitzontal, vertical i les dues diagonals.</p>
+        <p>Cada cop que es col·loca una fitxa, hem de comprovar si forma una línia de 4. En lloc de mirar tot el tauler, només comprovem des de la fitxa acabada de posar en <strong>4 direccions</strong>: horitzontal, vertical i les dues diagonals.</p>
 
-        <p>Per a cada direccio, comptem quantes fitxes consecutives del mateix jugador hi ha cap a un costat i cap a l'altre. Si el total arriba a 4 o mes, vol dir que ha guanyat:</p>
+        <p>Per a cada direcció, comptem quantes fitxes consecutives del mateix jugador hi ha cap a un costat i cap a l'altre. Si el total arriba a 4 o més, vol dir que ha guanyat:</p>
 
         <div class="simulador"
              data-code='FILES = 6
@@ -227,15 +227,15 @@ print("4 en horitzontal:", ha_guanyat(5, 4, HUMA))
 
 # Ara buidem una casella, i com que només hi ha 3 fitxes consecutives, vol dir que encara no s&apos;ha guanyat.
 tauler[5][4] = BUIT
-print("Nomes 3:", ha_guanyat(5, 3, HUMA))'
+print("Només 3:", ha_guanyat(5, 3, HUMA))'
              data-readonly="true"
              data-height="500">
         </div>
 
         <p>
           Aquesta peça que has llegit és, probablement, la més enginyosa del joc.
-          <br>La llista <code>direccions</code> conte 4 parelles <code>[df, dc]</code> que representen com ens movem per cada eix. Per exemple, <code>[0, 1]</code> vol dir "mateixa fila, columna seguent" (horitzontal) i <code>[1, -1]</code> vol dir "fila seguent, columna anterior" (diagonal).
-          <br> Per a cada direcció, el primer <code>while</code> compta cap endavant (<code>+df, +dc</code>) i el segon cap enrere (<code>-df, -dc</code>). Aixi detectem linies on la fitxa nova esta al mig, no nomes al final.
+          <br>La llista <code>direccions</code> conté 4 parelles <code>[df, dc]</code> que representen com ens movem per cada eix. Per exemple, <code>[0, 1]</code> vol dir "mateixa fila, columna següent" (horitzontal) i <code>[1, -1]</code> vol dir "fila següent, columna anterior" (diagonal).
+          <br> Per a cada direcció, el primer <code>while</code> compta cap endavant (<code>+df, +dc</code>) i el segon cap enrere (<code>-df, -dc</code>). Així detectem línies on la fitxa nova està al mig, no només al final.
         </p>
 
         
@@ -248,11 +248,11 @@ print("Nomes 3:", ha_guanyat(5, 3, HUMA))'
       <section class="chapter-section">
         <h2>Peça 4: l'estratègia de joc de la màquina</h2>
 
-        <p>La nostra màquina segueix una estrategia senzilla de tres passos:</p>
+        <p>La nostra màquina segueix una estratègia senzilla de tres passos:</p>
 
         <ol>
-          <li><strong>Puc guanyar?</strong> Prova cada columna. Si posar-hi una fitxa dona 4 en ratlla, juga alla.</li>
-          <li><strong>He de bloquejar?</strong> Prova cada columna amb la fitxa del rival. Si el rival guanyaria, la maquina bloqueja aquella columna.</li>
+          <li><strong>Puc guanyar?</strong> Prova cada columna. Si posar-hi una fitxa dona 4 en ratlla, juga allà.</li>
+          <li><strong>He de bloquejar?</strong> Prova cada columna amb la fitxa del rival. Si el rival guanyaria, la màquina bloqueja aquella columna.</li>
           <li><strong>Si no </strong> es compleixen les condicions anteriors, escollirà les columnes del centre, perquè són les que donen més opcions.</li>
         </ol>
 
@@ -270,7 +270,7 @@ def torn_maquina():
             tauler[fila][col] = MAQUINA
             if ha_guanyat(fila, col, MAQUINA):
                 return fila, col  # Guanyo!
-            tauler[fila][col] = BUIT  # Desfes
+            tauler[fila][col] = BUIT  # Desfés
 
     # 2. He de bloquejar el rival?
     for col in range(COLS):
@@ -278,10 +278,10 @@ def torn_maquina():
         if fila >= 0:
             tauler[fila][col] = HUMA
             if ha_guanyat(fila, col, HUMA):
-                tauler[fila][col] = BUIT  # Desfes
+                tauler[fila][col] = BUIT  # Desfés
                 fila2 = deixa_fitxa(col, MAQUINA)
                 return fila2, col  # Bloquejo!
-            tauler[fila][col] = BUIT  # Desfes
+            tauler[fila][col] = BUIT  # Desfés
 
     # 3. Prefereix columnes centrals
     preferides = [3, 2, 4, 1, 5, 0, 6]
@@ -295,7 +295,7 @@ def torn_maquina():
              data-height="440">
         </div>
 
-        <p>Fixa't que la funcio retorna <code>fila, col</code> (dues coses alhora). Aixi el programa principal sap on ha jugat la maquina i pot comprovar si ha guanyat. La llista <code>preferides</code> prioritza la columna 4 (index 3), que es el centre del tauler i estadisticament la millor posicio.</p>
+        <p>Fixa't que la funció retorna <code>fila, col</code> (dues coses alhora). Així el programa principal sap on ha jugat la màquina i pot comprovar si ha guanyat. La llista <code>preferides</code> prioritza la columna 4 (index 3), que és el centre del tauler i estadísticament la millor posició.</p>
       </section>
 
 
@@ -308,7 +308,7 @@ def torn_maquina():
         <p>
           Ara juntem totes les peces.
           <br>La persona que juga té les fitxes <strong>●</strong>, i la màquina, les <strong>○</strong>.
-          <br> A cada torn, la persona escriu el numero de columna (1–7) escollit i prem la tecla <code>Retorn</code>.
+          <br> A cada torn, la persona escriu el número de columna (1–7) escollit i prem la tecla <code>Retorn</code>.
           <br> Ja pots jugar!
         </p>
 
@@ -321,14 +321,14 @@ COLS = 7
 BUIT = "\u00b7"
 HUMA = "\u25cf"
 MAQUINA = "\u25cb"
-DIAMANT_HUMA = "\u25c9"      # Guanyador huma
-DIAMANT_MAQUINA = "\u25ce"   # Guanyador maquina
+DIAMANT_HUMA = "\u25c9"      # Guanyador humà
+DIAMANT_MAQUINA = "\u25ce"   # Guanyador màquina
 BOX_TL = "\u2554"            # Cantonada superior esquerra ╔
 BOX_TR = "\u2557"            # Cantonada superior dreta    ╗
 BOX_BL = "\u255a"            # Cantonada inferior esquerra ╚
 BOX_BR = "\u255d"            # Cantonada inferior dreta    ╝
-BOX_H  = "\u2550"            # Linia horitzontal           ═
-BOX_V  = "\u2551"            # Linia vertical              ║
+BOX_H  = "\u2550"            # Línia horitzontal           ═
+BOX_V  = "\u2551"            # Línia vertical              ║
 
 # ── Tauler ────────────────────────────────
 tauler = []
@@ -413,9 +413,9 @@ def marca_guanyadors(posicions, diamant):
     for (f, c) in posicions:
         tauler[f][c] = diamant
 
-# ── Intel·ligencia de la maquina ──────────
+# ── Intel·ligencia de la màquina ──────────
 def torn_maquina(facil):
-    # 1. Puc guanyar? (en facil, de vegades ho ignora)
+    # 1. Puc guanyar? (en fàcil, de vegades ho ignora)
     if not facil or random.random() > 0.3:
         for col in range(COLS):
             fila = fila_lliure(col)
@@ -424,7 +424,7 @@ def torn_maquina(facil):
                 if ha_guanyat(fila, col, MAQUINA):
                     return fila, col
                 tauler[fila][col] = BUIT
-    # 2. He de bloquejar? (en facil, sovint no ho fa)
+    # 2. He de bloquejar? (en fàcil, sovint no ho fa)
     if not facil or random.random() > 0.6:
         for col in range(COLS):
             fila = fila_lliure(col)
@@ -458,9 +458,9 @@ def tauler_ple():
 
 # ── Inici ─────────────────────────────────
 print("=== 4 EN RATLLA ===")
-print("Tu ets " + HUMA + "   La maquina es " + MAQUINA)
+print("Tu ets " + HUMA + "   La màquina és " + MAQUINA)
 print()
-nivell = input("Nivell: 1.facil / 2.dificil: ")
+nivell = input("Nivell: 1.fàcil / 2.difícil: ")
 facil = (nivell == "1")
 
 # ── Bucle de partides ────────────────────
@@ -471,9 +471,9 @@ while True:
 
     torn_huma = random.choice([True, False])
     if not torn_huma:
-        print("Comenca la maquina!")
+        print("Comença la màquina!")
         fm, cm = torn_maquina(facil)
-        torn_huma = True  # Ara toca l&apos;huma
+        torn_huma = True  # Ara toca l&apos;humà
 
     dibuixa()
 
@@ -494,7 +494,7 @@ while True:
                     else:
                         print("Columna plena!")
                 else:
-                    print("Escriu un numero de l&apos;1 al 7.")
+                    print("Escriu un número de l&apos;1 al 7.")
             fila = deixa_fitxa(col, HUMA)
             if ha_guanyat(fila, col, HUMA):
                 posicions = troba_guanyadors(fila, col, HUMA)
@@ -507,13 +507,13 @@ while True:
                 break
             dibuixa()
         else:
-            print("La maquina juga...")
+            print("La màquina juga...")
             fm, cm = torn_maquina(facil)
             if ha_guanyat(fm, cm, MAQUINA):
                 posicions = troba_guanyadors(fm, cm, MAQUINA)
                 marca_guanyadors(posicions, DIAMANT_MAQUINA)
                 dibuixa()
-                print("Ha guanyat la maquina!")
+                print("Ha guanyat la màquina!")
                 print()
                 print()
                 print()
@@ -531,12 +531,12 @@ while True:
 
     resposta = input("Vols tornar a jugar? (s/n): ")
     if resposta.lower() != "s":
-        break
+        break'
              data-interactive="true"
              data-height="640">
         </div>
 
-        <p>El bucle principal alterna entre el torn huma i el torn de la maquina amb la variable <code>torn_huma</code>. Despres de cada jugada, comprovem si el jugador ha guanyat o si el tauler es ple. <code>random.choice([True, False])</code> decideix aleatoriament qui comenca la partida.</p>
+        <p>El bucle principal alterna entre el torn humà i el torn de la màquina amb la variable <code>torn_huma</code>. Després de cada jugada, comprovem si el jugador ha guanyat o si el tauler és ple. <code>random.choice([True, False])</code> decideix aleatòriament qui comença la partida.</p>
       </section>
 
 
@@ -544,21 +544,21 @@ while True:
            QUÈ HEM FET SERVIR
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Que hem fet servir?</h2>
+        <h2>Què hem fet servir?</h2>
 
         <p>Repassa tot el que apareix en aquest joc:</p>
 
         <ul>
-          <li><strong>Llistes de llistes</strong> (cap. 8): el tauler es una llista de 6 files, cada fila es una llista de 7 valors.</li>
-          <li><strong>Funcions que retornen valors</strong> (cap. 9): <code>fila_lliure()</code> retorna un numero, <code>ha_guanyat()</code> retorna <code>True</code>/<code>False</code>, <code>torn_maquina()</code> retorna dues coses alhora.</li>
-          <li><strong>Bucle <code>while</code></strong> (cap. 5): el bucle principal i la validacio de l'entrada del jugador.</li>
-          <li><strong>Bucle <code>for</code></strong> (cap. 6): per recorrer el tauler, les direccions i les columnes.</li>
+          <li><strong>Llistes de llistes</strong> (cap. 8): el tauler és una llista de 6 files, cada fila és una llista de 7 valors.</li>
+          <li><strong>Funcions que retornen valors</strong> (cap. 9): <code>fila_lliure()</code> retorna un número, <code>ha_guanyat()</code> retorna <code>True</code>/<code>False</code>, <code>torn_maquina()</code> retorna dues coses alhora.</li>
+          <li><strong>Bucle <code>while</code></strong> (cap. 5): el bucle principal i la validació de l'entrada del jugador.</li>
+          <li><strong>Bucle <code>for</code></strong> (cap. 6): per recórrer el tauler, les direccions i les columnes.</li>
           <li><strong>Condicionals</strong> (cap. 4): per detectar guanyadors, bloquejar el rival i validar l'entrada.</li>
-          <li><strong><code>range(n, -1, -1)</code></strong> (cap. 6): per recorrer la columna de baix a dalt.</li>
-          <li><strong><code>random.choice()</code></strong> (cap. 11): per decidir qui comenca.</li>
+          <li><strong><code>range(n, -1, -1)</code></strong> (cap. 6): per recórrer la columna de baix a dalt.</li>
+          <li><strong><code>random.choice()</code></strong> (cap. 11): per decidir qui comença.</li>
         </ul>
 
-        <p>Tot el curs en un sol programa d'unes 100 linies!</p>
+        <p>Tot el curs en un sol programa d'unes 100 línies!</p>
       </section>
 
 
@@ -568,12 +568,12 @@ while True:
       <section class="chapter-section chapter-exercise">
         <h2>Repte obert</h2>
 
-        <p>El joc funciona, pero pots millorar-lo:</p>
+        <p>El joc funciona, però pots millorar-lo:</p>
 
         <ul>
-          <li><strong>Maquina mes intel·ligent.</strong> Afegeix un quart pas a la IA: abans de triar el centre, comprova si posar una fitxa dona 3 en ratlla (preparant un 4 en ratlla futur).</li>
-          <li><strong>Dos jugadors.</strong> Modifica el programa perque dos humans puguin jugar alternant torns, sense la IA.</li>
-          <li><strong>Tauler mes gran.</strong> Canvia <code>FILES</code> i <code>COLS</code> per fer un tauler 9x7. Funciona sense tocar res mes!</li>
+          <li><strong>Màquina més intel·ligent.</strong> Afegeix un quart pas a la IA: abans de triar el centre, comprova si posar una fitxa dona 3 en ratlla (preparant un 4 en ratlla futur).</li>
+          <li><strong>Dos jugadors.</strong> Modifica el programa perquè dos humans puguin jugar alternant torns, sense la IA.</li>
+          <li><strong>Tauler més gran.</strong> Canvia <code>FILES</code> i <code>COLS</code> per fer un tauler 9x7. Funciona sense tocar res més!</li>
         </ul>
 
         <div class="simulador"
@@ -584,14 +584,14 @@ COLS = 7
 BUIT = "\u00b7"
 HUMA = "\u25cf"
 MAQUINA = "\u25cb"
-DIAMANT_HUMA = "\u25c9"      # Guanyador huma
-DIAMANT_MAQUINA = "\u25ce"   # Guanyador maquina
+DIAMANT_HUMA = "\u25c9"      # Guanyador humà
+DIAMANT_MAQUINA = "\u25ce"   # Guanyador màquina
 BOX_TL = "\u2554"            # Cantonada superior esquerra ╔
 BOX_TR = "\u2557"            # Cantonada superior dreta    ╗
 BOX_BL = "\u255a"            # Cantonada inferior esquerra ╚
 BOX_BR = "\u255d"            # Cantonada inferior dreta    ╝
-BOX_H  = "\u2550"            # Linia horitzontal           ═
-BOX_V  = "\u2551"            # Linia vertical              ║
+BOX_H  = "\u2550"            # Línia horitzontal           ═
+BOX_V  = "\u2551"            # Línia vertical              ║
 
 tauler = []
 for f in range(FILES):
@@ -710,9 +710,9 @@ def tauler_ple():
     return True
 
 print("=== 4 EN RATLLA ===")
-print("Tu ets " + HUMA + "   La maquina es " + MAQUINA)
+print("Tu ets " + HUMA + "   La màquina és " + MAQUINA)
 print()
-nivell = input("Nivell: 1.facil / 2.dificil: ")
+nivell = input("Nivell: 1.fàcil / 2.difícil: ")
 facil = (nivell == "1")
 
 # ── Bucle de partides ────────────────────
@@ -723,9 +723,9 @@ while True:
 
     torn_huma = random.choice([True, False])
     if not torn_huma:
-        print("Comenca la maquina!")
+        print("Comença la màquina!")
         fm, cm = torn_maquina(facil)
-        torn_huma = True  # Ara toca l&apos;huma
+        torn_huma = True  # Ara toca l&apos;humà
 
     dibuixa()
 
@@ -745,7 +745,7 @@ while True:
                     else:
                         print("Columna plena!")
                 else:
-                    print("Escriu un numero de l&apos;1 al 7.")
+                    print("Escriu un número de l&apos;1 al 7.")
             fila = deixa_fitxa(col, HUMA)
             if ha_guanyat(fila, col, HUMA):
                 posicions = troba_guanyadors(fila, col, HUMA)
@@ -758,13 +758,13 @@ while True:
                 break
             dibuixa()
         else:
-            print("La maquina juga...")
+            print("La màquina juga...")
             fm, cm = torn_maquina(facil)
             if ha_guanyat(fm, cm, MAQUINA):
                 posicions = troba_guanyadors(fm, cm, MAQUINA)
                 marca_guanyadors(posicions, DIAMANT_MAQUINA)
                 dibuixa()
-                print("Ha guanyat la maquina!")
+                print("Ha guanyat la màquina!")
                 print()
                 print()
                 print()
@@ -802,7 +802,7 @@ while True:
            NAVEGACIÓ
            ───────────────────────────────────────── -->
       <nav class="chapter-nav" aria-label="Navegació entre capítols">
-        <a href="capitol-11.html" class="btn-nav btn-nav--prev">&larr; Capitol anterior</a>
+        <a href="capitol-11.html" class="btn-nav btn-nav--prev">&larr; Capítol anterior</a>
         <a href="index.html" class="btn-nav btn-nav--next">Tornar a l'index &rarr;</a>
       </nav>
 

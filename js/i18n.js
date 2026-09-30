@@ -22,6 +22,7 @@ P.UI = {
   'log.error_testcode':   '❌ Error en comprovar el teu codi',
   'log.timeout':          '⏱ Temps excedit (possible bucle infinit)',
   'log.loading':          'Preparant Python…',
+  'log.lazy':             'Prem ▶ Executa. (El primer cop, Python triga uns segons a carregar-se.)',
   'log.ready':            '🟢 Python llest',
   'log.reset':            '↺ Consola netejada',
   'log.stdin':            '📥 Entrades del programa',
@@ -39,6 +40,7 @@ P.UI = {
   'ui.restore_title':     'Torna al codi amb què començava l\'exercici',
   'ui.restore_confirm':   'Vols tornar al codi inicial de l\'exercici? Perdràs el que has escrit (ho pots recuperar amb Ctrl+Z).',
   'log.code_restored':    '⟲ S\'ha recuperat el codi inicial',
+  'log.requires_missing': '⚠ La sortida és correcta, però l\'enunciat demana fer servir:',
   'ui.exit_fs':           '✕ Surt',
   'ui.exit_fs_title':     'Surt de la pantalla completa',
 };

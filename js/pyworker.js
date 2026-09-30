@@ -15,6 +15,7 @@
 // Protocol:
 //   Main → Worker:  {type:'init', cdnUrl}
 //   Main → Worker:  {type:'run', code, stdin, interactive, inputBuffer}
+//   Main → Worker:  {type:'check', code, requires}   → {type:'check_result', missing}
 //   Worker → Main:  {type:'ready'}
 //   Worker → Main:  {type:'stdout', text}
 //   Worker → Main:  {type:'stdout_partial', text}  (mode interactiu: prompt sense \n)
@@ -56,6 +57,13 @@ def _batch_input(prompt=''):
         raise EOFError
     return line.rstrip('\\n')
 `, { filename: '<pycat>' });   // nom propi: no es confon amb el codi de l'alumne (<exec>)
+
+    // Comprovació de requisits (data-requires): mòdul compartit amb el
+    // test automàtic. Si no es pot carregar, simplement no es comprova.
+    try {
+      var resp = await fetch('pycat_requires.py');
+      if (resp.ok) pyodide.runPython(await resp.text(), { filename: '<pycat>' });
+    } catch (_) {}
 
     postMessage({ type: 'ready' });
   } catch (e) {
@@ -306,11 +314,28 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
   }
 }
 
+// ── Comprova els requisits d'un exercici (data-requires) ─
+function checkRequires(code, requires) {
+  var missing = [];
+  try {
+    var fn = pyodide.globals.get('pycat_requisits_que_falten');
+    if (fn) {
+      var res = fn(code, requires);
+      missing = res.toJs();
+      res.destroy();
+      fn.destroy();
+    }
+  } catch (_) { missing = []; }
+  postMessage({ type: 'check_result', missing: missing });
+}
+
 // ── Dispatcher de missatges ──────────────────────────────
 self.onmessage = function(e) {
   var type = e.data.type;
   if (type === 'init') {
     initPyodide(e.data.cdnUrl);
+  } else if (type === 'check') {
+    checkRequires(e.data.code, e.data.requires);
   } else if (type === 'run') {
     runCode(e.data.code, e.data.stdin, e.data.interactive, e.data.inputBuffer);
   }

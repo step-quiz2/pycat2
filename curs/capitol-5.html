@@ -210,6 +210,89 @@ print("Fi del bucle")'
 
 
       <!-- ─────────────────────────────────────────
+           SECCIÓ 5b — Errors de l'usuari: try / except
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Quan l'usuari s'equivoca: <code>try</code> / <code>except</code></h2>
+
+        <p>Què passa si demanes un número i l'usuari escriu una paraula? Executa aquest programa: l'entrada és <code>catorze</code> (en lletres).</p>
+
+        <div class="simulador"
+             data-code='edat = int(input("Quina edat tens? "))
+print("L&apos;any que ve tindràs", edat + 1, "anys.")'
+             data-stdin="catorze"
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>El programa s'atura amb un <code>ValueError</code>: <code>int()</code> no sap convertir <code>"catorze"</code> en un número. Un programa ben fet no s'hauria d'aturar per culpa d'una entrada equivocada. Per evitar-ho, posem la línia que pot fallar dins d'un bloc <code>try</code> («intenta») i diem què cal fer si falla amb <code>except</code> («excepte si…»):</p>
+
+        <div class="simulador"
+             data-code='text = input("Quina edat tens? ")
+try:
+    edat = int(text)
+    print("L&apos;any que ve tindràs", edat + 1, "anys.")
+except ValueError:
+    print("Això no és un número!")'
+             data-stdin="catorze"
+             data-height="260">
+        </div>
+
+        <p>Python executa el bloc <code>try</code>. Si tot va bé, se salta l'<code>except</code>. Si hi ha un <code>ValueError</code>, deixa el <code>try</code> just a la línia de l'error i executa el bloc <code>except</code>. Per veure el cas en què tot va bé, afegeix la línia <code>text = "14"</code> just després de l'<code>input</code> i torna a executar.</p>
+
+        <p>Combinant-ho amb <code>while True</code> i <code>break</code>, podem <strong>tornar a preguntar</strong> fins que la resposta sigui correcta. Aquí l'usuari s'equivoca dues vegades (<code>hola</code> i <code>3,5</code>) abans d'escriure <code>7</code>:</p>
+
+        <div class="simulador"
+             data-code='while True:
+    text = input("Escriu un número enter: ")
+    try:
+        n = int(text)
+        break          # el número és correcte: sortim del bucle
+    except ValueError:
+        print("Això no és un número enter. Torna-ho a provar.")
+print("El doble és", n * 2)'
+             data-stdin="hola
+3,5
+7"
+             data-readonly="true"
+             data-height="300">
+        </div>
+
+        <p>Consells:</p>
+        <ul>
+          <li>Posa dins del <code>try</code> <strong>només</strong> les línies que poden fallar, no tot el programa.</li>
+          <li>Escriu el nom de l'error que esperes (<code>except ValueError:</code>). Així, si hi ha un altre error (per exemple, una variable mal escrita), Python te'l continuarà mostrant.</li>
+        </ul>
+
+        <h3>Practica</h3>
+
+        <div class="exercise-enunciat">
+          Escriu un programa que demani un número enter. Si l'usuari escriu una cosa que no és un número enter, mostra <code>No és un número</code> i torna-li a demanar. Quan n'escrigui un de correcte, mostra <code>Correcte: </code> i el número. Fes servir <code>try</code> / <code>except</code> dins d'un <code>while</code>.
+        </div>
+
+        <pre class="code-example">Entrades: hola, 3.5, 12  →  No és un número
+                          No és un número
+                          Correcte: 12</pre>
+
+        <div class="simulador"
+             data-code='# Demana un número enter fins que l&apos;usuari n&apos;escrigui un de correcte
+
+'
+             data-tests='[
+               {"stdin":"5","expected":"Correcte: 5"},
+               {"stdin":"hola\n5","expected":"No és un número\nCorrecte: 5"},
+               {"stdin":"a\nb\n-3","expected":"No és un número\nNo és un número\nCorrecte: -3"},
+               {"stdin":"3.5\n12","expected":"No és un número\nCorrecte: 12"}
+             ]'
+             data-interactive="true"
+             data-goal-id="cap-5-try"
+             data-requires="try,while"
+             data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
            SECCIÓ 6 — Errors típics
            ───────────────────────────────────────── -->
       <section class="chapter-section">
@@ -280,6 +363,7 @@ intent = int(input(&quot;Endevina el número: &quot;))
              ]'
              data-interactive="true"
              data-goal-id="cap-5-ex"
+             data-requires="while"
              data-height="360">
         </div>
       </section>
@@ -297,6 +381,7 @@ intent = int(input(&quot;Endevina el número: &quot;))
           <li>Si la condició mai és falsa, la iteració és <strong>infinita</strong>. Pots sortir d'ella amb <code>break</code>.</li>
           <li><code>continue</code> salta la resta de la iteració actual i torna al principi del bucle.</li>
           <li>Si la condició ja és falsa des del principi, el bloc no s'executa ni un cop.</li>
+          <li><code>try</code> / <code>except ValueError:</code> evita que el programa s'aturi si l'usuari escriu una dada incorrecta. Amb <code>while True</code> es pot tornar a preguntar.</li>
         </ul>
       </section>
 

@@ -147,6 +147,10 @@ else:
     print(i)</pre>
           <pre class="glossari-example">def saluda(nom):
     print("Hola, " + nom)</pre>
+          <pre class="glossari-example">try:
+    n = int(input("Número: "))
+except ValueError:
+    print("Això no és un número")</pre>
         </div>
 
         <div class="glossari-section glossari-rules">

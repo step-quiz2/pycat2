@@ -13,6 +13,7 @@
 //   P.pyInit()                          — carrega Pyodide al worker
 //   P.pyRun(code, stdin, onDone)        — executa i crida callback(output|null)
 //   P.pyRunAsync(code, stdin)           — executa i retorna Promise<output|null>
+//   P.pyCheck(code, requires)           — Promise<requisits que falten> (data-requires)
 //   P.pyKill()                          — mata el worker
 //   P.pyStop()                          — mata i re-spawna
 //   P.canInteractive()                  — true si SharedArrayBuffer disponible
@@ -122,6 +123,11 @@ var _handlers = {
     var cb = _onDone;
     _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
     if (cb) cb(null);
+  },
+  check_result: function(d) {
+    var cb = _onCheck;
+    _onCheck = null;
+    if (cb) cb(d.missing || []);
   },
   input_request: function() {
     // El worker necessita input de l'alumne
@@ -288,6 +294,19 @@ function pyRunAsync(code, stdin, interactive) {
   });
 }
 
+// Comprova els requisits d'un exercici (data-requires) sobre el codi de
+// l'alumne. Retorna Promise<array de descripcions dels que falten>.
+// Només es crida després d'una validació, amb Python ja carregat.
+var _onCheck = null;
+function pyCheck(code, requires) {
+  return new Promise(function(resolve) {
+    var S = P.state;
+    if (!requires || !S.worker || !S.pyodideReady) { resolve([]); return; }
+    _onCheck = resolve;
+    S.worker.postMessage({ type: 'check', code: code, requires: requires });
+  });
+}
+
 // Mata el worker (atura qualsevol execució)
 function pyKill() {
   var S = P.state;
@@ -318,6 +337,7 @@ function pyStop() {
 P.pyInit         = pyInit;
 P.pyRun          = pyRun;
 P.pyRunAsync     = pyRunAsync;
+P.pyCheck        = pyCheck;
 P.pyKill         = pyKill;
 P.pyStop         = pyStop;
 P.canInteractive = canInteractive;
