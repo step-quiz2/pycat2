@@ -12,7 +12,7 @@
   var style = document.createElement('style');
   style.textContent = [
     // Footer floating: sempre visible a la part inferior
-    '.karel-footer {',
+    '.pycat-footer {',
     '  position: fixed;',
     '  bottom: 0;',
     '  left: 0;',
@@ -32,7 +32,7 @@
     '  line-height: 1.4;',
     '  background: var(--bg, #fff);',
     '}',
-    '.karel-footer a {',
+    '.pycat-footer a {',
     '  color: inherit;',
     '}',
     // Afegim padding-bottom al layout perquè el footer floating no tapi contingut
@@ -45,7 +45,7 @@
   // HTML del footer — modifica aquí per canviar el text.
   // Llicència: vegeu LICENSE i LLICENCIA.md (contingut CC BY-NC-SA 4.0, codi MIT).
   var footer = document.createElement('footer');
-  footer.className = 'karel-footer';
+  footer.className = 'pycat-footer';
   footer.innerHTML =
     '<span>© 2026 <strong>David Arso Civil</strong> · INS Miquel Tarradell.</span>' +
     '<span>Contingut: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>' +

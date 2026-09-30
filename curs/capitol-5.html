@@ -7,29 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
-<body>
+<body data-pagina="capitol" data-num="5">
 
-<header class="topbar">
-  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <div class="logo">
-    <span class="logo-icon"></span>
-    <span>PyCat</span>
-  </div>
-  <nav class="topbar-nav">
-    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
-    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
-    <a href="../index.html" class="topbar-nav-link">Simulador</a>
-  </nav>
-  <div class="topbar-actions"></div>
-</header>
-
-<div class="curs-layout">
-  <div id="sidebar-overlay" aria-hidden="true"></div>
-  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
-    <div id="sidebar-nav"></div>
-  </nav>
-
-  <main class="curs-content">
+<main class="curs-content">
     <div class="chapter-content-inner">
 
 
@@ -386,28 +366,11 @@ intent = int(input(&quot;Endevina el número: &quot;))
       </section>
 
 
-      <!-- ─────────────────────────────────────────
-           NAVEGACIÓ
-           ───────────────────────────────────────── -->
-      <nav class="chapter-nav" aria-label="Navegació entre capítols">
-        <a href="capitol-4.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
-        <a href="capitol-6.html" class="btn-nav btn-nav--next">Capítol següent →</a>
-      </nav>
-
-
     </div>
-  </main>
-</div>
+</main>
 
 <script src="glossari-data.js"></script>
 <script src="capitols.js"></script>
-<script>
-  injectCursLogo();
-  renderSidebar(5);
-  renderSimuladors();
-  initSidebarToggle();
-</script>
-
 <script src="../footer.js"></script>
 </body>
 </html>

@@ -56,6 +56,7 @@ body {
   align-items: center;
   font-size: 1.2rem;
 }
+.logo-img { width: 1.4em; height: 1.4em; display: block; }
 
 .topbar-nav {
   display: flex;
@@ -247,6 +248,31 @@ pre.code-example {
   text-decoration: none;
 }
 .chapter-nav a:hover { text-decoration: underline; }
+
+
+/* Dificultat dels reptes (insígnia de la capçalera) */
+.chapter-badge.badge--facil     { background: #d1fae5; color: #065f46; }
+.chapter-badge.badge--intermedi { background: #fef3c7; color: #92400e; }
+.chapter-badge.badge--dificil   { background: #fee2e2; color: #991b1b; }
+
+/* Pista plegable dels reptes */
+details.pista { margin-top: 1.5rem; }
+details.pista summary { cursor: pointer; font-size: 0.82rem; color: var(--muted); }
+details.pista > p,
+details.pista > div { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+
+/* Secció destacada (p. ex. enllaç al capítol extra) */
+.seccio-destacada {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px dashed #3776AB;
+  border-radius: 8px;
+  text-align: center;
+}
+.btn-nav--inline { display: inline-block; }
+
+/* Separador entre capítols i reptes a l'índex */
+.capitols-separador { margin: 1.2rem 0; border-top: 1px solid var(--border); list-style: none; }
 
 
 /* ══════════════════════════════════════════════════════
@@ -630,27 +656,3 @@ body.light .sidebar-check {
   color: #16a34a;
 }
 
-
-/* ══════════════════════════════════════════════════════
-   INDICADOR OFFLINE-READY (Service Worker)
-══════════════════════════════════════════════════════ */
-
-#offline-indicator {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  z-index: 10000;
-  background: #2a6e2a;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 4px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  opacity: 1;
-  transition: opacity 0.4s ease-out;
-}
-
-#offline-indicator.fade {
-  opacity: 0;
-}

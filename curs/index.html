@@ -7,20 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
-<body>
-
-<header class="topbar">
-  <div class="logo">
-    <span class="logo-icon"></span>
-    <span>PyCat</span>
-  </div>
-  <nav class="topbar-nav">
-    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
-    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
-    <a href="../index.html" class="topbar-nav-link">Simulador</a>
-  </nav>
-  <div class="topbar-actions"></div>
-</header>
+<body data-pagina="index">
 
 <div class="curs-index-hero">
   <h1>Aprèn Python de veritat<br>des del navegador</h1>
@@ -36,7 +23,6 @@
 <script src="capitols.js"></script>
 <script src="../js/sw-register.js"></script>
 <script>
-  injectCursLogo();
 
   // Genera la llista de capítols i reptes
   (function renderIndex() {
@@ -58,7 +44,7 @@
     }
 
     // Separador visual
-    html += '<li style="margin:1.2rem 0;border-top:1px solid #d0d0d0"></li>';
+    html += '<li class="capitols-separador" aria-hidden="true"></li>';
 
     // Reptes
     for (const r of REPTES_DATA) {

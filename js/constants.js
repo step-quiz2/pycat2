@@ -10,7 +10,7 @@ const P = {};
 // ── Claus de localStorage ────────────────────────────────
 P.LS_KEY_CODE     = 'pycat_code';
 P.LS_KEY_THEME    = 'pycat-theme';
-P.LS_KEY_PROGRESS = 'pycat_progress';   // reservat per al sistema de progrés (B1)
+// (El progrés del curs es desa a 'pycat_progress' des de curs/capitols.js.)
 
 // ── Codi per defecte al simulador lliure ─────────────────
 P.DEFAULT_CODE = `# El teu primer programa Python

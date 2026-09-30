@@ -13,6 +13,9 @@
 //   ?testcode=BASE64 → codi Python afegit al final del codi de l'alumne abans d'executar
 //   ?goalId=ID       → identificador del repte (per postMessage)
 //   ?requires=a,b    → construccions que el codi ha de fer servir (js/pycat_requires.py)
+//   ?save=CLAU       → desa el codi de l'alumne a localStorage[CLAU] i mostra «⟲ Codi inicial»
+//   ?interactive=1   → exercici amb input(): primer s'executa en mode interactiu i
+//                       després el botó passa a «▶ Valida» (cal SharedArrayBuffer)
 //   ?theme=light     → força mode clar
 // ════════════════════════════════════════════════════════
 
@@ -182,13 +185,10 @@
   if (!S.testCases && !S.freeStdin && !P.canInteractive()) {
     var code = ta ? ta.value : '';
     if (/\binput\s*\(/.test(code)) {
-      // Mostra el panell un cop Pyodide estigui llest (per no tapar el loading)
-      var checkReady = setInterval(function() {
-        if (P.state.pyodideReady || P.state.currentState === 'idle') {
-          clearInterval(checkReady);
-          P.consoleShowStdinPanel();
-        }
-      }, 500);
+      // Simulador lliure: es mostra quan Python és llest (per no tapar el
+      // missatge de càrrega). Incrustat (càrrega sota demanda): de seguida.
+      if (embed) P.consoleShowStdinPanel();
+      else P.whenReady(P.consoleShowStdinPanel);
     }
   }
 

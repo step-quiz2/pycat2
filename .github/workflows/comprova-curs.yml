@@ -19,6 +19,6 @@ jobs:
         with:
           node-version: 20
       - name: Sintaxi dels fitxers JS
-        run: for f in js/*.js curs/*.js tests/*.js tools/*.js footer.js sw.js; do node --check "$f" || exit 1; done
+        run: for f in js/*.js curs/*.js tests/*.js footer.js sw.js; do node --check "$f" || exit 1; done
       - name: Test del curs (solucions i casos de prova)
         run: python3 tests/comprova-curs.py

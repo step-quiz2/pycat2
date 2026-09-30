@@ -2,6 +2,8 @@
 // curs/capitols.js — Dades dels capítols i helpers de UI
 //
 // Funcions exportades al window global (idèntic a KarelCat):
+//   initCursPage()             — esquelet comú (capçalera, barra lateral,
+//                                navegació); s'executa sol en carregar-se
 //   injectCursLogo()           — pobla .logo-icon
 //   renderSidebar(currentNum)  — omple #sidebar-nav (amb ✓ de progrés)
 //   renderReptesSidebar(num)   — sidebar pels reptes (amb ✓ de progrés)
@@ -16,7 +18,7 @@
 // ── Logo ─────────────────────────────────────────────────
 function injectCursLogo() {
   document.querySelectorAll('.logo-icon').forEach(function(el) {
-    if (!el.innerHTML.trim()) el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" width="1.4em" height="1.4em" style="vertical-align:middle"><path fill="#3776AB" d="M53.75,5.42c-27.65,0-31.75,12.5-31.75,12.5v12.75h32.5v4.5H21.25C8.65,35.17,5,44.75,5,56.3c0,12.25,3.75,20.75,17.25,20.75h8.75v-12c0-13.62,11.25-24.87,24.87-24.87h16.13v-16c0-13.5-11-24.3-24.37-24.3C55.03,5.44,54.4,5.42,53.75,5.42z M45.75,15.62c2.62,0,4.75,2.12,4.75,4.75c0,2.62-2.13,4.75-4.75,4.75c-2.63,0-4.75-2.13-4.75-4.75C41,17.75,43.12,15.62,45.75,15.62z"/><path fill="#FFD43B" d="M56.25,104.58c27.65,0,31.75-12.5,31.75-12.5V79.33H55.5v-4.5h33.25c12.6,0,16.25-9.58,16.25-21.13c0-12.25-3.75-20.75-17.25-20.75h-8.75v12c0,13.62-11.25,24.87-24.87,24.87H38v16c0,13.5,11,24.3,24.37,24.3C63.97,104.56,64.6,104.58,56.25,104.58z M64.25,94.38c-2.62,0-4.75-2.12-4.75-4.75c0-2.62,2.13-4.75,4.75-4.75c2.63,0,4.75,2.13,4.75,4.75C69,92.25,66.88,94.38,64.25,94.38z"/></svg>';
+    if (!el.innerHTML.trim()) el.innerHTML = '<img class="logo-img" src="../img/logo.svg" alt="" width="22" height="22">';
   });
 }
 
@@ -420,12 +422,10 @@ function _diffCell(td, text, showSpaces) {
 
 // Refresca la sidebar actual (detecta si estem en un capítol o repte)
 function _refreshSidebar() {
-  // Busca quin capítol/repte estem
-  var path = window.location.pathname;
-  var capMatch = path.match(/capitol-(\d+)\.html/);
-  var repMatch = path.match(/repte-(\d+)\.html/);
-  if (capMatch) renderSidebar(parseInt(capMatch[1], 10));
-  else if (repMatch) renderReptesSidebar(parseInt(repMatch[1], 10));
+  var tipus = document.body.getAttribute('data-pagina');
+  var num   = parseInt(document.body.getAttribute('data-num'), 10);
+  if (tipus === 'capitol') renderSidebar(num);
+  else if (tipus === 'repte') renderReptesSidebar(num);
 }
 
 
@@ -467,8 +467,108 @@ function initGlossariCurs() {
 }
 
 
-// Auto-init (capitols.js es carrega després del DOM)
-initGlossariCurs();
+// ── Esquelet comú de les pàgines del curs ─────────────────
+// Cada pàgina només conté el seu <main class="curs-content"> i declara
+// qui és al <body>:
+//
+//   <body data-pagina="capitol" data-num="4">   → capítol 4
+//   <body data-pagina="repte"   data-num="7">   → repte 7
+//   <body data-pagina="index">                   → índex del curs (sense barra lateral)
+//
+// initCursPage() hi afegeix la capçalera, la barra lateral, la navegació
+// anterior/següent (calculada a partir de CAPITOLS_DATA / REPTES_DATA),
+// el glossari i els simuladors. Així l'esquelet es canvia en un sol lloc.
+
+function _topbarHtml(seccio, ambToggle, toggleLabel) {
+  function link(href, text, actiu) {
+    return '<a href="' + href + '" class="topbar-nav-link' + (actiu ? ' active' : '') + '">' + text + '</a>';
+  }
+  return (ambToggle
+      ? '<button id="sidebar-toggle" aria-label="' + toggleLabel + '" aria-expanded="false">☰</button>'
+      : '') +
+    '<div class="logo"><span class="logo-icon"></span><span>PyCat</span></div>' +
+    '<nav class="topbar-nav">' +
+      link('capitol-1.html', 'Capítols', seccio === 'capitol') +
+      link('repte-1.html', 'Reptes', seccio === 'repte') +
+      link('../index.html', 'Simulador', false) +
+    '</nav>' +
+    '<div class="topbar-actions"></div>';
+}
+
+// Enllaços «anterior / següent» d'una pàgina
+function _chapterNavLinks(tipus, num) {
+  var llista = tipus === 'repte' ? REPTES_DATA : CAPITOLS_DATA;
+  var idx = -1;
+  for (var i = 0; i < llista.length; i++) if (llista[i].num === num) idx = i;
+  var prev, next;
+  if (tipus === 'repte') {
+    prev = idx > 0 ? { href: llista[idx - 1].arxiu, text: '← Repte anterior' }
+                   : { href: 'capitol-1.html', text: '← Capítols' };
+    next = idx >= 0 && idx < llista.length - 1 ? { href: llista[idx + 1].arxiu, text: 'Repte següent →' }
+                   : { href: 'index.html', text: 'Torna a l\'índex →' };
+  } else {
+    prev = idx > 0 ? { href: llista[idx - 1].arxiu, text: '← Capítol anterior' }
+                   : { href: 'index.html', text: '← Índex' };
+    next = idx >= 0 && idx < llista.length - 1 ? { href: llista[idx + 1].arxiu, text: 'Capítol següent →' }
+                   : { href: 'index.html', text: 'Torna a l\'índex →' };
+  }
+  return { prev: prev, next: next };
+}
+
+function initCursPage() {
+  var body   = document.body;
+  var tipus  = body.getAttribute('data-pagina');     // capitol | repte | index
+  var num    = parseInt(body.getAttribute('data-num'), 10);
+  var main   = document.querySelector('main.curs-content');
+  var esCurs = (tipus === 'capitol' || tipus === 'repte') && main;
+
+  // 1) Capçalera (si la pàgina no en té)
+  if (tipus && !document.querySelector('.topbar')) {
+    var header = document.createElement('header');
+    header.className = 'topbar';
+    header.innerHTML = _topbarHtml(tipus === 'index' ? 'capitol' : tipus, esCurs,
+      tipus === 'repte' ? 'Mostra/amaga els reptes' : 'Mostra/amaga els capítols');
+    body.insertBefore(header, body.firstChild);
+  }
+
+  if (esCurs) {
+    // 2) Distribució: barra lateral + contingut
+    var layout = document.createElement('div');
+    layout.className = 'curs-layout';
+    layout.innerHTML =
+      '<div id="sidebar-overlay" aria-hidden="true"></div>' +
+      '<nav id="sidebar" class="curs-sidebar" aria-label="' +
+        (tipus === 'repte' ? 'Reptes del curs' : 'Capítols del curs') + '">' +
+        '<div id="sidebar-nav"></div>' +
+      '</nav>';
+    main.parentNode.insertBefore(layout, main);
+    layout.appendChild(main);
+
+    // 3) Navegació anterior / següent (al final del contingut)
+    if (!main.querySelector('.chapter-nav')) {
+      var links = _chapterNavLinks(tipus, num);
+      var nav = document.createElement('nav');
+      nav.className = 'chapter-nav';
+      nav.setAttribute('aria-label', tipus === 'repte' ? 'Navegació entre reptes' : 'Navegació entre capítols');
+      nav.innerHTML =
+        '<a href="' + links.prev.href + '" class="btn-nav btn-nav--prev">' + links.prev.text + '</a>' +
+        '<a href="' + links.next.href + '" class="btn-nav btn-nav--next">' + links.next.text + '</a>';
+      (main.querySelector('.chapter-content-inner') || main).appendChild(nav);
+    }
+  }
+
+  injectCursLogo();
+  initGlossariCurs();
+
+  if (esCurs) {
+    if (tipus === 'repte') renderReptesSidebar(num); else renderSidebar(num);
+    renderSimuladors();
+    initSidebarToggle();
+  }
+}
+
+// Auto-init (capitols.js es carrega al final del <body>, amb el DOM ja llegit)
+initCursPage();
 
 
 // ── Exporta ──────────────────────────────────────────────
@@ -478,6 +578,7 @@ window.renderReptesSidebar = renderReptesSidebar;
 window.renderSimuladors    = renderSimuladors;
 window.initSidebarToggle   = initSidebarToggle;
 window.initGlossariCurs    = initGlossariCurs;
+window.initCursPage        = initCursPage;
 window.getProgress         = getProgress;
 window.saveGoalCompleted   = saveGoalCompleted;
 window.isGoalCompleted     = isGoalCompleted;

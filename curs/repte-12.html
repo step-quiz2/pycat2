@@ -7,32 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
-<body>
+<body data-pagina="repte" data-num="12">
 
-<header class="topbar">
-  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <div class="logo">
-    <span class="logo-icon"></span>
-    <span>PyCat</span>
-  </div>
-  <nav class="topbar-nav">
-    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
-    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
-    <a href="../index.html" class="topbar-nav-link">Simulador</a>
-  </nav>
-  <div class="topbar-actions"></div>
-</header>
-
-<div class="curs-layout">
-  <div id="sidebar-overlay" aria-hidden="true"></div>
-  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
-    <div id="sidebar-nav"></div>
-  </nav>
-
-  <main class="curs-content">
+<main class="curs-content">
 
     <header class="chapter-header">
-      <span class="chapter-badge" style="background: #fee2e2; color: #991b1b;">⚡ Repte 12 — Difícil</span>
+      <span class="chapter-badge badge--dificil">⚡ Repte 12 — Difícil</span>
       <h1>Paraula al revés</h1>
     </header>
 
@@ -66,31 +46,17 @@ paraula = input(&quot;Escriu una paraula: &quot;)
       </div>
     </section>
 
-    <details style="margin-top: 1.5rem;">
-      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
-      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+    <details class="pista">
+      <summary>💡 Pista</summary>
+      <p>
         El slicing té un truc: <code>paraula[::-1]</code> retorna el text del revés.
         També es pot fer amb un <code>for</code> recorrent de dreta a esquerra i acumulant en una variable.
       </p>
     </details>
-
-    <nav class="chapter-nav">
-      <a href="repte-11.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
-      <a href="repte-13.html" class="btn-nav btn-nav--next">Repte següent →</a>
-    </nav>
-
-  </main>
-</div>
+</main>
 
 <script src="glossari-data.js"></script>
 <script src="capitols.js"></script>
-<script>
-  injectCursLogo();
-  renderReptesSidebar(12);
-  renderSimuladors();
-  initSidebarToggle();
-</script>
-
 <script src="../footer.js"></script>
 </body>
 </html>

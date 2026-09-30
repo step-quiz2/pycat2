@@ -41,6 +41,12 @@ P.UI = {
   'ui.restore_confirm':   'Vols tornar al codi inicial de l\'exercici? Perdràs el que has escrit (ho pots recuperar amb Ctrl+Z).',
   'log.code_restored':    '⟲ S\'ha recuperat el codi inicial',
   'log.requires_missing': '⚠ La sortida és correcta, però l\'enunciat demana fer servir:',
+  'log.worker_error':     'Error intern del worker:',
+  'log.restarting':       '🔄 Re-inicialitzant Python…',
+  'log.empty_code':       '⚠ Escriu codi abans d\'executar.',
+  'log.test_n':           '── Test {i}/{n} ──',
+  'ui.theme_dark':        'Mode fosc',
+  'ui.theme_light':       'Mode clar',
   'ui.exit_fs':           '✕ Surt',
   'ui.exit_fs_title':     'Surt de la pantalla completa',
 };
