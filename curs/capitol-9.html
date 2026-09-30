@@ -302,6 +302,24 @@ print(resultat)
 
 
       <!-- ─────────────────────────────────────────
+           ORDENA EL PROGRAMA (problema de Parsons)
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>🧩 Ordena el programa</h2>
+        <p>Ordena i indenta les línies: primer es defineix la funció <code>area_rectangle</code>, que <strong>retorna</strong> l'àrea, i després el programa la crida i n'imprimeix el resultat.</p>
+        <p>Arrossega les línies (o fes servir ↑ ↓) i indenta-les amb ⇤ ⇥. Quan ho tinguis, prem <strong>✓ Comprova</strong>.</p>
+
+        <div class="parsons" data-goal-id="cap-9-parsons" data-expected="Àrea: 15">
+<pre class="parsons-codi">def area_rectangle(base, altura):
+    area = base * altura
+    return area
+resultat = area_rectangle(3, 5)
+print("Àrea:", resultat)</pre>
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
            EXERCICI
            ───────────────────────────────────────── -->
       <section class="chapter-section chapter-exercise">
@@ -339,6 +357,37 @@ False"
              data-goal-id="cap-9-ex"
              data-requires="def,return"
              data-height="360">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-9-quiz">
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">def doble(n):
+    return n * 2
+
+print(doble(4) + 1)</pre>
+            <ol class="quiz-opcions"><li>8</li><li>9</li><li>10</li></ol>
+            <p class="quiz-explica"><code>doble(4)</code> retorna 8, i el programa hi suma 1.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2">
+            <p>Què retorna una funció que no té <code>return</code>?</p>
+            <ol class="quiz-opcions"><li>0</li><li>None</li><li>Un text buit</li></ol>
+            <p class="quiz-explica">Si una funció acaba sense <code>return</code>, retorna <code>None</code> («res»).</p>
+          </div>
+          <div class="quiz-q" data-correcta="2">
+            <p>Una variable creada dins d'una funció…</p>
+            <ol class="quiz-opcions"><li>es pot fer servir a tot el programa</li><li>només existeix dins de la funció</li><li>es desa per sempre</li></ol>
+            <p class="quiz-explica">És una variable <strong>local</strong>: desapareix quan la funció acaba. Ho pots veure amb 👣 Pas a pas.</p>
+          </div>
         </div>
       </section>
 

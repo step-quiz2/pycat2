@@ -564,6 +564,12 @@ function initCursPage() {
     if (tipus === 'repte') renderReptesSidebar(num); else renderSidebar(num);
     renderSimuladors();
     initSidebarToggle();
+    // Problemes de Parsons i qüestionaris (curs/activitats.js), si n'hi ha
+    if (document.querySelector('.parsons, .quiz')) {
+      var sc = document.createElement('script');
+      sc.src = 'activitats.js';
+      document.body.appendChild(sc);
+    }
   }
 }
 

@@ -220,6 +220,52 @@ for i in range(1, 6):
 
 
       <!-- ─────────────────────────────────────────
+           TROBA L'ERROR
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>🐞 Troba l'error</h2>
+        <div class="exercise-enunciat">Aquest programa hauria de sumar tots els nombres de l'1 fins a <code>n</code> (per a <code>n = 5</code>: 1 + 2 + 3 + 4 + 5 = 15), però dona 10. Troba l'error i corregeix-lo.</div>
+
+        <div class="simulador"
+             data-code='n = int(input("Fins a quin nombre? "))
+suma = 0
+for i in range(1, n):
+    suma = suma + i
+print(suma)
+'
+             data-tests='[{"stdin": "5", "expected": "15"}, {"stdin": "1", "expected": "1"}, {"stdin": "10", "expected": "55"}]'
+             data-interactive="true"
+             data-goal-id="cap-6-bug"
+             data-requires="for"
+             data-height="340">
+        </div>
+
+        <details class="pista">
+          <summary>💡 Pista</summary>
+          <p>Quins valors pren <code>i</code>? Prova-ho amb 👣 Pas a pas.</p>
+        </details>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           ORDENA EL PROGRAMA (problema de Parsons)
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>🧩 Ordena el programa</h2>
+        <p>Ordena i indenta les línies perquè el programa escrigui la taula de multiplicar de l'1 al 3 (una fila per línia: <code>1 2 3</code>, <code>2 4 6</code>, <code>3 6 9</code>).</p>
+        <p>Arrossega les línies (o fes servir ↑ ↓) i indenta-les amb ⇤ ⇥. Quan ho tinguis, prem <strong>✓ Comprova</strong>.</p>
+
+        <div class="parsons" data-goal-id="cap-6-parsons">
+<pre class="parsons-codi">for fila in range(1, 4):
+    linia = ""
+    for col in range(1, 4):
+        linia = linia + str(fila * col) + " "
+    print(linia)</pre>
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
            EXERCICI
            ───────────────────────────────────────── -->
       <section class="chapter-section chapter-exercise">
@@ -249,6 +295,42 @@ for i in range(1, 6):
              data-goal-id="cap-6-ex"
              data-requires="for"
              data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-6-quiz">
+          <div class="quiz-q" data-correcta="2">
+            <p>Quins valors genera <code>range(2, 6)</code>?</p>
+            <ol class="quiz-opcions"><li>2, 3, 4, 5, 6</li><li>2, 3, 4, 5</li><li>3, 4, 5, 6</li></ol>
+            <p class="quiz-explica"><code>range(inici, fi)</code> comença a <code>inici</code> i s'atura <strong>abans</strong> de <code>fi</code>.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">total = 0
+for i in range(4):
+    total = total + i
+print(total)</pre>
+            <ol class="quiz-opcions"><li>6</li><li>10</li><li>4</li></ol>
+            <p class="quiz-explica"><code>range(4)</code> dona 0, 1, 2 i 3: 0 + 1 + 2 + 3 = 6.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">compte = 0
+for i in range(3):
+    for j in range(2):
+        compte = compte + 1
+print(compte)</pre>
+            <ol class="quiz-opcions"><li>5</li><li>6</li><li>3</li></ol>
+            <p class="quiz-explica">El bucle interior fa 2 voltes per <strong>cada</strong> volta de l'exterior: 3 · 2 = 6.</p>
+          </div>
         </div>
       </section>
 

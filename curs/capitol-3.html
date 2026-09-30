@@ -250,6 +250,37 @@ Producte: 48"
       </section>
 
 
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-3-quiz">
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">print(7 // 2)</pre>
+            <ol class="quiz-opcions"><li>3.5</li><li>3</li><li>4</li></ol>
+            <p class="quiz-explica"><code>//</code> és la divisió entera: es queda amb la part entera del resultat.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">print(7 % 2)</pre>
+            <ol class="quiz-opcions"><li>1</li><li>3</li><li>3.5</li></ol>
+            <p class="quiz-explica"><code>%</code> és el residu de la divisió: 7 = 2·3 + <strong>1</strong>.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2" data-comprova data-stdin="5">
+            <p>L'usuari escriu <code>5</code>. Què imprimeix el programa?</p>
+            <pre class="code-example">x = input()
+print(x + x)</pre>
+            <ol class="quiz-opcions"><li>10</li><li>55</li><li>Error</li></ol>
+            <p class="quiz-explica"><code>input()</code> sempre retorna un text: <code>"5" + "5"</code> enganxa els dos textos. Per sumar, cal <code>int(input())</code>.</p>
+          </div>
+        </div>
+      </section>
+
+
       <section class="chapter-section">
         <h2>Resum</h2>
         <ul>

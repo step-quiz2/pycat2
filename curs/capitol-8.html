@@ -288,6 +288,39 @@ print(numeros)   '
 
 
       <!-- ─────────────────────────────────────────
+           TROBA L'ERROR
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>🐞 Troba l'error</h2>
+        <div class="exercise-enunciat">Aquest programa llegeix uns quants nombres en una línia i n'hauria de mostrar el més gran, <strong>sense</strong> fer servir <code>max()</code>. Té <strong>dos</strong> errors: amb <code>25 4 9</code> diu 9, i amb <code>-5 -2 -9</code> diu 0. Troba'ls i corregeix-los.</div>
+
+        <div class="simulador"
+             data-code='text = input("Escriu nombres separats per espais: ")
+nombres = []
+for paraula in text.split():
+    nombres.append(int(paraula))
+
+maxim = 0
+for i in range(1, len(nombres)):
+    if nombres[i] &gt; maxim:
+        maxim = nombres[i]
+print("Màxim:", maxim)
+'
+             data-tests='[{"stdin": "3 17 8", "expected": "Màxim: 17"}, {"stdin": "25 4 9", "expected": "Màxim: 25"}, {"stdin": "-5 -2 -9", "expected": "Màxim: -2"}, {"stdin": "7", "expected": "Màxim: 7"}]'
+             data-interactive="true"
+             data-goal-id="cap-8-bug"
+             data-requires="for"
+             data-height="340">
+        </div>
+
+        <details class="pista">
+          <summary>💡 Pista</summary>
+          <p>Per quina posició comença el segon <code>for</code>? I si tots els nombres són negatius, quin valor inicial de <code>maxim</code> seria millor?</p>
+        </details>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
            EXERCICI
            ───────────────────────────────────────── -->
       <section class="chapter-section chapter-exercise">
@@ -312,6 +345,39 @@ print(numeros)   '
              data-goal-id="cap-8-ex"
              data-requires="list"
              data-height="360">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-8-quiz">
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">llista = [5, 8, 2]
+print(llista[-1])</pre>
+            <ol class="quiz-opcions"><li>5</li><li>2</li><li>Error</li></ol>
+            <p class="quiz-explica">Els índexs negatius compten des del final: <code>[-1]</code> és l'últim element.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">nums = [1, 2]
+nums.append(3)
+print(len(nums))</pre>
+            <ol class="quiz-opcions"><li>2</li><li>3</li><li>4</li></ol>
+            <p class="quiz-explica"><code>.append()</code> afegeix un element al final: ara la llista en té 3.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">print(sum([4, 6, 10]))</pre>
+            <ol class="quiz-opcions"><li>20</li><li>4610</li><li>[4, 6, 10]</li></ol>
+            <p class="quiz-explica"><code>sum()</code> suma tots els nombres de la llista.</p>
+          </div>
         </div>
       </section>
 
