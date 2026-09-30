@@ -117,8 +117,7 @@ var _handlers = {
   error: function(d) {
     _clearTimeout();
     P.state.running = false;
-    P.consolePush(P.t('log.error') + ': ' + d.msg, 'err');
-    if (d.line) P.markErrorLine(d.line);
+    _showError(d.msg, d.line);
     P.setStateUI('error');
     var cb = _onDone;
     _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
@@ -136,6 +135,26 @@ var _handlers = {
     });
   }
 };
+
+// ── Mostra un error: explicació en català + missatge original ──
+// d.line és relativa al codi executat (codi de l'alumne + testCode):
+// si cau dins del testCode, no es marca cap línia de l'editor.
+function _showError(msg, line) {
+  var userLines = P.state.userLineCount || Infinity;
+  var inUserCode = line && line <= userLines;
+  var info = P.explainError ? P.explainError(msg) : null;
+  var where = inUserCode ? P.t('log.error_line').replace('{n}', line)
+            : (line ? P.t('log.error_testcode') : P.t('log.error'));
+
+  if (info) {
+    P.consolePush(where + ': ' + info.text, 'err');
+    if (info.hint) P.consolePush('💡 ' + info.hint, 'hint');
+    P.consolePush(msg, 'dim');                   // l'original, per aprendre a llegir-lo
+  } else {
+    P.consolePush(where + ': ' + msg, 'err');
+  }
+  if (inUserCode) P.markErrorLine(line);
+}
 
 // ── Envia l'input al worker via SharedArrayBuffer ────────
 function _sendInputToWorker(text) {

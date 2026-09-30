@@ -28,6 +28,7 @@ pycat/
 │   ├── pyworker.js         ← Web Worker: executa Python, captura stdout/stderr
 │   ├── editor.js           ← Editor de codi (textarea + highlight overlay)
 │   ├── console.js          ← Renderitzat del panell de sortida
+│   ├── errors.js           ← Explicació en català dels errors de Python
 │   ├── ui.js               ← Botons, validació, feedback visual
 │   ├── main.js             ← Inicialització
 │   ├── kbd-accessory.js    ← Teclat virtual mòbil (Python keys)
@@ -81,7 +82,11 @@ Obre [http://localhost:8000](http://localhost:8000) per al simulador lliure, o [
 - El simulador carrega **Pyodide** (CPython via WebAssembly, ~12MB, es cacheja) dins d'un **Web Worker**.
 - El worker rep missatges `{type:'run', code:'...'}` i emet `stdout`, `stderr`, `done` o `error` de tornada.
 - L'`input()` interactiu usa **SharedArrayBuffer + Atomics.wait()** per bloquejar el worker mentre l'alumne escriu. Requereix els headers COOP/COEP de `_headers`. En entorns sense aquests headers, hi ha un panell de stdin previ a l'execució com a fallback.
-- La validació dels reptes compara stdout contra `data-expected` (Mode A), executa múltiples casos de prova via `data-tests` (Mode B), o afegeix codi de test via `data-testcode` (Mode C).
+- La validació dels reptes compara stdout contra `data-expected` (Mode A), executa múltiples casos de prova via `data-tests` (Mode B), o afegeix codi de test via `data-testcode` (Mode C). Si falla, la pàgina del curs mostra les diferències línia per línia (en vermell).
+- Els errors de Python es mostren amb una explicació i una pista en català (`js/errors.js`), seguides del missatge original, i es marca la línia de l'error a l'editor.
+- El codi de cada simulador editable del curs es desa a `localStorage['pycat-code:<pàgina>:<núm. de simulador>']` (paràmetre `save`). El botó **«⟲ Codi inicial»** torna a l'esquelet de l'exercici. El simulador lliure fa servir la clau `pycat_code`.
+- **«⛶ Pantalla completa»** posa el mateix iframe a pantalla completa (Fullscreen API, o CSS si el navegador no la té); el botó **«✕ Surt»** de dins en surt. Així el progrés i el codi es mantenen.
+- Editor: indentació automàtica en prémer Enter (+4 espais després de `:`), retrocés que esborra un nivell, Tab / Maj+Tab, Ctrl+Enter per executar. Totes les edicions es poden desfer amb Ctrl+Z.
 - El sistema de progrés usa `localStorage` i es renderitza com a checkmarks a la barra lateral.
 
 Per als detalls d'implementació, llegiu directament el codi (ben comentat) i `TODO.md`.

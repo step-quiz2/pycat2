@@ -18,6 +18,8 @@ P.UI = {
   'log.running':          '⚡ Executant…',
   'log.done':             '✅ Programa completat',
   'log.error':            '❌ Error',
+  'log.error_line':       '❌ Error a la línia {n}',
+  'log.error_testcode':   '❌ Error en comprovar el teu codi',
   'log.timeout':          '⏱ Temps excedit (possible bucle infinit)',
   'log.loading':          'Preparant Python…',
   'log.ready':            '🟢 Python llest',
@@ -33,6 +35,12 @@ P.UI = {
   'ui.readonly':          'No editable',
   'log.ran_interactive':  '✔ Programa executat. Prem ▶ Valida per comprovar.',
   'log.validating':       '── Validació ──',
+  'ui.restore':           '⟲ Codi inicial',
+  'ui.restore_title':     'Torna al codi amb què començava l\'exercici',
+  'ui.restore_confirm':   'Vols tornar al codi inicial de l\'exercici? Perdràs el que has escrit (ho pots recuperar amb Ctrl+Z).',
+  'log.code_restored':    '⟲ S\'ha recuperat el codi inicial',
+  'ui.exit_fs':           '✕ Surt',
+  'ui.exit_fs_title':     'Surt de la pantalla completa',
 };
 
 // ── Funció de traducció ──────────────────────────────────

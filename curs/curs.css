@@ -271,13 +271,49 @@ pre.code-example {
 .simulador-feedback.fb-ok { color: #16a34a; }
 .simulador-feedback.fb-ko { color: #dc2626; }
 
-/* Botó de pantalla completa (només visible en mòbil) */
+/* Diferències línia per línia (exercici fallit) */
+.diff-stdin {
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.diff-table {
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text);
+  max-width: 100%;
+  display: block;
+  overflow-x: auto;
+}
+.diff-table th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 2px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.diff-table td {
+  padding: 2px 10px;
+  white-space: pre;
+  vertical-align: top;
+}
+.diff-table td.diff-num { color: var(--muted); text-align: right; padding-right: 6px; }
+.diff-table td.diff-missing { color: var(--muted); font-style: italic; }
+.diff-table tr.diff-bad td { background: #fee2e2; color: #991b1b; }
+.diff-table tr.diff-bad td.diff-num { color: #991b1b; font-weight: 700; }
+
+/* Botó de pantalla completa */
 .simulador-fullscreen-btn {
-  display: none;
-  text-align: right;
+  display: block;
+  margin-left: auto;
   font-size: 0.78rem;
   color: var(--muted, #888);
-  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
   padding: 5px 2px 0;
   font-family: inherit;
 }
@@ -285,9 +321,21 @@ pre.code-example {
   color: var(--accent, #0070f3);
   text-decoration: underline;
 }
-@media (max-width: 640px) {
-  .simulador-fullscreen-btn { display: block; }
+
+/* Pantalla completa sense Fullscreen API (p. ex. iPhone): l'iframe
+   ocupa tota la finestra i es tanca amb el botó «✕ Surt» de dins. */
+.simulador.sim-fs iframe {
+  position: fixed;
+  inset: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  border: none !important;
+  border-radius: 0 !important;
+  z-index: 1000;
+  background: #fff;
 }
+body.sim-fs-open { overflow: hidden; }
 
 
 /* ══════════════════════════════════════════════════════

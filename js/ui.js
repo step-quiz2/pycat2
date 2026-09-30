@@ -48,6 +48,8 @@ function handleRunClick() {
 
 // ── Construeix el codi final (codi de l'alumne + testCode) ──
 function _buildFinalCode(userCode) {
+  // Nombre de línies de l'alumne: un error més avall és del testCode
+  P.state.userLineCount = userCode.split('\n').length;
   var tc = P.state.testCode || '';
   if (!tc) return userCode;
   return userCode + '\n\n# ── Tests ──\n' + tc;
@@ -237,6 +239,7 @@ function _notifyResults(results) {
       type:    'pycat-result',
       goalId:  P.state.goalId,
       success: allPassed,
+      total:   (P.state.testCases || []).length,
       results: results
     }, P.parentOrigin);
   } catch(_) {}
@@ -323,10 +326,7 @@ function initFileActions() {
       var ta = document.getElementById('code-editor');
       if (!ta) return;
       ta.value = e.target.result;
-      P.updateEditor();
-      if (!document.body.classList.contains('embed')) {
-        try { localStorage.setItem(P.LS_KEY_CODE, ta.value); } catch(_) {}
-      }
+      P.updateEditor();   // també desa el codi (P.saveCode)
       ta.focus();
     };
     reader.readAsText(file);

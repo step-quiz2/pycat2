@@ -160,6 +160,7 @@ body.embed .btn-glossari { display: none; }
   align-items: center;
   gap: 4px;
 }
+.btn[hidden] { display: none; }
 .btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn.p { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn.p:hover { filter: brightness(1.15); }
@@ -386,6 +387,7 @@ body.light .hl-cm  { color: #9ca3af; }
 .con-line.err { color: var(--error); }
 .con-line.ok  { color: var(--ok); }
 .con-line.dim { color: var(--muted); }
+.con-line.hint { color: var(--text); word-break: normal; overflow-wrap: anywhere; }
 
 
 /* ══════════════════════════════════════════════════════
