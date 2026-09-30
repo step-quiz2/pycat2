@@ -7,32 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
-<body>
+<body data-pagina="repte" data-num="1">
 
-<header class="topbar">
-  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <div class="logo">
-    <span class="logo-icon"></span>
-    <span>PyCat</span>
-  </div>
-  <nav class="topbar-nav">
-    <a href="capitol-1.html" class="topbar-nav-link">Capítols</a>
-    <a href="repte-1.html" class="topbar-nav-link active">Reptes</a>
-    <a href="../index.html" class="topbar-nav-link">Simulador</a>
-  </nav>
-  <div class="topbar-actions"></div>
-</header>
-
-<div class="curs-layout">
-  <div id="sidebar-overlay" aria-hidden="true"></div>
-  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
-    <div id="sidebar-nav"></div>
-  </nav>
-
-  <main class="curs-content">
+<main class="curs-content">
 
     <header class="chapter-header">
-      <span class="chapter-badge" style="background: #d1fae5; color: #065f46;">⚡ Repte 1 — Fàcil</span>
+      <span class="chapter-badge badge--facil">⚡ Repte 1 — Fàcil</span>
       <h1>El primer programa</h1>
     </header>
 
@@ -61,32 +41,18 @@ M'encanta programar!"
       </div>
     </section>
 
-    <details style="margin-top: 1.5rem;">
-      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
-      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+    <details class="pista">
+      <summary>💡 Pista</summary>
+      <p>
         Necessites tres instruccions <code>print()</code>, una per cada línia.
         Recorda posar el text entre cometes dobles: <code>print("text")</code>.
         Per l'apòstrof de «M'encanta», pots usar cometes dobles per embolcallar el text.
       </p>
     </details>
-
-    <nav class="chapter-nav">
-      <a href="capitol-1.html" class="btn-nav btn-nav--prev">← Capítol 1</a>
-      <a href="repte-2.html" class="btn-nav btn-nav--next">Repte següent →</a>
-    </nav>
-
-  </main>
-</div>
+</main>
 
 <script src="glossari-data.js"></script>
 <script src="capitols.js"></script>
-<script>
-  injectCursLogo();
-  renderReptesSidebar(1);
-  renderSimuladors();
-  initSidebarToggle();
-</script>
-
 <script src="../footer.js"></script>
 </body>
 </html>

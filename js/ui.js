@@ -97,7 +97,7 @@ async function runProgram() {
 
   var userCode = (document.getElementById('code-editor') || {}).value || '';
   if (!userCode.trim()) {
-    P.consolePush('⚠ Escriu codi abans d\'executar.', 'dim');
+    P.consolePush(P.t('log.empty_code'), 'dim');
     return;
   }
 
@@ -175,7 +175,7 @@ async function _runBatchValidation(finalCode) {
     var tc = S.testCases[i];
 
     if (S.testCases.length > 1) {
-      P.consolePush('── Test ' + (i + 1) + '/' + S.testCases.length + ' ──', 'dim');
+      P.consolePush(P.t('log.test_n').replace('{i}', i + 1).replace('{n}', S.testCases.length), 'dim');
     }
 
     var output = await P.pyRunAsync(finalCode, tc.stdin || null);
@@ -268,7 +268,7 @@ function updateThemeBtn() {
   if (!btn) return;
   var isLight = document.body.classList.contains('light');
   btn.innerHTML = isLight ? ICON_MOON : ICON_SUN;
-  btn.title     = isLight ? 'Mode fosc' : 'Mode clar';
+  btn.title     = P.t(isLight ? 'ui.theme_dark' : 'ui.theme_light');
 }
 
 function toggleTheme() {

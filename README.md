@@ -8,64 +8,34 @@ Curs interactiu per aprendre Python real al navegador, en català. Seqüela de [
 
 ## Què és
 
-PyCat és un curs de Python per a alumnes que ja han completat KarelCat (o equivalent). Manté la mateixa filosofia: tot al navegador, sense instal·lació, interfície minimalista. La diferència fonamental és que executa **CPython real via Pyodide (WebAssembly)**.
+PyCat és un curs de Python per a alumnes d'ESO que ja han fet KarelCat (o equivalent). Manté la mateixa filosofia: tot al navegador, sense instal·lació, interfície minimalista. La diferència és que executa **CPython real via Pyodide (WebAssembly)**.
 
-El curs consta d'**11 capítols** progressius i **15 reptes** amb validació automàtica.
+El curs té **12 capítols** (l'últim, un capítol extra: el joc del 4 en ratlla) i **15 reptes** amb validació automàtica. Els errors de Python s'expliquen en català, el codi de l'alumne es desa sol i, quan un exercici falla, es mostren les diferències línia per línia.
 
-## Estructura de fitxers
+| Capítol | Títol |
+|---|---|
+| 1 | Hola, Python! |
+| 2 | Variables |
+| 3 | Operacions i input |
+| 4 | Decisions: if, elif, else |
+| 5 | Repetir amb while (i `try` / `except`) |
+| 6 | Repetir amb for i range |
+| 7 | Treballant amb text |
+| 8 | Llistes |
+| 9 | Funcions |
+| 10 | Diccionaris |
+| 11 | Posant-ho tot junt |
+| 12 | 4 en ratlla |
+
+## Estructura
 
 ```
-pycat/
-├── index.html              ← Simulador lliure de Python (també serveix com a iframe per als capítols)
-├── style.css               ← Estils del simulador
-├── sw.js                   ← Kill-switch del Service Worker (veure TODO.md Task 5)
-│
-├── js/
-│   ├── constants.js        ← Configuració global i claus localStorage
-│   ├── i18n.js             ← Sistema de traduccions (ca/es/en)
-│   ├── state.js            ← Estat centralitzat
-│   ├── pyrunner.js         ← Wrapper Pyodide: càrrega, execució, fallback CDN
-│   ├── pyworker.js         ← Web Worker: executa Python, captura stdout/stderr
-│   ├── editor.js           ← Editor de codi (textarea + highlight overlay)
-│   ├── console.js          ← Renderitzat del panell de sortida
-│   ├── errors.js           ← Explicació en català dels errors de Python
-│   ├── pycat_requires.py   ← Comprovació de data-requires (Pyodide i tests/comprova-curs.py)
-│   ├── ui.js               ← Botons, validació, feedback visual
-│   ├── main.js             ← Inicialització
-│   ├── kbd-accessory.js    ← Teclat virtual mòbil (Python keys)
-│   └── sw-register.js      ← Kill-switch del SW (desregistra i neteja caches)
-│
-├── curs/
-│   ├── index.html          ← Índex del curs
-│   ├── capitol-1.html      ← Hola, Python!
-│   ├── capitol-2.html      ← Variables
-│   ├── capitol-3.html      ← Operacions i input
-│   ├── capitol-4.html      ← Input
-│   ├── capitol-5.html      ← Decisions
-│   ├── capitol-6.html      ← Bucles amb dades
-│   ├── capitol-7.html      ← Llistes
-│   ├── capitol-8.html      ← Funcions
-│   ├── capitol-9.html      ← Cadenes
-│   ├── capitol-10.html     ← Diccionaris
-│   ├── capitol-11.html     ← Posant-ho tot junt
-│   ├── repte-1.html        ← Repte 1 (fàcil)
-│   ├── ...                 ← repte-2 a repte-15
-│   ├── capitols.js         ← Dades dels capítols/reptes + renderSidebar/renderSimuladors
-│   ├── glossari-data.js    ← Dades del glossari
-│   └── curs.css            ← Estils del curs
-│
-├── tests/
-│   ├── test-exercises.html ← Test runner (eina de desenvolupament, veure tests/README.md)
-│   └── solutions.js        ← Solucions de referència per a cada goalId
-│
-├── tools/
-│   ├── generate-pages.js   ← Generador de capítols/reptes des de JSON
-│   └── pages/              ← Fitxers JSON d'exemple
-│
-├── docs/
-│   └── ARCHITECTURE.md     ← Document de disseny original (veure avís al fitxer)
-│
-└── _headers                ← Headers COOP/COEP per a SharedArrayBuffer (Cloudflare Pages)
+index.html        Simulador lliure (també és el simulador incrustat als capítols)
+style.css         Estils del simulador
+js/               Motor: Pyodide en un Web Worker, editor, consola, validació
+curs/             Capítols, reptes, índex, capitols.js (dades i esquelet), curs.css
+tests/            Test automàtic del curs i solucions de referència
+docs/             CURRENT-STATE.md: estat complet del projecte
 ```
 
 ## Servir en local
@@ -74,26 +44,13 @@ pycat/
 python3 -m http.server 8000
 ```
 
-Obre [http://localhost:8000](http://localhost:8000) per al simulador lliure, o [http://localhost:8000/curs/](http://localhost:8000/curs/) per al curs.
+Obre <http://localhost:8000> per al simulador lliure, o <http://localhost:8000/curs/> per al curs.
 
-> **Nota:** Cal servir-ho amb un servidor HTTP (no obrir els `.html` directament com a fitxers) perquè Pyodide i els Web Workers requereixen un origen HTTP.
+> Cal un servidor HTTP (no obrir els `.html` com a fitxers): Pyodide i els Web Workers necessiten un origen HTTP.
 
-## Arquitectura breu
+## Com continuar el desenvolupament
 
-- El simulador carrega **Pyodide** (CPython via WebAssembly, ~12MB, es cacheja) dins d'un **Web Worker**. El simulador lliure el precarrega; els simuladors incrustats al curs només el carreguen quan l'alumne prem ▶ Executa per primer cop (una pàgina amb 20 simuladors no carrega 20 intèrprets).
-- El worker rep missatges `{type:'run', code:'...'}` i emet `stdout`, `stderr`, `done` o `error` de tornada.
-- L'`input()` interactiu usa **SharedArrayBuffer + Atomics.wait()** per bloquejar el worker mentre l'alumne escriu. Requereix els headers COOP/COEP de `_headers`. En entorns sense aquests headers, hi ha un panell de stdin previ a l'execució com a fallback.
-- La validació dels reptes compara stdout contra `data-expected` (Mode A), executa múltiples casos de prova via `data-tests` (Mode B), o afegeix codi de test via `data-testcode` (Mode C). Si falla, la pàgina del curs mostra les diferències línia per línia (en vermell).
-- `data-requires="fstring,for"` exigeix, a més de la sortida correcta, que el codi faci servir certes construccions (es comprova amb el mòdul `ast` de Python). Claus disponibles a `js/pycat_requires.py`: `variables`, `fstring`, `input`, `if`, `while`, `for`, `list`, `dict`, `def`, `return`, `try`, `split`.
-- Els errors de Python es mostren amb una explicació i una pista en català (`js/errors.js`), seguides del missatge original, i es marca la línia de l'error a l'editor.
-- El codi de cada simulador editable del curs es desa a `localStorage['pycat-code:<pàgina>:<núm. de simulador>']` (paràmetre `save`). El botó **«⟲ Codi inicial»** torna a l'esquelet de l'exercici. El simulador lliure fa servir la clau `pycat_code`.
-- **«⛶ Pantalla completa»** posa el mateix iframe a pantalla completa (Fullscreen API, o CSS si el navegador no la té); el botó **«✕ Surt»** de dins en surt. Així el progrés i el codi es mantenen.
-- Editor: indentació automàtica en prémer Enter (+4 espais després de `:`), retrocés que esborra un nivell, Tab / Maj+Tab, Ctrl+Enter per executar. Totes les edicions es poden desfer amb Ctrl+Z.
-- El sistema de progrés usa `localStorage` i es renderitza com a checkmarks a la barra lateral.
-
-Per als detalls d'implementació, llegiu directament el codi (ben comentat) i `TODO.md`.
-
-## Tests
+Llegeix [`docs/CURRENT-STATE.md`](docs/CURRENT-STATE.md) abans de fer cap canvi. Conté l'arquitectura, el format de les pàgines i dels simuladors, els contractes entre mòduls, les decisions preses i les tasques pendents.
 
 Després de qualsevol canvi en un exercici, executa el test automàtic (només cal Python 3):
 
@@ -101,11 +58,7 @@ Després de qualsevol canvi en un exercici, executa el test automàtic (només c
 python3 tests/comprova-curs.py
 ```
 
-Comprova que la solució de referència de cada exercici (`tests/solutions.js`) supera tots els casos de prova de la pàgina i que el codi inicial no els supera. A GitHub s'executa sol a cada push i a cada pull request (pestanya «Actions»). Més detalls a [`tests/README.md`](tests/README.md).
-
-## Tasques pendents
-
-Veure [`TODO.md`](TODO.md).
+A GitHub s'executa sol a cada push i a cada pull request (pestanya «Actions»). Més detalls a [`tests/README.md`](tests/README.md).
 
 <!-- atribucio-centre:inici -->
 

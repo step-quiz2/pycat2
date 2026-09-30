@@ -14,6 +14,7 @@
 //   P.pyRun(code, stdin, onDone)        — executa i crida callback(output|null)
 //   P.pyRunAsync(code, stdin)           — executa i retorna Promise<output|null>
 //   P.pyCheck(code, requires)           — Promise<requisits que falten> (data-requires)
+//   P.whenReady(fn)                     — crida fn quan Python estigui llest
 //   P.pyKill()                          — mata el worker
 //   P.pyStop()                          — mata i re-spawna
 //   P.canInteractive()                  — true si SharedArrayBuffer disponible
@@ -59,7 +60,7 @@ function _spawnWorker() {
   };
 
   S.worker.onerror = function(e) {
-    P.consolePush('Error intern del worker: ' + e.message, 'err');
+    P.consolePush(P.t('log.worker_error') + ' ' + e.message, 'err');
     P.setStateUI('error');
   };
 }
@@ -74,6 +75,10 @@ var _handlers = {
     _triedFallback = false;   // Reset per a futures recàrregues
     P.consoleClear();
     P.setStateUI('idle');
+    // Executa el que esperava que Python estigués llest (vegeu whenReady)
+    var cua = _readyQueue;
+    _readyQueue = [];
+    cua.forEach(function(fn) { fn(); });
   },
   load_error: function(d) {
     // Si encara no hem provat el CDN alternatiu, torna a provar automàticament
@@ -179,7 +184,6 @@ function _sendInputToWorker(text) {
 var _currentOutput = [];
 var _timeoutId     = null;
 var _onDone        = null;
-var _currentCode   = null;   // per reiniciar el timeout
 
 function _clearTimeout() {
   if (_timeoutId) { clearTimeout(_timeoutId); _timeoutId = null; }
@@ -207,7 +211,6 @@ function _showRetryButton() {
   var btn = document.createElement('button');
   btn.textContent = P.t('ui.retry');
   btn.className = 'retry-btn';
-  btn.style.cssText = 'margin:8px 0;padding:6px 16px;border:none;border-radius:4px;background:#e67e22;color:#fff;cursor:pointer;font-size:14px;';
   btn.onclick = function() {
     btn.remove();
     _triedFallback = false;
@@ -234,35 +237,22 @@ function pyInit() {
 function pyRun(code, stdin, onDone, interactive) {
   var S = P.state;
 
-  // Inicialitza Pyodide si encara no s'ha fet
-  if (!S.worker) {
-    _spawnWorker();
-    var origReady = _handlers.ready;
-    _handlers.ready = function() {
-      origReady();
-      _handlers.ready = origReady;
-      pyRun(code, stdin, onDone, interactive);
-    };
-    P.setStateUI('loading');
-    P.consolePush(P.t('log.loading'), 'dim');
-    S.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
-    return;
-  }
-
-  if (!S.pyodideReady) {
-    var origReady2 = _handlers.ready;
-    _handlers.ready = function() {
-      origReady2();
-      _handlers.ready = origReady2;
-      pyRun(code, stdin, onDone, interactive);
-    };
+  // Si Python encara no és a punt, s'executa quan ho sigui
+  // (i, si el worker no existeix, primer es carrega: càrrega sota demanda)
+  if (!S.worker || !S.pyodideReady) {
+    if (!S.worker) {
+      _spawnWorker();
+      P.setStateUI('loading');
+      P.consolePush(P.t('log.loading'), 'dim');
+      S.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
+    }
+    whenReady(function() { pyRun(code, stdin, onDone, interactive); });
     return;
   }
 
   // Reset
   _currentOutput = [];
   _onDone = onDone || null;
-  _currentCode = code;
   S.running = true;
   S.startTime = Date.now();
 
@@ -307,6 +297,13 @@ function pyCheck(code, requires) {
   });
 }
 
+// Crida fn() quan Python estigui llest (immediatament si ja ho és)
+var _readyQueue = [];
+function whenReady(fn) {
+  if (P.state.pyodideReady) fn();
+  else _readyQueue.push(fn);
+}
+
 // Mata el worker (atura qualsevol execució)
 function pyKill() {
   var S = P.state;
@@ -328,7 +325,7 @@ function pyStop() {
   pyKill();
   _spawnWorker();
   P.setStateUI('loading');
-  P.consolePush('🔄 Re-inicialitzant Python…', 'dim');
+  P.consolePush(P.t('log.restarting'), 'dim');
   P.state.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
 }
 
@@ -341,3 +338,4 @@ P.pyCheck        = pyCheck;
 P.pyKill         = pyKill;
 P.pyStop         = pyStop;
 P.canInteractive = canInteractive;
+P.whenReady      = whenReady;

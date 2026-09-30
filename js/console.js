@@ -42,14 +42,6 @@ function consolePushPartial(text) {
   el.scrollTop = el.scrollHeight;
 }
 
-// Tanca la línia parcial actual
-function consoleClosePartial() {
-  const el = document.getElementById('console-output');
-  if (!el) return;
-  const partial = el.querySelector('.con-line.partial:last-child');
-  if (partial) partial.classList.remove('partial');
-}
-
 function consoleClear() {
   const el = document.getElementById('console-output');
   if (el) el.innerHTML = '';
@@ -142,7 +134,6 @@ function consoleGetStdin() {
 // ── Exporta ──────────────────────────────────────────────
 P.consolePush         = consolePush;
 P.consolePushPartial  = consolePushPartial;
-P.consoleClosePartial = consoleClosePartial;
 P.consoleClear        = consoleClear;
 P.consoleShowInput    = consoleShowInput;
 P.consoleHideInput    = consoleHideInput;

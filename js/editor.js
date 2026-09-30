@@ -182,13 +182,6 @@ function updateLineBg(numLines) {
 }
 
 // ── Marcatge de línies ───────────────────────────────────
-function highlightLine(n) {
-  document.querySelectorAll('.lbg-row.active').forEach(function(el) { el.classList.remove('active'); });
-  if (!n) return;
-  var row = document.getElementById('lbg-' + n);
-  if (row) row.classList.add('active');
-}
-
 function markErrorLine(n) {
   if (n) {
     var el = document.getElementById('lbg-' + n);
@@ -506,7 +499,6 @@ function initAutocomplete(ta) {
 // ── Exporta ──────────────────────────────────────────────
 P.initEditor     = initEditor;
 P.updateEditor   = updateEditor;
-P.highlightLine  = highlightLine;
 P.markErrorLine  = markErrorLine;
 P.clearLineMarks = clearLineMarks;
 P.editText       = editText;       // l'usen la barra tàctil i el botó «Codi inicial»
