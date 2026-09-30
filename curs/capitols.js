@@ -149,6 +149,7 @@ function renderSimuladors() {
     var tests    = div.getAttribute('data-tests') || '';
     var testcode = div.getAttribute('data-testcode') || '';
     var goalId   = div.getAttribute('data-goal-id') || '';
+    var requires = div.getAttribute('data-requires') || '';
     var interactive = div.getAttribute('data-interactive') === 'true';
 
     var params = new URLSearchParams();
@@ -165,6 +166,7 @@ function renderSimuladors() {
     if (tests)    params.set('tests', btoa(unescape(encodeURIComponent(tests))));
     if (testcode) params.set('testcode', btoa(unescape(encodeURIComponent(testcode))));
     if (goalId)   params.set('goalId', goalId);
+    if (requires) params.set('requires', requires);
     if (interactive) params.set('interactive', '1');
 
     var iframe = document.createElement('iframe');
@@ -333,7 +335,11 @@ window.addEventListener('message', function(e) {
       for (var i = 0; i < results.length; i++) {
         if (!results[i].passed) { failed = results[i]; break; }
       }
-      if (failed && failed.actual === null) {
+      var missing = e.data.missing || [];
+      if (!failed && missing.length) {
+        fb.textContent = '✗ La sortida és correcta, però l\'enunciat demana fer servir: ' +
+          missing.join(', ') + '.';
+      } else if (failed && failed.actual === null) {
         fb.textContent = '✗ El programa ha donat error. Revisa la consola.';
       } else if (failed) {
         _renderDiff(fb, failed, e.data.total || results.length);

@@ -27,6 +27,7 @@ P.state = {
   testCases:    null,
   testCode:     '',
   freeStdin:    null,
+  requires:     '',      // requisits de l'exercici (data-requires), p. ex. "fstring,for"
 
   // Input interactiu (simulador lliure)
   interactive:    false,   // true si SharedArrayBuffer disponible i mode lliure

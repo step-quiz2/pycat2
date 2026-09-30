@@ -12,6 +12,7 @@
 //   ?tests=BASE64    → JSON de test cases: [{stdin, expected}, ...]
 //   ?testcode=BASE64 → codi Python afegit al final del codi de l'alumne abans d'executar
 //   ?goalId=ID       → identificador del repte (per postMessage)
+//   ?requires=a,b    → construccions que el codi ha de fer servir (js/pycat_requires.py)
 //   ?theme=light     → força mode clar
 // ════════════════════════════════════════════════════════
 
@@ -130,6 +131,7 @@
 
   // 2) Paràmetres de validació — estat normalitzat
   S.goalId    = params.get('goalId') || '';
+  S.requires  = params.get('requires') || '';
   S.testCode  = params.get('testcode') ? (dec(params.get('testcode')) || '') : '';
 
   const urlStdin = params.get('stdin') ? dec(params.get('stdin')) : null;
@@ -160,14 +162,20 @@
     S.freeStdin = urlStdin;
   }
 
-  // 3) Inicialitza Pyodide (pre-carrega al worker)
-  P.pyInit();
-
-  // 3b) Paràmetre interactive (opt-in per a dual-mode)
+  // 3) Python (Pyodide)
+  //    · Simulador lliure: es pre-carrega de seguida (només n'hi ha un).
+  //    · Simuladors incrustats al curs: es carrega en el PRIMER clic a
+  //      ▶ Executa (P.pyRun ho fa sol). Una pàgina amb 20 simuladors ja no
+  //      carrega 20 intèrprets de Python quan l'alumne fa scroll.
   S.wantsInteractive = params.get('interactive') === '1';
 
-  // 4) Estat inicial de la UI
-  P.setStateUI('loading');
+  if (embed) {
+    P.setStateUI('idle');
+    P.consolePush(P.t('log.lazy'), 'dim');
+  } else {
+    P.pyInit();
+    P.setStateUI('loading');
+  }
 
   // 5) Mostra el panell stdin si estem en mode lliure sense SAB
   //    i el codi per defecte (o el carregat) conté input()
@@ -175,7 +183,6 @@
     var code = ta ? ta.value : '';
     if (/\binput\s*\(/.test(code)) {
       // Mostra el panell un cop Pyodide estigui llest (per no tapar el loading)
-      var origReady = P.state.pyodideReady;
       var checkReady = setInterval(function() {
         if (P.state.pyodideReady || P.state.currentState === 'idle') {
           clearInterval(checkReady);

@@ -129,7 +129,7 @@ var ERROR_RULES = [
   // ── Valors ────────────────────────────────────────────
   { re: /^ValueError: invalid literal for int\(\) with base 10: (.*)$/,
     fn: m => ({ text: 'No es pot convertir ' + m[1] + ' en un nombre enter.',
-                hint: 'int(...) només funciona amb textos que són nombres enters, com "42". Si té decimals, fes servir float(...).' }) },
+                hint: 'int(...) només funciona amb textos que són nombres enters, com "42". Perquè el programa no s\'aturi si l\'usuari s\'equivoca, fes servir try / except ValueError (capítol 5).' }) },
   { re: /^ValueError: could not convert string to float: (.*)$/,
     fn: m => ({ text: 'No es pot convertir ' + m[1] + ' en un nombre decimal.',
                 hint: 'Els decimals s\'escriuen amb punt, no amb coma: 3.5 (no 3,5).' }) },

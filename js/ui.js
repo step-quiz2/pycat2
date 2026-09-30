@@ -194,7 +194,18 @@ async function _runBatchValidation(finalCode) {
     if (output === null) break;
   }
 
-  _notifyResults(results);
+  // Sortida correcta: comprova també COM està fet (data-requires)
+  var missing = [];
+  var allPassed = results.length > 0 && results.every(function(r) { return r.passed; });
+  if (allPassed && S.requires) {
+    var userCode = (document.getElementById('code-editor') || {}).value || '';
+    missing = await P.pyCheck(userCode, S.requires);
+    if (missing.length) {
+      P.consolePush(P.t('log.requires_missing') + ' ' + missing.join(', ') + '.', 'err');
+    }
+  }
+
+  _notifyResults(results, missing);
 }
 
 // ── Atura el programa ────────────────────────────────────
@@ -231,15 +242,18 @@ function _notifyClear() {
   } catch(_) {}
 }
 
-function _notifyResults(results) {
+function _notifyResults(results, missing) {
   if (!P.state.goalId) return;
-  var allPassed = results.length > 0 && results.every(function(r) { return r.passed; });
+  missing = missing || [];
+  var allPassed = results.length > 0 && missing.length === 0 &&
+                  results.every(function(r) { return r.passed; });
   try {
     window.parent.postMessage({
       type:    'pycat-result',
       goalId:  P.state.goalId,
       success: allPassed,
       total:   (P.state.testCases || []).length,
+      missing: missing,
       results: results
     }, P.parentOrigin);
   } catch(_) {}

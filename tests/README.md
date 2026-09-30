@@ -48,6 +48,6 @@ Prevé regressions quan s'editen els test cases o el codi d'un exercici. Detecta
 python3 tests/comprova-curs.py
 ```
 
-Fa la mateixa comprovació amb el Python de l'ordinador (imitant el simulador: `input()` no imprimeix la pregunta i cada execució comença amb variables noves). A més, comprova que el codi inicial de cada exercici **no** superi els tests, que no hi hagi `goalId` repetits i que els `goalId` de `curs/capitols.js` existeixin. Surt amb error si alguna cosa falla.
+Fa la mateixa comprovació amb el Python de l'ordinador (imitant el simulador: `input()` no imprimeix la pregunta i cada execució comença amb variables noves). A més, comprova que la solució compleixi els requisits de `data-requires`, que cap `data-code` contingui HTML (senyal d'una cometa de tancament oblidada), que el codi inicial de cada exercici **no** superi els tests, que no hi hagi `goalId` repetits i que els `goalId` de `curs/capitols.js` existeixin. Surt amb error si alguna cosa falla.
 
 S'executa automàticament a GitHub a cada push i pull request (`.github/workflows/comprova-curs.yml`).
