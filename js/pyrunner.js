@@ -117,6 +117,7 @@ var _handlers = {
     P.state.running = false;
     P.consolePush(P.t('log.done') + ' (' + d.elapsed + 'ms)', 'ok');
     P.setStateUI('done');
+    if (d.turtle && P.turtleShow) P.turtleShow(d.turtle);
     var cb = _onDone;
     _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
     if (cb) cb(d.output != null ? d.output : _currentOutput.join('\n'));
@@ -125,6 +126,7 @@ var _handlers = {
     _clearTimeout();
     P.state.running = false;
     _showError(d.msg, d.line);
+    if (d.turtle && P.turtleShow) P.turtleShow(d.turtle);   // el que s'ha dibuixat fins a l'error
     P.setStateUI('error');
     var cb = _onDone;
     _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació

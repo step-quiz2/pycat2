@@ -65,6 +65,10 @@ P.UI = {
   'log.step_recording':   '👣 Preparant el pas a pas…',
   'log.step_failed':      '❌ No s\'ha pogut executar el pas a pas.',
   'log.step_needs_input': '👣 Aquest programa fa servir input(). Escriu les entrades a sota (una per línia) i torna a prémer «👣 Pas a pas».',
+  'ui.turtle_title':      'Dibuix',
+  'ui.turtle_skip_title': 'Acaba el dibuix de cop',
+  'ui.turtle_save_title': 'Desa el dibuix com a imatge (PNG)',
+  'ui.turtle_close_title':'Amaga el dibuix',
   'ui.exit_fs':           '✕ Surt',
   'ui.exit_fs_title':     'Surt de la pantalla completa',
 };

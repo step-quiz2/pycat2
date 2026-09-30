@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 13 — Dibuixa amb la tortuga | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body data-pagina="capitol" data-num="13">
+
+<main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA DEL CAPÍTOL
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 13 · extra</span>
+        <h1>Dibuixa amb la tortuga</h1>
+        <p class="chapter-lead">Fes servir els bucles i les funcions que ja coneixes per fer dibuixos amb la tortuga de Python.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — La tortuga
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>La tortuga</h2>
+        <p>Python porta una <strong>tortuga</strong> que dibuixa: la mous amb instruccions i deixa rastre per on passa. Per fer-la servir, cal escriure <code>import turtle</code> al principi del programa (com amb <code>random</code> al capítol 11).</p>
+
+        <p>La tortuga comença al centre, mirant cap a la dreta. Prem <strong>▶ Executa</strong> i mira el dibuix a sobre de la consola:</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+turtle.forward(100)   # avança 100 passos
+turtle.left(90)       # gira 90° a l&apos;esquerra
+turtle.forward(50)
+'
+             data-height="460">
+        </div>
+
+        <ul>
+          <li><code>turtle.forward(d)</code> avança <code>d</code> passos; <code>turtle.backward(d)</code> recula.</li>
+          <li><code>turtle.left(angle)</code> i <code>turtle.right(angle)</code> giren, en <strong>graus</strong>.</li>
+        </ul>
+
+        <p>Canvia els números i torna a executar. Pots fer-ho tantes vegades com vulguis: cada execució comença amb el full en blanc.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Quadrat amb for
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Un quadrat amb <code>for</code></h2>
+        <p>Un quadrat són 4 vegades el mateix: avançar i girar 90°. Això és feina per a un <code>for</code> (capítol 6):</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+for i in range(4):
+    turtle.forward(100)
+    turtle.left(90)
+'
+             data-height="460">
+        </div>
+
+        <p>Per què 90? Perquè en fer tota la volta la tortuga gira 360°, i 360 / 4 = 90. Prova-ho amb 👣 <strong>Pas a pas</strong> i mira com canvia <code>i</code>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Polígons
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Qualsevol polígon</h2>
+        <p>La mateixa idea serveix per a qualsevol polígon regular: si té <code>n</code> costats, a cada costat girem <code>360 / n</code> graus.</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+costats = 6
+for i in range(costats):
+    turtle.forward(80)
+    turtle.left(360 / costats)
+'
+             data-height="460">
+        </div>
+
+        <p>Canvia <code>costats</code> per 3, 5, 8 o 20. Què passa quan n'hi ha molts?</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Funcions que dibuixen
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Funcions que dibuixen</h2>
+        <p>Amb una funció (capítol 9) podem crear la nostra pròpia instrucció de dibuix. Els paràmetres diuen quants costats i de quina mida:</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+def poligon(costats, mida):
+    for i in range(costats):
+        turtle.forward(mida)
+        turtle.left(360 / costats)
+
+poligon(3, 100)
+poligon(4, 80)
+poligon(5, 60)
+'
+             data-height="460">
+        </div>
+
+        <p>Ara <code>poligon(8, 40)</code> dibuixa un octàgon en una sola línia. Això és <strong>descomposició</strong>: dividir un dibuix complicat en peces senzilles.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Aixecar el llapis
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Aixecar el llapis i anar a un punt</h2>
+        <p>La tortuga té un llapis. Amb <code>turtle.penup()</code> l'aixeca (es mou sense dibuixar) i amb <code>turtle.pendown()</code> el torna a baixar. <code>turtle.goto(x, y)</code> la porta a un punt: el centre és <code>(0, 0)</code>, la <code>x</code> creix cap a la dreta i la <code>y</code> cap amunt.</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+def quadrat(mida):
+    for i in range(4):
+        turtle.forward(mida)
+        turtle.left(90)
+
+for x in [-150, -50, 50]:
+    turtle.penup()
+    turtle.goto(x, 0)
+    turtle.pendown()
+    quadrat(60)
+'
+             data-height="460">
+        </div>
+
+        <p>Pots saber on és la tortuga amb <code>turtle.xcor()</code> i <code>turtle.ycor()</code>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Colors
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Colors, gruix i farciment</h2>
+        <p>Els colors s'escriuen amb el seu nom en anglès (<code>"red"</code>, <code>"blue"</code>, <code>"gold"</code>…). <code>turtle.color(llapis, farciment)</code> tria els dos colors, i el que dibuixis entre <code>begin_fill()</code> i <code>end_fill()</code> quedarà pintat per dins:</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+turtle.bgcolor("lightyellow")          # color del fons
+turtle.pensize(4)                      # gruix del llapis
+turtle.color("blue", "lightblue")     # llapis, farciment
+turtle.begin_fill()
+turtle.circle(80)                      # cercle de radi 80
+turtle.end_fill()
+
+turtle.penup()
+turtle.goto(0, 70)
+turtle.dot(30, "red")                  # un punt de 30 de diàmetre
+'
+             data-height="460">
+        </div>
+
+        <p class="consell">🎨 A PyCat també pots escriure els colors en català (<code>"vermell"</code>, <code>"blau"</code>, <code>"verd"</code>…), però en altres programes de Python només funcionen els noms en anglès.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 7 — Espirals
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Espirals i flors</h2>
+        <p>Si a cada volta la tortuga avança una mica més, surt una espiral. Amb <code>turtle.speed(0)</code> dibuixa de cop (la velocitat va de 1, lenta, a 10, ràpida; 0 és instantani):</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+turtle.speed(0)
+colors = ["red", "orange", "gold", "green", "blue", "purple"]
+for i in range(120):
+    turtle.color(colors[i % 6])
+    turtle.forward(i * 2)
+    turtle.left(59)
+'
+             data-height="460">
+        </div>
+
+        <p>I si repetim un cercle girant una mica cada vegada, surt una flor:</p>
+
+        <div class="simulador"
+             data-code='import turtle
+
+turtle.speed(0)
+turtle.color("purple")
+for i in range(12):
+    turtle.circle(60)
+    turtle.left(30)
+'
+             data-height="460">
+        </div>
+
+        <p>Amb el botó 💾 del dibuix el pots desar com a imatge.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           ORDENA EL PROGRAMA (problema de Parsons)
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>🧩 Ordena el programa</h2>
+        <p>Ordena i indenta les línies perquè el programa dibuixi una estrella daurada de cinc puntes, pintada per dins. (Pista: per fer una estrella, a cada punta es gira 144°.)</p>
+        <p>Arrossega les línies (o fes servir ↑ ↓) i indenta-les amb ⇤ ⇥. Quan ho tinguis, prem <strong>✓ Comprova</strong>. Després, copia-ho al simulador lliure per veure-la!</p>
+
+        <div class="parsons" data-goal-id="cap-13-parsons">
+<pre class="parsons-codi">import turtle
+turtle.color("gold")
+turtle.begin_fill()
+for i in range(5):
+    turtle.forward(150)
+    turtle.right(144)
+turtle.end_fill()</pre>
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           REPTE OBERT
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Repte obert: la casa</h2>
+        <div class="exercise-enunciat">
+          Dibuixa una casa: un quadrat i, a sobre, un triangle per teulada. Fes-ho amb dues funcions, <code>quadrat(mida)</code> i <code>triangle(mida)</code>. Si vols, afegeix-hi una porta, una finestra, colors… o tot un poble!
+        </div>
+
+        <div class="simulador"
+             data-code='import turtle
+
+def quadrat(mida):
+    # completa la funció
+    pass
+
+def triangle(mida):
+    # completa la funció
+    pass
+
+quadrat(100)
+# on ha d&apos;anar la tortuga per dibuixar la teulada?
+'
+             data-height="500">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria.</p>
+
+        <div class="quiz" data-goal-id="cap-13-quiz">
+          <div class="quiz-q" data-correcta="3">
+            <p>Quants graus ha de girar la tortuga a cada costat per dibuixar un triangle equilàter?</p>
+            <ol class="quiz-opcions"><li>60</li><li>90</li><li>120</li></ol>
+            <p class="quiz-explica">En tota la volta gira 360°, i en un triangle hi ha 3 girs: 360 / 3 = 120.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">import turtle
+turtle.forward(100)
+turtle.left(90)
+turtle.forward(50)
+print(turtle.xcor(), turtle.ycor())</pre>
+            <ol class="quiz-opcions"><li>100.0 50.0</li><li>50.0 100.0</li><li>150.0 0.0</li></ol>
+            <p class="quiz-explica">Primer va 100 cap a la dreta (x = 100), després gira i puja 50 (y = 50).</p>
+          </div>
+          <div class="quiz-q" data-correcta="1">
+            <p>Què fa <code>turtle.penup()</code>?</p>
+            <ol class="quiz-opcions"><li>Aixeca el llapis: la tortuga es mou sense dibuixar</li><li>Esborra el dibuix</li><li>Fa que la tortuga miri cap amunt</li></ol>
+            <p class="quiz-explica">Amb el llapis aixecat es mou sense deixar rastre; <code>turtle.pendown()</code> el torna a baixar.</p>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li><code>import turtle</code> dona accés a la tortuga. Comença al centre <code>(0, 0)</code>, mirant a la dreta.</li>
+          <li><code>forward</code>, <code>backward</code>, <code>left</code>, <code>right</code> la mouen i la giren (en graus).</li>
+          <li>Polígon regular de <code>n</code> costats: repeteix <code>n</code> vegades «avança i gira <code>360 / n</code>».</li>
+          <li><code>penup</code>, <code>pendown</code> i <code>goto(x, y)</code> permeten moure's sense dibuixar.</li>
+          <li><code>color</code>, <code>pensize</code>, <code>begin_fill</code> / <code>end_fill</code>, <code>circle</code>, <code>dot</code> i <code>bgcolor</code> donen color i forma.</li>
+          <li>Les funcions converteixen un dibuix complicat en peces senzilles que es poden reutilitzar.</li>
+        </ul>
+      </section>
+
+    </div>
+</main>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script src="../footer.js"></script>
+</body>
+</html>

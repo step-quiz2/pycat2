@@ -170,6 +170,11 @@ var ERROR_RULES = [
   { re: /^(ModuleNotFoundError|ImportError): No module named '(\w+)'/,
     fn: m => ({ text: 'No existeix cap mòdul anomenat «' + m[2] + '».',
                 hint: 'Revisa com l\'has escrit (per exemple: import random).' }) },
+  { re: /^(?:turtle\.)?TurtleGraphicsError: (.*)$/,
+    fn: m => ({ text: m[1],
+                hint: /color/i.test(m[1])
+                  ? 'Els colors poden ser un nom ("red", "vermell") o tres números: (1, 0, 0).'
+                  : null }) },
   { re: /^AssertionError/,
     fn: () => ({ text: 'Una comprovació (assert) no s\'ha complert.',
                  hint: null }) },

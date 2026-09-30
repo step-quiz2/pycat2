@@ -93,6 +93,7 @@ function _ensureStdinPanel(code) {
 // ── Executa el programa ──────────────────────────────────
 async function runProgram() {
   if (P.exitTrace) P.exitTrace();
+  if (P.turtleClear) P.turtleClear();
   P.consoleClear();
   P.clearLineMarks();
 
@@ -217,6 +218,7 @@ function stopProgram() {
 // ── Neteja la consola ────────────────────────────────────
 function resetConsole() {
   if (P.exitTrace) P.exitTrace();
+  if (P.turtleClear) P.turtleClear();
   P.consoleClear();
   P.clearLineMarks();
   P.state.ranInteractive = false;

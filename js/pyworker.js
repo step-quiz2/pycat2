@@ -21,7 +21,7 @@
 //   Worker → Main:  {type:'stdout', text}
 //   Worker → Main:  {type:'stdout_partial', text}  (mode interactiu: prompt sense \n)
 //   Worker → Main:  {type:'stderr', text}
-//   Worker → Main:  {type:'done', elapsed, output}
+//   Worker → Main:  {type:'done', elapsed, output, turtle}   (turtle: JSON del dibuix o null)
 //   Worker → Main:  {type:'error', msg, line, elapsed}
 //   Worker → Main:  {type:'input_request'}
 // ════════════════════════════════════════════════════════
@@ -68,6 +68,17 @@ def _batch_input(prompt=''):
         if (resp.ok) pyodide.runPython(await resp.text(), { filename: '<pycat>' });
       } catch (_) {}
     }
+
+    // Mòdul «turtle» propi (pycat_turtle.py): es desa com a /pycat/turtle.py,
+    // davant de la biblioteca estàndard.
+    try {
+      var respT = await fetch('pycat_turtle.py');
+      if (respT.ok) {
+        pyodide.FS.mkdirTree('/pycat');
+        pyodide.FS.writeFile('/pycat/turtle.py', await respT.text());
+        pyodide.runPython("import sys\nif '/pycat' not in sys.path: sys.path.insert(0, '/pycat')");
+      }
+    } catch (_) {}
 
     postMessage({ type: 'ready' });
   } catch (e) {
@@ -196,6 +207,17 @@ builtins.input = _batch_input
 }
 
 
+// ── Dibuix de la tortuga (si el programa l'ha fet servir) ─
+// Retorna el JSON de les ordres de dibuix o null.
+function _turtleData() {
+  try {
+    return pyodide.runPython(
+      "import sys\n" +
+      "_m = sys.modules.get('turtle')\n" +
+      "_m._pycat_json() if _m is not None and hasattr(_m, '_pycat_json') else None") || null;
+  } catch (_) { return null; }
+}
+
 // ── Envia el text d'stderr al main, línia a línia ────────
 function _emitStderr(text) {
   if (!text) return;
@@ -228,6 +250,9 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
       _setupBatchIO(stdin);
     }
 
+    // Cada programa comença amb un full de dibuix en blanc
+    pyodide.runPython("import sys\nsys.modules.pop('turtle', None)");
+
     // Executa el codi de l'alumne en un espai de variables NOU a cada
     // execució: les variables d'una execució (o d'un cas de prova) anterior
     // no sobreviuen, i l'alumne no veu les variables internes del worker.
@@ -244,7 +269,7 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
       _emitStderr(pyodide.runPython('sys.stderr.getvalue()'));
       // Restaura
       pyodide.runPython(RESTORE_IO);
-      postMessage({ type: 'done', elapsed: elapsed, output: stdout || '' });
+      postMessage({ type: 'done', elapsed: elapsed, output: stdout || '', turtle: _turtleData() });
     } else {
       // Mode batch: llegeix la sortida capturada
       var stdout = pyodide.runPython('_cap_out.getvalue()');
@@ -259,7 +284,7 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
         }
       }
       _emitStderr(stderr);
-      postMessage({ type: 'done', elapsed: elapsed, output: stdout || '' });
+      postMessage({ type: 'done', elapsed: elapsed, output: stdout || '', turtle: _turtleData() });
     }
 
   } catch (e) {
@@ -311,7 +336,7 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
     var msgLines = msg.split('\n').filter(function(l) { return l.trim(); });
     var lastLine = msgLines[msgLines.length - 1] || msg;
 
-    postMessage({ type: 'error', msg: lastLine, line: line, elapsed: elapsed2 });
+    postMessage({ type: 'error', msg: lastLine, line: line, elapsed: elapsed2, turtle: _turtleData() });
   } finally {
     // Allibera el diccionari de variables de l'alumne (proxy JS → Python)
     if (userGlobals) { try { userGlobals.destroy(); } catch(_) {} }

@@ -45,10 +45,17 @@ from pycat_trace import pycat_traca  # noqa: E402
 
 ARREL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPS_MAXIM = 10  # segons per execució (com P.EXEC_TIMEOUT)
+TURTLE = os.path.join(ARREL, 'js', 'pycat_turtle.py')
 
 # Programa que executa el codi de l'alumne com ho fa el simulador
+# El mòdul turtle és el de PyCat (js/pycat_turtle.py), com al simulador:
+# el test el posa davant de la biblioteca estàndard amb el nom «turtle».
 EXECUTOR = r'''
-import builtins, sys
+import builtins, sys, importlib.util
+_spec = importlib.util.spec_from_file_location('turtle', sys.argv[2])
+_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
+sys.modules['turtle'] = _mod
 def _input(prompt=''):
     line = sys.stdin.readline()
     if not line:
@@ -95,7 +102,7 @@ def executa(codi, stdin, tmp):
     with open(tmp, 'w', encoding='utf-8') as f:
         f.write(codi)
     try:
-        r = subprocess.run([sys.executable, '-c', EXECUTOR, tmp], input=stdin or '',
+        r = subprocess.run([sys.executable, '-c', EXECUTOR, tmp, TURTLE], input=stdin or '',
                            capture_output=True, text=True, timeout=TEMPS_MAXIM)
     except subprocess.TimeoutExpired:
         return None, 'temps excedit'

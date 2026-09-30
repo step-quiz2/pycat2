@@ -883,3 +883,33 @@ body:not(.light) .trace-line { color: #facc15; }
   word-break: break-all;
   font-family: var(--mono);
 }
+
+
+/* ══════════════════════════════════════════════════════
+   TORTUGA (js/turtle-view.js)
+══════════════════════════════════════════════════════ */
+
+.turtle-panel {
+  flex: 0 0 58%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+}
+.turtle-panel[hidden] { display: none; }
+.turtle-header {
+  padding: 4px 8px 4px 12px;
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.turtle-actions { display: flex; gap: 4px; }
+.turtle-actions .btn { padding: 2px 8px; }
+.turtle-stage { position: relative; flex: 1; min-height: 0; background: #fff; }
+.turtle-stage canvas { position: absolute; inset: 0; }

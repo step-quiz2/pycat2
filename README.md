@@ -10,7 +10,12 @@ Curs interactiu per aprendre Python real al navegador, en català. Seqüela de [
 
 PyCat és un curs de Python per a alumnes d'ESO que ja han fet KarelCat (o equivalent). Manté la mateixa filosofia: tot al navegador, sense instal·lació, interfície minimalista. La diferència és que executa **CPython real via Pyodide (WebAssembly)**.
 
-El curs té **12 capítols** (l'últim, un capítol extra: el joc del 4 en ratlla) i **15 reptes** amb validació automàtica. Els errors de Python s'expliquen en català, el codi de l'alumne es desa sol i, quan un exercici falla, es mostren les diferències línia per línia.
+El curs té **13 capítols** (els dos últims són extres: el joc del 4 en ratlla i la tortuga gràfica) i **15 reptes** amb validació automàtica. A més:
+
+- **👣 Pas a pas**: executa el programa línia a línia i mostra com canvien les variables.
+- **🐢 Tortuga**: `import turtle` dibuixa en un panell (mateixa API que el `turtle` de Python).
+- **Activitats**: qüestionaris «què imprimeix?», problemes de Parsons (ordenar el codi) i exercicis «troba l'error».
+- Errors de Python explicats en català, codi desat automàticament i diferències línia per línia quan un exercici falla.
 
 | Capítol | Títol |
 |---|---|
@@ -26,6 +31,7 @@ El curs té **12 capítols** (l'últim, un capítol extra: el joc del 4 en ratll
 | 10 | Diccionaris |
 | 11 | Posant-ho tot junt |
 | 12 | 4 en ratlla |
+| 13 | Dibuixa amb la tortuga |
 
 ## Estructura
 
