@@ -46,6 +46,9 @@
   // 0c) Obrir / Desar fitxers
   P.initFileActions();
 
+  // 0d) «👣 Pas a pas»
+  P.initStepper();
+
   // 1) Editor
   P.initEditor();
   const ta       = document.getElementById('code-editor');

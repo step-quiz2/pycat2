@@ -199,6 +199,40 @@ Carla: 78 punts"
       </section>
 
 
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-10-quiz">
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">edats = {"Anna": 15, "Pau": 16}
+print(edats["Pau"])</pre>
+            <ol class="quiz-opcions"><li>Pau</li><li>16</li><li>15</li></ol>
+            <p class="quiz-explica">Amb <code>diccionari[clau]</code> obtens el valor associat a la clau.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">d = {"a": 1}
+d["b"] = 2
+print(len(d))</pre>
+            <ol class="quiz-opcions"><li>1</li><li>2</li><li>3</li></ol>
+            <p class="quiz-explica">Assignar a una clau nova l'afegeix al diccionari: ara té 2 parelles.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">d = {"gat": 4}
+print(d.get("ocell", 0))</pre>
+            <ol class="quiz-opcions"><li>4</li><li>0</li><li>Error</li></ol>
+            <p class="quiz-explica"><code>.get(clau, defecte)</code> retorna el valor per defecte si la clau no existeix, sense donar error.</p>
+          </div>
+        </div>
+      </section>
+
+
       <section class="chapter-section">
         <h2>Resum</h2>
         <ul>

@@ -13,7 +13,13 @@
 #      es resol sense fer res);
 #   4. cada goalId és únic i els de curs/capitols.js existeixen a les pàgines;
 #   5. la solució compleix els requisits de data-requires (js/pycat_requires.py);
-#   6. cap data-code conté HTML (senyal d'una cometa de tancament oblidada).
+#   6. cap data-code conté HTML (senyal d'una cometa de tancament oblidada);
+#   7. el «pas a pas» (js/pycat_trace.py) de la solució acaba sense errors
+#      i dona la mateixa sortida que el primer cas de prova;
+#   8. problemes de Parsons (.parsons): la solució té indentació de 4 espais,
+#      s'executa sense errors i, si hi ha data-expected, dona aquesta sortida;
+#   9. qüestionaris (.quiz): data-correcta és vàlida i, a les preguntes amb
+#      data-comprova, el codi dona exactament el text de l'opció correcta.
 #
 # Imita el simulador (js/pyworker.js, mode batch): input() llegeix de
 # l'stdin del cas de prova sense imprimir la pregunta, cada execució té
@@ -24,6 +30,7 @@
 # ════════════════════════════════════════════════════════
 
 import glob
+import html
 import json
 import os
 import re
@@ -34,13 +41,21 @@ from html.parser import HTMLParser
 sys.dont_write_bytecode = True   # no deixis js/__pycache__
 sys.path.insert(0,os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'js'))
 from pycat_requires import pycat_requisits_que_falten  # noqa: E402  (mateix codi que el simulador)
+from pycat_trace import pycat_traca  # noqa: E402
 
 ARREL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPS_MAXIM = 10  # segons per execució (com P.EXEC_TIMEOUT)
+TURTLE = os.path.join(ARREL, 'js', 'pycat_turtle.py')
 
 # Programa que executa el codi de l'alumne com ho fa el simulador
+# El mòdul turtle és el de PyCat (js/pycat_turtle.py), com al simulador:
+# el test el posa davant de la biblioteca estàndard amb el nom «turtle».
 EXECUTOR = r'''
-import builtins, sys
+import builtins, sys, importlib.util
+_spec = importlib.util.spec_from_file_location('turtle', sys.argv[2])
+_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
+sys.modules['turtle'] = _mod
 def _input(prompt=''):
     line = sys.stdin.readline()
     if not line:
@@ -87,7 +102,7 @@ def executa(codi, stdin, tmp):
     with open(tmp, 'w', encoding='utf-8') as f:
         f.write(codi)
     try:
-        r = subprocess.run([sys.executable, '-c', EXECUTOR, tmp], input=stdin or '',
+        r = subprocess.run([sys.executable, '-B', '-c', EXECUTOR, tmp, TURTLE], input=stdin or '',
                            capture_output=True, text=True, timeout=TEMPS_MAXIM)
     except subprocess.TimeoutExpired:
         return None, 'temps excedit'
@@ -103,6 +118,54 @@ def supera(codi, casos, tmp):
         if sortida is None or sortida.strip() != (cas['expected'] or '').strip():
             return False, (i, cas, sortida, error)
     return True, None
+
+
+def _attr(tag, nom):
+    m = re.search(nom + r'="([^"]*)"', tag)
+    return html.unescape(m.group(1)) if m else None
+
+
+def comprova_parsons(nom, text, tmp):
+    errors = []
+    for m in re.finditer(r'(<div class="parsons"[^>]*>)\s*<pre class="parsons-codi">(.*?)</pre>', text, re.S):
+        tag, codi = m.group(1), html.unescape(m.group(2))
+        goal = _attr(tag, 'data-goal-id')
+        for linia in codi.split('\n'):
+            espais = len(linia) - len(linia.lstrip(' '))
+            if linia.strip() and espais % 4:
+                errors.append(f"{nom} [{goal}]: Parsons amb indentació que no és múltiple de 4")
+        sortida, error = executa(codi, _attr(tag, 'data-stdin'), tmp)
+        esperat = _attr(tag, 'data-expected')
+        if error:
+            errors.append(f"{nom} [{goal}]: la solució del Parsons dona error: {error}")
+        elif esperat is not None and sortida.strip() != esperat.strip():
+            errors.append(f"{nom} [{goal}]: el Parsons treu {sortida.strip()!r}, esperava {esperat!r}")
+    return errors
+
+
+def comprova_quiz(nom, text, tmp):
+    errors = []
+    for q in re.finditer(r'(<div class="quiz-q"[^>]*>)(.*?)</div>', text, re.S):
+        tag, cos = q.group(1), q.group(2)
+        opcions = [html.unescape(re.sub(r'<[^>]+>', '', o)) for o in re.findall(r'<li>(.*?)</li>', cos, re.S)]
+        try:
+            correcta = int(_attr(tag, 'data-correcta')) - 1
+        except (TypeError, ValueError):
+            correcta = -1
+        if not 0 <= correcta < len(opcions):
+            errors.append(f"{nom}: pregunta amb data-correcta no vàlida ({cos[:60].strip()!r}…)")
+            continue
+        if 'data-comprova' in tag:
+            m = re.search(r'<pre class="code-example">(.*?)</pre>', cos, re.S)
+            if not m:
+                errors.append(f"{nom}: pregunta amb data-comprova sense codi")
+                continue
+            sortida, error = executa(html.unescape(m.group(1)), _attr(tag, 'data-stdin'), tmp)
+            obtingut = (sortida or '').strip() if not error else 'Error'
+            if obtingut != opcions[correcta].strip():
+                errors.append(f"{nom}: pregunta «{m.group(1).splitlines()[0]}…»: el codi dona "
+                              f"{obtingut!r} però la resposta marcada és {opcions[correcta]!r}")
+    return errors
 
 
 def main():
@@ -158,12 +221,35 @@ def main():
                         if falten:
                             errors.append(f"{nom} [{goal}]: la solució no fa servir: {', '.join(falten)}")
 
+                if sol is not None and casos:
+                    codi_sol = afegeix(sol)
+                    traca = json.loads(pycat_traca(codi_sol, casos[0]['stdin'] or '',
+                                                   len(sol.split('\n'))))
+                    if traca['error'] or traca['tallat']:
+                        errors.append(f"{nom} [{goal}]: el pas a pas de la solució falla: "
+                                      f"{traca['error'] or 'massa passos'}")
+                    elif traca['sortida'].strip() != (casos[0]['expected'] or '').strip():
+                        errors.append(f"{nom} [{goal}]: el pas a pas no dona la sortida esperada")
+
                 inicial = sim.get('data-code', '')
                 if supera(afegeix(inicial), casos, tmp)[0]:
                     errors.append(f"{nom} [{goal}]: el codi inicial ja supera tots els casos")
     finally:
         if os.path.exists(tmp):
             os.remove(tmp)
+
+    # Activitats sense simulador (curs/activitats.js)
+    for pagina in sorted(glob.glob(os.path.join(ARREL, 'curs', '*.html'))):
+        nom = os.path.basename(pagina)
+        text = open(pagina, encoding='utf-8').read()
+        for goal in re.findall(r'class="(?:parsons|quiz)"[^>]*data-goal-id="([^"]+)"', text):
+            if goal in goals_vistos:
+                errors.append(f"{nom}: goalId '{goal}' repetit (també a {goals_vistos[goal]})")
+            goals_vistos[goal] = nom
+        errors += comprova_parsons(nom, text, tmp)
+        errors += comprova_quiz(nom, text, tmp)
+    if os.path.exists(tmp):
+        os.remove(tmp)
 
     # goalIds declarats a capitols.js
     capitols = open(os.path.join(ARREL, 'curs', 'capitols.js'), encoding='utf-8').read()

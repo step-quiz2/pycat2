@@ -42,6 +42,8 @@ while i <= 5:
 
         <p>Llegeix-ho en veu alta: «<em>mentre <code>i</code> sigui menor o igual a 5, imprimeix <code>i</code> i augmenta'l en 1</em>». Quan <code>i</code> arriba a 6, la condició és falsa i el bucle s'atura.</p>
 
+        <p class="consell">👣 <strong>Consell:</strong> prem el botó <strong>👣 Pas a pas</strong> del simulador. Podràs avançar línia a línia (amb ▶ o amb la fletxa → del teclat) i veure com canvia el valor de <code>i</code> a cada volta.</p>
+
         <p>Les dues peces clau del <code>while</code> són exactament les mateixes que al <code>if</code>: els <strong>dos punts</strong> <code>:</code> al final de la línia i la <strong>indentació</strong> del bloc interior.</p>
       </section>
 
@@ -345,6 +347,40 @@ intent = int(input(&quot;Endevina el número: &quot;))
              data-goal-id="cap-5-ex"
              data-requires="while"
              data-height="360">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-5-quiz">
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">i = 0
+while i &lt; 3:
+    i = i + 1
+print(i)</pre>
+            <ol class="quiz-opcions"><li>2</li><li>3</li><li>4</li></ol>
+            <p class="quiz-explica">El bucle suma 1 fins que <code>i</code> ja no és menor que 3, és a dir, quan val 3.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1">
+            <p>Quantes vegades s'executa el <code>print</code>?</p>
+            <pre class="code-example">n = 10
+while n &lt; 5:
+    print(n)</pre>
+            <ol class="quiz-opcions"><li>Cap</li><li>Una</li><li>Infinites</li></ol>
+            <p class="quiz-explica">La condició <code>10 &lt; 5</code> ja és falsa al principi: el bloc no s'executa ni un cop.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1">
+            <p>Què fa <code>break</code> dins d'un bucle?</p>
+            <ol class="quiz-opcions"><li>Surt del bucle immediatament</li><li>Torna al principi del bucle</li><li>Atura el programa amb un error</li></ol>
+            <p class="quiz-explica"><code>break</code> surt del bucle; el programa continua per la primera línia de després del bucle. (Tornar al principi és <code>continue</code>.)</p>
+          </div>
         </div>
       </section>
 

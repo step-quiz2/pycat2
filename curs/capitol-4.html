@@ -241,6 +241,55 @@ if nota = 5:
 
 
       <!-- ─────────────────────────────────────────
+           TROBA L'ERROR
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>🐞 Troba l'error</h2>
+        <div class="exercise-enunciat">Aquest programa hauria d'escriure <code>Infant</code> si l'edat és menor de 13, <code>Adolescent</code> si és menor de 18 i <code>Adult</code> si no. Però amb l'edat 8 escriu <code>Adolescent</code>! Troba l'error i corregeix-lo.</div>
+
+        <div class="simulador"
+             data-code='edat = int(input("Quina edat tens? "))
+if edat &lt; 18:
+    print("Adolescent")
+elif edat &lt; 13:
+    print("Infant")
+else:
+    print("Adult")
+'
+             data-tests='[{"stdin": "8", "expected": "Infant"}, {"stdin": "15", "expected": "Adolescent"}, {"stdin": "30", "expected": "Adult"}, {"stdin": "13", "expected": "Adolescent"}, {"stdin": "18", "expected": "Adult"}]'
+             data-interactive="true"
+             data-goal-id="cap-4-bug"
+             data-height="340">
+        </div>
+
+        <details class="pista">
+          <summary>💡 Pista</summary>
+          <p>Python s'atura a la primera condició certa. Quina condició és certa per a l'edat 8?</p>
+        </details>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           ORDENA EL PROGRAMA (problema de Parsons)
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>🧩 Ordena el programa</h2>
+        <p>Ordena i indenta les línies perquè el programa llegeixi una temperatura i escrigui <code>Fa calor</code> si és més de 25, <code>Fa fred</code> si és menys de 10 i <code>S'està bé</code> en els altres casos (comprova les condicions en aquest ordre).</p>
+        <p>Arrossega les línies (o fes servir ↑ ↓) i indenta-les amb ⇤ ⇥. Quan ho tinguis, prem <strong>✓ Comprova</strong>.</p>
+
+        <div class="parsons" data-goal-id="cap-4-parsons" data-stdin="30" data-expected="Fa calor">
+<pre class="parsons-codi">temp = int(input())
+if temp &gt; 25:
+    print("Fa calor")
+elif temp &lt; 10:
+    print("Fa fred")
+else:
+    print("S'està bé")</pre>
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
            EXERCICI
            ───────────────────────────────────────── -->
       <section class="chapter-section chapter-exercise">
@@ -265,6 +314,44 @@ if nota = 5:
              data-interactive="true"
              data-goal-id="cap-4-ex"
              data-height="340">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-4-quiz">
+          <div class="quiz-q" data-correcta="1" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">x = 10
+if x &gt; 5:
+    print("gran")
+else:
+    print("petit")</pre>
+            <ol class="quiz-opcions"><li>gran</li><li>petit</li><li>gran petit</li></ol>
+            <p class="quiz-explica">La condició <code>10 &gt; 5</code> és certa: s'executa el bloc de l'<code>if</code> i se salta l'<code>else</code>.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">nota = 8
+if nota &gt;= 5:
+    print("Aprovat")
+elif nota &gt;= 7:
+    print("Notable")</pre>
+            <ol class="quiz-opcions"><li>Aprovat</li><li>Notable</li><li>Res</li></ol>
+            <p class="quiz-explica">Python s'atura a la <strong>primera</strong> condició certa: <code>8 &gt;= 5</code> ja ho és, i no mira l'<code>elif</code>. Per això l'ordre de les condicions importa.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">print(3 &gt; 2 and 2 &gt; 5)</pre>
+            <ol class="quiz-opcions"><li>True</li><li>False</li><li>Error</li></ol>
+            <p class="quiz-explica"><code>and</code> només és cert si les <strong>dues</strong> condicions ho són, i <code>2 &gt; 5</code> és falsa.</p>
+          </div>
         </div>
       </section>
 

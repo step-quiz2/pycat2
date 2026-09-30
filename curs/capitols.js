@@ -40,6 +40,7 @@ var CAPITOLS_DATA = [
   { num: 10, titol: 'Diccionaris',                 arxiu: 'capitol-10.html', goalId: 'cap-10-ex' },
   { num: 11, titol: 'Posant-ho tot junt',          arxiu: 'capitol-11.html', goalId: null },
   { num: 12, titol: '4 en ratlla',                  arxiu: 'capitol-12.html', goalId: null },
+  { num: 13, titol: 'Dibuixa amb la tortuga',      arxiu: 'capitol-13.html', goalId: 'cap-13-parsons' },
   // ...afegir capítols aquí
 ];
 
@@ -564,6 +565,12 @@ function initCursPage() {
     if (tipus === 'repte') renderReptesSidebar(num); else renderSidebar(num);
     renderSimuladors();
     initSidebarToggle();
+    // Problemes de Parsons i qüestionaris (curs/activitats.js), si n'hi ha
+    if (document.querySelector('.parsons, .quiz')) {
+      var sc = document.createElement('script');
+      sc.src = 'activitats.js';
+      document.body.appendChild(sc);
+    }
   }
 }
 

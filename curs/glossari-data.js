@@ -84,6 +84,21 @@ var GLOSSARI_HTML = `
         </div>
 
         <div class="glossari-section">
+          <h3>La tortuga (<code>import turtle</code>)</h3>
+          <p class="glossari-hint">Capítol 13. Centre = <code>(0, 0)</code>; angles en graus</p>
+          <div class="glossari-grid">
+            <code>turtle.forward(d)</code><span>Avança <code>d</code> passos dibuixant (<code>backward</code> recula)</span>
+            <code>turtle.left(a)</code><span>Gira <code>a</code> graus a l'esquerra (<code>right</code>: a la dreta)</span>
+            <code>turtle.penup()</code><span>Aixeca el llapis (<code>pendown()</code> el baixa)</span>
+            <code>turtle.goto(x, y)</code><span>Va al punt <code>(x, y)</code></span>
+            <code>turtle.circle(r)</code><span>Cercle de radi <code>r</code>; <code>dot(mida, color)</code> fa un punt</span>
+            <code>turtle.color(c, f)</code><span>Color del llapis i del farciment; <code>pensize(g)</code> el gruix</span>
+            <code>begin_fill()</code><span>…<code>end_fill()</code>: pinta per dins el que dibuixis entremig</span>
+            <code>turtle.speed(v)</code><span>Velocitat de 1 (lenta) a 10; 0 = instantani</span>
+          </div>
+        </div>
+
+        <div class="glossari-section">
           <h3>Tipus de dades</h3>
           <div class="glossari-grid">
             <code>int</code><span>Nombre enter: <code>3</code>, <code>-7</code>, <code>0</code></span>

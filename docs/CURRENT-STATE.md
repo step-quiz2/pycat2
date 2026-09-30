@@ -28,25 +28,32 @@ Pyodide 0.27.7 (WebAssembly)** dins d'un Web Worker.
 
 Els títols coincideixen amb `CAPITOLS_DATA` i `REPTES_DATA` (`curs/capitols.js`).
 
-### 2.1 Capítols (12)
+### 2.1 Capítols (13)
 
 | # | Títol | Exercici validat (`data-goal-id`) | `data-requires` |
 |---|-------|-----------------------------------|-----------------|
 | 1 | Hola, Python! | `cap-1-ex` | — |
 | 2 | Variables | `cap-2-ex` | `variables,fstring` |
 | 3 | Operacions i input | `cap-3-ex` | `input` |
-| 4 | Decisions: if, elif, else | `cap-4-ex` | — |
+| 4 | Decisions: if, elif, else | `cap-4-ex`, `cap-4-bug` | — |
 | 5 | Repetir amb while (+ `try`/`except`) | `cap-5-ex`, `cap-5-try` | `while` · `try,while` |
-| 6 | Repetir amb for i range | `cap-6-ex` | `for` |
+| 6 | Repetir amb for i range | `cap-6-ex`, `cap-6-bug` | `for` · `for` |
 | 7 | Treballant amb text | `cap-7-ex` | — |
-| 8 | Llistes | `cap-8-ex` | `list` |
+| 8 | Llistes | `cap-8-ex`, `cap-8-bug` | `list` · `for` |
 | 9 | Funcions | `cap-9-ex` (amb `data-testcode`) | `def,return` |
 | 10 | Diccionaris | `cap-10-ex` | `dict,for` |
 | 11 | Posant-ho tot junt (projecte: quiz) | — | — |
 | 12 | 4 en ratlla (capítol extra) | — | — |
+| 13 | Dibuixa amb la tortuga (capítol extra) | — (Parsons `cap-13-parsons`) | — |
 
 La barra lateral marca amb ✓ un capítol quan se supera el `goalId` de
-`CAPITOLS_DATA` (el de `cap-5-try` no hi compta: és un exercici extra).
+`CAPITOLS_DATA` (els altres exercicis d'un capítol no hi compten).
+
+A més dels exercicis amb simulador, els capítols tenen **activitats** (§5.3):
+
+- «🐞 Troba l'error» (exercicis validats amb un programa que té errors): capítols 4, 6 i 8.
+- «🧩 Ordena el programa» (problemes de Parsons, `cap-N-parsons`): capítols 4, 6, 9 i 13.
+- «Comprova què has après» (qüestionari de 3 preguntes, `cap-N-quiz`): capítols 1–10 i 13.
 
 ### 2.2 Reptes (15)
 
@@ -92,6 +99,10 @@ js/editor.js          Editor: ressaltat, números de línia, autocompletat,
 js/pyrunner.js        Gestió del Worker: càrrega, execució, timeout, cua whenReady
 js/pyworker.js        Web Worker: executa Python amb Pyodide
 js/pycat_requires.py  Comprovació de data-requires (Pyodide i test automàtic)
+js/pycat_trace.py     Enregistrament del «pas a pas» (sys.settrace)
+js/pycat_turtle.py    Mòdul turtle propi (enregistra les ordres de dibuix)
+js/stepper.js         Interfície del «👣 Pas a pas»
+js/turtle-view.js     Dibuix animat de la tortuga en un <canvas>
 js/ui.js              Botons, validació per casos de prova, tema, glossari, fitxers
 js/kbd-accessory.js   Barra de tecles per a pantalles tàctils
 js/main.js            Inicialització: llegeix els paràmetres d'URL
@@ -101,6 +112,7 @@ curs/index.html       Índex del curs
 curs/capitol-N.html   Capítols (només el contingut; vegeu §5)
 curs/repte-N.html     Reptes (només el contingut)
 curs/capitols.js      Dades del curs + esquelet de pàgina + simuladors + progrés
+curs/activitats.js    Problemes de Parsons i qüestionaris (es carrega si cal)
 curs/glossari-data.js Contingut del glossari (GLOSSARI_HTML)
 curs/curs.css         Estils del curs
 
@@ -112,7 +124,10 @@ tests/test-exercises.html  Versió de navegador del test (amb Pyodide)
 
 **Ordre de càrrega a `index.html`** (depenen del namespace global `P`):
 `constants → i18n → state → console → errors → editor → pyrunner → ui →
-kbd-accessory → main → sw-register → glossari-data → footer`.
+stepper → turtle-view → kbd-accessory → main → sw-register → glossari-data → footer`.
+
+El worker carrega també `pycat_requires.py`, `pycat_trace.py` i
+`pycat_turtle.py` (aquest com a `/pycat/turtle.py`).
 
 ---
 
@@ -124,10 +139,11 @@ kbd-accessory → main → sw-register → glossari-data → footer`.
 Main → Worker:  {type:'init', cdnUrl}
 Main → Worker:  {type:'run', code, stdin, interactive, inputBuffer}
 Main → Worker:  {type:'check', code, requires}
+Main → Worker:  {type:'trace', code, stdin, userLines}
 Worker → Main:  {type:'ready'} | {type:'load_error', cdnUrl}
 Worker → Main:  {type:'stdout', text} | {type:'stdout_partial', text} | {type:'stderr', text}
-Worker → Main:  {type:'done', elapsed, output} | {type:'error', msg, line, elapsed}
-Worker → Main:  {type:'input_request'} | {type:'check_result', missing}
+Worker → Main:  {type:'done', elapsed, output, turtle} | {type:'error', msg, line, elapsed, turtle}
+Worker → Main:  {type:'input_request'} | {type:'check_result', missing} | {type:'trace_result', data}
 ```
 
 Decisions importants de `pyworker.js`:
@@ -163,7 +179,25 @@ carrega 20 intèrprets.
 Amb `?interactive=1` i `SharedArrayBuffer`, el primer clic executa en mode
 interactiu i el botó passa a «▶ Valida».
 
-### 4.4 Errors en català (`errors.js`)
+### 4.4 Pas a pas (`pycat_trace.py` + `stepper.js`)
+
+El botó «👣 Pas a pas» envia el codi (amb el `testCode`) al worker, que
+l'executa amb `sys.settrace` i desa, abans de cada línia de l'alumne, la línia
+i les variables de cada nivell de crida (màxim 1000 passos). L'alumne recorre
+els passos endavant i enrere: la línia es marca a l'editor i les variables
+que canvien es destaquen. Amb `input()` fa servir les entrades de l'exemple,
+del primer test o del panell d'entrades.
+
+### 4.5 Tortuga (`pycat_turtle.py` + `turtle-view.js`)
+
+Mòdul amb la mateixa API que el `turtle` de Python (`forward`, `left`,
+`circle`, `color`, `begin_fill`, `goto`, `speed`, `Turtle()`, `Screen()`…),
+que accepta també noms de colors en català. No dibuixa: enregistra les ordres
+(màxim 50.000) i, en acabar el programa, el simulador les anima en un panell
+«🐢 Dibuix» a sobre de la consola (⏩ acaba de cop, 💾 desa PNG). El worker
+l'esborra de `sys.modules` abans de cada execució.
+
+### 4.6 Errors en català (`errors.js`)
 
 `P.explainError(msg)` recorre `ERROR_RULES` (patró → explicació + pista). La
 consola mostra: «❌ Error a la línia N: explicació», «💡 pista» i, a sota, el
@@ -232,6 +266,34 @@ Classes útils: `.chapter-badge.badge--facil|badge--intermedi|badge--dificil`,
 
 Cada simulador editable desa el codi de l'alumne (vegeu §7) i té els botons
 «⟲ Codi inicial» i «⛶ Pantalla completa» (el mateix iframe; «✕ Surt» per tornar).
+Tots tenen «👣 Pas a pas».
+
+### 5.3 Activitats sense simulador (`curs/activitats.js`)
+
+`initCursPage()` carrega `activitats.js` si la pàgina té `.parsons` o `.quiz`.
+
+```html
+<!-- Problema de Parsons: el <pre> és la solució (4 espais per nivell) -->
+<div class="parsons" data-goal-id="cap-6-parsons" data-stdin="…" data-expected="…">
+<pre class="parsons-codi">for i in range(3):
+    print(i)</pre>
+</div>
+
+<!-- Qüestionari: data-correcta = posició de l'opció bona (1, 2, …) -->
+<div class="quiz" data-goal-id="cap-1-quiz">
+  <div class="quiz-q" data-correcta="2" data-comprova>
+    <p>Què imprimeix aquest programa?</p>
+    <pre class="code-example">print("3 + 4")</pre>
+    <ol class="quiz-opcions"><li>7</li><li>3 + 4</li><li>Error</li></ol>
+    <p class="quiz-explica">Entre cometes és un text.</p>
+  </div>
+</div>
+```
+
+`data-comprova` fa que el test executi el codi i comprovi que la sortida és el
+text de l'opció correcta (`data-stdin` opcional). `data-stdin`/`data-expected`
+del Parsons també són opcionals. Els `goalId` d'aquestes activitats es desen
+al progrés com els dels exercicis.
 
 ---
 
@@ -280,8 +342,11 @@ python3 tests/comprova-curs.py
 Per a cada exercici amb `data-goal-id` comprova que la solució de
 `tests/solutions.js` supera tots els casos, que compleix `data-requires`, que el
 codi inicial **no** els supera, que els `goalId` són únics i coherents amb
-`capitols.js`, i que cap `data-code` conté HTML (cometa oblidada). Imita el
-simulador (sense pregunta a `input()`, variables noves a cada execució).
+`capitols.js`, que cap `data-code` conté HTML (cometa oblidada) i que el
+«pas a pas» de cada solució dona la mateixa sortida. Per a les activitats:
+executa les solucions dels Parsons i comprova les respostes marcades com a
+correctes de les preguntes amb `data-comprova`. Imita el simulador (sense
+pregunta a `input()`, variables noves a cada execució, mòdul `turtle` propi).
 
 La GitHub Action `comprova-curs.yml` l'executa a cada push i PR, juntament amb
 `node --check` de tots els fitxers JS.
@@ -304,15 +369,9 @@ La GitHub Action `comprova-curs.yml` l'executa a cada push i PR, juntament amb
 
 ## 11. Tasques pendents
 
-Continuació del pla de millores (fases 1–4 fetes):
+Fases 1–5 del pla de millores fetes.
 
-**Fase 5 — pedagogia**
-- Execució pas a pas amb taula de variables (`sys.settrace`, gravar i reproduir).
-- Més tipus d'exercicis: «troba l'error», problemes de Parsons, mini-qüestionaris,
-  diversos exercicis graduats per capítol.
-- Mòdul `turtle` propi que dibuixi en un `<canvas>`.
-
-**Altres propostes**
+- Diversos exercicis graduats (★ ★★ ★★★) per capítol; més «troba l'error» i Parsons.
 - Pistes graduals (1 → 2 → 3) que es desbloquegin després d'intents fallits.
 - Avisar quan la resposta és «gairebé correcta» (majúscules, espais, accents) i
   ignorar els espais del final de cada línia en comparar.
@@ -323,6 +382,8 @@ Continuació del pla de millores (fases 1–4 fetes):
   favicon; servir la font localment (privadesa).
 - Barra tàctil amb ⇥ ⇤ i paraules clau; autocompletat amb `()` i variables.
 - Aturar bucles infinits amb `pyodide.setInterruptBuffer()` sense recarregar.
+- Tortuga: validar dibuixos (p. ex. comprovar la posició final o les línies).
+- Pas a pas: mode interactiu amb `input()` (ara necessita les entrades abans).
 - Continguts: capítol de `import` (`random`, `math`), tuples, `round()`,
   depuració amb `print()`; capítol 0 de pont des de KarelCat.
 - Guia del professorat i «📋 Copia el meu progrés».

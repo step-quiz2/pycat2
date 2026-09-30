@@ -255,6 +255,14 @@ pre.code-example {
 .chapter-badge.badge--intermedi { background: #fef3c7; color: #92400e; }
 .chapter-badge.badge--dificil   { background: #fee2e2; color: #991b1b; }
 
+/* Consell destacat dins d'un capítol */
+.consell {
+  background: #fefce8;
+  border-left: 4px solid #eab308;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
 /* Pista plegable dels reptes */
 details.pista { margin-top: 1.5rem; }
 details.pista summary { cursor: pointer; font-size: 0.82rem; color: var(--muted); }
@@ -656,3 +664,86 @@ body.light .sidebar-check {
   color: #16a34a;
 }
 
+
+
+/* ══════════════════════════════════════════════════════
+   ACTIVITATS (curs/activitats.js): Parsons i qüestionaris
+══════════════════════════════════════════════════════ */
+
+.parsons, .quiz {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+/* Botons comuns */
+.btn-activitat {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+}
+.btn-activitat:hover { border-color: var(--accent); color: var(--accent); }
+.btn-activitat--p { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-activitat--p:hover { color: #fff; filter: brightness(1.1); }
+
+/* Parsons */
+.parsons-llista { list-style: none; padding: 0; margin: 0.5rem 0; }
+.parsons-linia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px 4px 10px;
+  margin-bottom: 4px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: grab;
+  transition: margin-left 0.12s;
+}
+.parsons-linia code { background: none; font-size: 0.85rem; white-space: pre; }
+.parsons-linia.sobre { border-color: var(--accent); border-style: dashed; }
+.parsons-linia.malament { border-color: #dc2626; background: #fef2f2; }
+.parsons-botons { display: flex; gap: 2px; flex-shrink: 0; }
+.parsons-botons button {
+  font-family: var(--mono);
+  width: 1.9em;
+  height: 1.9em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--text);
+}
+.parsons-botons button:hover { border-color: var(--accent); color: var(--accent); }
+.parsons-accions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Qüestionari */
+.quiz-q { padding: 0.6rem 0; border-bottom: 1px dashed var(--border); }
+.quiz-q:last-of-type { border-bottom: none; }
+.quiz-num { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+.quiz-opcions { list-style: none; padding: 0; margin: 0.5rem 0; display: flex; flex-direction: column; gap: 6px; }
+.quiz-opcio {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+}
+.quiz-opcio:hover:not(:disabled) { border-color: var(--accent); }
+.quiz-opcio:disabled { cursor: default; }
+.quiz-opcio.bona    { border-color: #16a34a; background: #f0fdf4; color: #166534; font-weight: 700; }
+.quiz-opcio.bona::after { content: '  ✓'; }
+.quiz-opcio.dolenta { border-color: #dc2626; background: #fef2f2; color: #991b1b; text-decoration: line-through; }
+.quiz-explica { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }

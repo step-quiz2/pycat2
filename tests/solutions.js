@@ -98,6 +98,34 @@ for nom, punts in puntuacions.items():
     print(f"{nom}: {punts} punts")
 `,
 
+  'cap-4-bug': `edat = int(input())
+if edat < 13:
+    print("Infant")
+elif edat < 18:
+    print("Adolescent")
+else:
+    print("Adult")
+`,
+
+  'cap-6-bug': `n = int(input())
+suma = 0
+for i in range(1, n + 1):
+    suma = suma + i
+print(suma)
+`,
+
+  'cap-8-bug': `text = input()
+nombres = []
+for paraula in text.split():
+    nombres.append(int(paraula))
+
+maxim = nombres[0]
+for i in range(len(nombres)):
+    if nombres[i] > maxim:
+        maxim = nombres[i]
+print("Màxim:", maxim)
+`,
+
   // ── Reptes ──
 
   'repte-1': `print("Hola, món!")
