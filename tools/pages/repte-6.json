@@ -18,7 +18,7 @@
           "body": "<p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos nombres, inclòs el zero i nombres negatius.</p>",
           "simulador": {
             "goalId": "repte-6",
-            "code": "# Repte 6: Parell o senar\n# Llegeix un nombre i mostra si és parell o senar\n\nn = int(input())\n",
+            "code": "# Repte 6: Parell o senar\n# Llegeix un nombre i mostra si és parell o senar\n\nn = int(input(\"Escriu un número: \"))\n",
             "tests": [
               { "stdin": "4",  "expected": "Parell" },
               { "stdin": "7",  "expected": "Senar" },
@@ -26,6 +26,7 @@
               { "stdin": "-3", "expected": "Senar" },
               { "stdin": "1",  "expected": "Senar" }
             ],
+            "interactive": true,
             "height": 320
           }
         }
