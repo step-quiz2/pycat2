@@ -14,6 +14,7 @@
 //   P.pyRun(code, stdin, onDone)        — executa i crida callback(output|null)
 //   P.pyRunAsync(code, stdin)           — executa i retorna Promise<output|null>
 //   P.pyCheck(code, requires)           — Promise<requisits que falten> (data-requires)
+//   P.pyTrace(code, stdin, userLines)   — Promise<execució pas a pas> (pycat_trace.py)
 //   P.whenReady(fn)                     — crida fn quan Python estigui llest
 //   P.pyKill()                          — mata el worker
 //   P.pyStop()                          — mata i re-spawna
@@ -128,6 +129,13 @@ var _handlers = {
     var cb = _onDone;
     _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
     if (cb) cb(null);
+  },
+  trace_result: function(d) {
+    var cb = _onTrace;
+    _onTrace = null;
+    var data = null;
+    try { data = d.data ? JSON.parse(d.data) : null; } catch (_) {}
+    if (cb) cb(data);
   },
   check_result: function(d) {
     var cb = _onCheck;
@@ -297,6 +305,32 @@ function pyCheck(code, requires) {
   });
 }
 
+// Enregistra una execució pas a pas (pycat_trace.py). Carrega Python si
+// cal. Retorna Promise<{passos, sortida, error, tallat} | null>.
+var _onTrace = null;
+function pyTrace(code, stdin, userLines) {
+  return new Promise(function(resolve) {
+    var S = P.state;
+    function envia() {
+      // Límit de temps (p. ex. un càlcul enorme dins d'una sola línia)
+      var t = setTimeout(function() {
+        _onTrace = null;
+        pyStop();
+        resolve(null);
+      }, P.EXEC_TIMEOUT);
+      _onTrace = function(data) { clearTimeout(t); resolve(data); };
+      S.worker.postMessage({ type: 'trace', code: code, stdin: stdin, userLines: userLines });
+    }
+    if (!S.worker) {
+      _spawnWorker();
+      P.setStateUI('loading');
+      P.consolePush(P.t('log.loading'), 'dim');
+      S.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
+    }
+    whenReady(envia);
+  });
+}
+
 // Crida fn() quan Python estigui llest (immediatament si ja ho és)
 var _readyQueue = [];
 function whenReady(fn) {
@@ -335,6 +369,7 @@ P.pyInit         = pyInit;
 P.pyRun          = pyRun;
 P.pyRunAsync     = pyRunAsync;
 P.pyCheck        = pyCheck;
+P.pyTrace        = pyTrace;
 P.pyKill         = pyKill;
 P.pyStop         = pyStop;
 P.canInteractive = canInteractive;

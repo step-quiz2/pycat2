@@ -255,6 +255,14 @@ pre.code-example {
 .chapter-badge.badge--intermedi { background: #fef3c7; color: #92400e; }
 .chapter-badge.badge--dificil   { background: #fee2e2; color: #991b1b; }
 
+/* Consell destacat dins d'un capítol */
+.consell {
+  background: #fefce8;
+  border-left: 4px solid #eab308;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
 /* Pista plegable dels reptes */
 details.pista { margin-top: 1.5rem; }
 details.pista summary { cursor: pointer; font-size: 0.82rem; color: var(--muted); }

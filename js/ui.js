@@ -92,6 +92,7 @@ function _ensureStdinPanel(code) {
 
 // ── Executa el programa ──────────────────────────────────
 async function runProgram() {
+  if (P.exitTrace) P.exitTrace();
   P.consoleClear();
   P.clearLineMarks();
 
@@ -215,6 +216,7 @@ function stopProgram() {
 
 // ── Neteja la consola ────────────────────────────────────
 function resetConsole() {
+  if (P.exitTrace) P.exitTrace();
   P.consoleClear();
   P.clearLineMarks();
   P.state.ranInteractive = false;
@@ -365,6 +367,8 @@ function initFileActions() {
 
 // ── Exporta ──────────────────────────────────────────────
 P.setStateUI     = setStateUI;
+P.buildFinalCode = _buildFinalCode;   // l'usa stepper.js
+P.usesInput      = _usesInput;
 P.handleRunClick = handleRunClick;
 P.initTheme      = initTheme;
 P.initGlossari   = initGlossari;

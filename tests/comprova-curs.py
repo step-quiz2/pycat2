@@ -13,7 +13,9 @@
 #      es resol sense fer res);
 #   4. cada goalId és únic i els de curs/capitols.js existeixen a les pàgines;
 #   5. la solució compleix els requisits de data-requires (js/pycat_requires.py);
-#   6. cap data-code conté HTML (senyal d'una cometa de tancament oblidada).
+#   6. cap data-code conté HTML (senyal d'una cometa de tancament oblidada);
+#   7. el «pas a pas» (js/pycat_trace.py) de la solució acaba sense errors
+#      i dona la mateixa sortida que el primer cas de prova.
 #
 # Imita el simulador (js/pyworker.js, mode batch): input() llegeix de
 # l'stdin del cas de prova sense imprimir la pregunta, cada execució té
@@ -34,6 +36,7 @@ from html.parser import HTMLParser
 sys.dont_write_bytecode = True   # no deixis js/__pycache__
 sys.path.insert(0,os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'js'))
 from pycat_requires import pycat_requisits_que_falten  # noqa: E402  (mateix codi que el simulador)
+from pycat_trace import pycat_traca  # noqa: E402
 
 ARREL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPS_MAXIM = 10  # segons per execució (com P.EXEC_TIMEOUT)
@@ -157,6 +160,16 @@ def main():
                     else:
                         if falten:
                             errors.append(f"{nom} [{goal}]: la solució no fa servir: {', '.join(falten)}")
+
+                if sol is not None and casos:
+                    codi_sol = afegeix(sol)
+                    traca = json.loads(pycat_traca(codi_sol, casos[0]['stdin'] or '',
+                                                   len(sol.split('\n'))))
+                    if traca['error'] or traca['tallat']:
+                        errors.append(f"{nom} [{goal}]: el pas a pas de la solució falla: "
+                                      f"{traca['error'] or 'massa passos'}")
+                    elif traca['sortida'].strip() != (casos[0]['expected'] or '').strip():
+                        errors.append(f"{nom} [{goal}]: el pas a pas no dona la sortida esperada")
 
                 inicial = sim.get('data-code', '')
                 if supera(afegeix(inicial), casos, tmp)[0]:

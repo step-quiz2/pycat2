@@ -327,6 +327,7 @@ body.embed .btn-file { display: none; }
 }
 .lbg-row.active { background: var(--accent-dim); }
 .lbg-row.error  { background: var(--error-dim); }
+.lbg-row.step   { background: rgba(250,204,21,0.28); box-shadow: inset 3px 0 0 #eab308; }
 
 /* Ressaltat sintàctic */
 .hl-kw   { color: #c084fc; }  /* keywords: morat */
@@ -830,4 +831,55 @@ body.is-readonly #line-numbers {
 }
 .readonly-toast.visible {
   opacity: 1;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   PAS A PAS (js/stepper.js)
+══════════════════════════════════════════════════════ */
+
+body.tracing #console-output { display: none; }
+body.tracing .editor-inner textarea { cursor: default; }
+
+.trace-panel {
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.trace-controls { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.trace-controls .btn { padding: 4px 10px; }
+.trace-controls .btn:disabled { opacity: 0.4; cursor: default; }
+.trace-count { min-width: 7em; text-align: center; color: var(--muted); }
+.trace-range { width: 100%; }
+.trace-line { font-weight: 700; color: #a16207; }
+body:not(.light) .trace-line { color: #facc15; }
+.trace-line.err { color: var(--error); }
+.trace-line.ok  { color: var(--ok); }
+
+.trace-level { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; overflow: hidden; }
+.trace-level-name {
+  background: var(--surface);
+  color: var(--muted);
+  padding: 3px 8px;
+  font-size: 0.9em;
+  border-bottom: 1px solid var(--border);
+}
+.trace-level table { border-collapse: collapse; width: 100%; }
+.trace-level td { padding: 2px 8px; vertical-align: top; }
+.trace-name  { font-weight: 700; white-space: nowrap; }
+.trace-value { word-break: break-all; }
+.trace-type  { color: var(--muted); font-size: 0.85em; white-space: nowrap; text-align: right; }
+.trace-level tr.changed td { background: rgba(250,204,21,0.25); }
+.trace-empty { padding: 3px 8px; color: var(--muted); font-style: italic; }
+.trace-out-title { color: var(--muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.trace-out {
+  margin: 0;
+  padding: 6px 8px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: var(--mono);
 }

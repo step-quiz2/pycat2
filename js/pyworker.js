@@ -16,6 +16,7 @@
 //   Main → Worker:  {type:'init', cdnUrl}
 //   Main → Worker:  {type:'run', code, stdin, interactive, inputBuffer}
 //   Main → Worker:  {type:'check', code, requires}   → {type:'check_result', missing}
+//   Main → Worker:  {type:'trace', code, stdin, userLines} → {type:'trace_result', data (JSON)}
 //   Worker → Main:  {type:'ready'}
 //   Worker → Main:  {type:'stdout', text}
 //   Worker → Main:  {type:'stdout_partial', text}  (mode interactiu: prompt sense \n)
@@ -60,10 +61,13 @@ def _batch_input(prompt=''):
 
     // Comprovació de requisits (data-requires): mòdul compartit amb el
     // test automàtic. Si no es pot carregar, simplement no es comprova.
-    try {
-      var resp = await fetch('pycat_requires.py');
-      if (resp.ok) pyodide.runPython(await resp.text(), { filename: '<pycat>' });
-    } catch (_) {}
+    // També el mòdul del «pas a pas» (pycat_trace.py).
+    for (const fitxer of ['pycat_requires.py', 'pycat_trace.py']) {
+      try {
+        var resp = await fetch(fitxer);
+        if (resp.ok) pyodide.runPython(await resp.text(), { filename: '<pycat>' });
+      } catch (_) {}
+    }
 
     postMessage({ type: 'ready' });
   } catch (e) {
@@ -329,11 +333,26 @@ function checkRequires(code, requires) {
   postMessage({ type: 'check_result', missing: missing });
 }
 
+// ── Execució pas a pas (pycat_trace.py) ──────────────────
+function traceCode(code, stdin, userLines) {
+  var data = null;
+  try {
+    var fn = pyodide.globals.get('pycat_traca');
+    if (fn) {
+      data = fn(code, stdin || '', userLines || null);
+      fn.destroy();
+    }
+  } catch (e) { data = null; }
+  postMessage({ type: 'trace_result', data: data });
+}
+
 // ── Dispatcher de missatges ──────────────────────────────
 self.onmessage = function(e) {
   var type = e.data.type;
   if (type === 'init') {
     initPyodide(e.data.cdnUrl);
+  } else if (type === 'trace') {
+    traceCode(e.data.code, e.data.stdin, e.data.userLines);
   } else if (type === 'check') {
     checkRequires(e.data.code, e.data.requires);
   } else if (type === 'run') {
