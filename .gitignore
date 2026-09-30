@@ -1,0 +1,4 @@
+# Fitxers generats per Python (tests/comprova-curs.py)
+__pycache__/
+*.pyc
+tests/.tmp-comprova.py

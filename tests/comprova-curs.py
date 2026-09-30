@@ -102,7 +102,7 @@ def executa(codi, stdin, tmp):
     with open(tmp, 'w', encoding='utf-8') as f:
         f.write(codi)
     try:
-        r = subprocess.run([sys.executable, '-c', EXECUTOR, tmp, TURTLE], input=stdin or '',
+        r = subprocess.run([sys.executable, '-B', '-c', EXECUTOR, tmp, TURTLE], input=stdin or '',
                            capture_output=True, text=True, timeout=TEMPS_MAXIM)
     except subprocess.TimeoutExpired:
         return None, 'temps excedit'
