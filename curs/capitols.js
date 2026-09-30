@@ -132,8 +132,15 @@ function renderReptesSidebar(currentNum) {
 
 // ── Renderitzador de simuladors incrustats ────────────────
 
+// Clau de localStorage per al codi del simulador núm. `idx` d'aquesta pàgina
+function _saveKey(idx) {
+  var page = location.pathname.split('/').pop() || 'index.html';
+  return 'pycat-code:' + page + ':' + idx;
+}
+
 function renderSimuladors() {
-  document.querySelectorAll('.simulador').forEach(function(div) {
+  document.querySelectorAll('.simulador').forEach(function(div, idx) {
+    var hasCode  = div.hasAttribute('data-code');
     var code     = div.getAttribute('data-code') || '';
     var readonly = div.getAttribute('data-readonly') === 'true';
     var height   = div.getAttribute('data-height') || '320';
@@ -148,8 +155,11 @@ function renderSimuladors() {
     params.set('embed', '1');
     params.set('theme', 'light');
 
-    if (code)     params.set('code', btoa(unescape(encodeURIComponent(code))));
+    // El codi es passa sempre que hi hagi l'atribut (encara que sigui buit):
+    // si no, el simulador hi posaria el codi per defecte «Hola, món!».
+    if (hasCode)  params.set('code', btoa(unescape(encodeURIComponent(code))));
     if (readonly) params.set('readonly', '1');
+    else          params.set('save', _saveKey(idx));   // desa el codi de l'alumne
     if (stdin)    params.set('stdin', btoa(unescape(encodeURIComponent(stdin))));
     if (expected) params.set('expected', btoa(unescape(encodeURIComponent(expected))));
     if (tests)    params.set('tests', btoa(unescape(encodeURIComponent(tests))));
@@ -163,20 +173,23 @@ function renderSimuladors() {
     iframe.style.height = height + 'px';
     iframe.style.border = '1px solid #d0d0d0';
     iframe.style.borderRadius = '8px';
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    // allow-modals: el botó «⟲ Codi inicial» demana confirmació amb confirm()
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-modals');
     iframe.setAttribute('loading', 'lazy');
 
     div.innerHTML = '';
     div.appendChild(iframe);
 
-    // Botó de pantalla completa (visible en mòbil via CSS)
-    var fullscreenBtn = document.createElement('a');
-    fullscreenBtn.href = '../index.html?' + params.toString();
-    fullscreenBtn.target = '_blank';
-    fullscreenBtn.rel = 'noopener';
-    fullscreenBtn.className = 'simulador-fullscreen-btn';
-    fullscreenBtn.textContent = '↗ Obre a pantalla completa';
-    div.appendChild(fullscreenBtn);
+    // Botó de pantalla completa: el MATEIX iframe ocupa tota la pantalla,
+    // així el progrés i el codi es mantenen (abans s'obria una pestanya nova
+    // on el resultat no arribava a la pàgina del curs).
+    var fsBtn = document.createElement('button');
+    fsBtn.type = 'button';
+    fsBtn.className = 'simulador-fullscreen-btn';
+    fsBtn.textContent = '⛶ Pantalla completa';
+    fsBtn.title = 'Obre el simulador a pantalla completa (Esc per sortir)';
+    fsBtn.addEventListener('click', function() { _enterFullscreen(div, iframe); });
+    div.appendChild(fsBtn);
 
     if (goalId) {
       var fb = document.createElement('div');
@@ -191,6 +204,63 @@ function renderSimuladors() {
     }
   });
 }
+
+
+// ── Pantalla completa d'un simulador ─────────────────────
+// Fa servir la Fullscreen API sobre l'iframe quan el navegador la permet.
+// Si no (p. ex. Safari de l'iPhone), l'iframe es fixa a tota la finestra
+// amb CSS (.simulador.sim-fs). En tots dos casos l'iframe rep un missatge
+// 'pycat-fs' per mostrar o amagar el seu botó «✕ Surt».
+
+var _fsSim = null;   // { div, iframe } del simulador en pantalla completa (mode CSS)
+
+function _notifyFs(iframe, on) {
+  try { iframe.contentWindow.postMessage({ type: 'pycat-fs', on: on }, window.location.origin); } catch(_) {}
+}
+
+function _enterFullscreen(div, iframe) {
+  var req = iframe.requestFullscreen || iframe.webkitRequestFullscreen;
+  var enabled = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+  if (req && enabled) {
+    Promise.resolve(req.call(iframe)).catch(function() { _enterCssFullscreen(div, iframe); });
+  } else {
+    _enterCssFullscreen(div, iframe);
+  }
+}
+
+function _enterCssFullscreen(div, iframe) {
+  _exitFullscreen();
+  div.classList.add('sim-fs');
+  document.body.classList.add('sim-fs-open');
+  _fsSim = { div: div, iframe: iframe };
+  _notifyFs(iframe, true);
+}
+
+function _exitFullscreen() {
+  var fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if (fsEl) {
+    var exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if (exit) Promise.resolve(exit.call(document)).catch(function() {});
+  }
+  if (_fsSim) {
+    _fsSim.div.classList.remove('sim-fs');
+    document.body.classList.remove('sim-fs-open');
+    _notifyFs(_fsSim.iframe, false);
+    _fsSim = null;
+  }
+}
+
+function _onFullscreenChange() {
+  var fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  document.querySelectorAll('.simulador iframe').forEach(function(ifr) {
+    _notifyFs(ifr, ifr === fsEl);
+  });
+}
+document.addEventListener('fullscreenchange', _onFullscreenChange);
+document.addEventListener('webkitfullscreenchange', _onFullscreenChange);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && _fsSim) _exitFullscreen();
+});
 
 
 // ── Sidebar toggle (hamburger mòbil) ─────────────────────
@@ -231,6 +301,8 @@ window.addEventListener('message', function(e) {
   var type   = e.data.type;
   var goalId = e.data.goalId;
 
+  if (type === 'pycat-exit-fs') { _exitFullscreen(); return; }
+
   if (type === 'pycat-clear') {
     var fb = goalId ? document.querySelector('.simulador-feedback[data-goal-id="' + CSS.escape(goalId) + '"]') : null;
     if (fb) { fb.className = 'simulador-feedback'; fb.textContent = ''; }
@@ -264,17 +336,81 @@ window.addEventListener('message', function(e) {
       if (failed && failed.actual === null) {
         fb.textContent = '✗ El programa ha donat error. Revisa la consola.';
       } else if (failed) {
-        var stdinInfo = failed.stdin
-          ? ' amb input «' + failed.stdin.replace(/\n/g, ' | ') + '»'
-          : '';
-        fb.textContent = '✗ Test ' + (failed.testIdx + 1) + ' fallit' + stdinInfo +
-          ': esperava «' + failed.expected + '», has tret «' + (failed.actual || '') + '».';
+        _renderDiff(fb, failed, e.data.total || results.length);
       } else {
         fb.textContent = '✗ La sortida no coincideix amb l\'esperada. Revisa el codi.';
       }
     }
   }
 });
+
+// ── Diferències entre la sortida esperada i la de l'alumne ──
+// Taula de dues columnes, línia per línia; les línies diferents en vermell.
+// Tot el text entra amb textContent (mai innerHTML): ve del codi de l'alumne.
+var DIFF_MAX_LINES = 40;
+
+function _renderDiff(fb, failed, nTests) {
+  fb.textContent = '';
+  var head = document.createElement('div');
+  head.textContent = '✗ ' + (nTests > 1 ? 'Test ' + (failed.testIdx + 1) + ' de ' + nTests + ' fallit.' : 'La sortida no és l\'esperada.') +
+    ' Les línies diferents estan marcades en vermell.';
+  fb.appendChild(head);
+
+  if (failed.stdin) {
+    var inp = document.createElement('div');
+    inp.className = 'diff-stdin';
+    inp.textContent = 'Entrades del test: ' + failed.stdin.replace(/\n+$/, '').split('\n').join('  ⏎  ');
+    fb.appendChild(inp);
+  }
+
+  var exp = String(failed.expected || '').replace(/\r\n/g, '\n').trim().split('\n');
+  var act = String(failed.actual || '').replace(/\r\n/g, '\n').trim().split('\n');
+  if (exp.length === 1 && exp[0] === '') exp = [];
+  if (act.length === 1 && act[0] === '') act = [];
+
+  var table = document.createElement('table');
+  table.className = 'diff-table';
+  var thead = table.createTHead().insertRow();
+  ['', 'Esperat', 'Has tret'].forEach(function(t) {
+    var th = document.createElement('th');
+    th.textContent = t;
+    thead.appendChild(th);
+  });
+  var tbody = table.createTBody();
+  var n = Math.max(exp.length, act.length);
+  for (var i = 0; i < Math.min(n, DIFF_MAX_LINES); i++) {
+    var e = exp[i], a = act[i];
+    var row = tbody.insertRow();
+    if (e !== a) row.className = 'diff-bad';
+    var num = row.insertCell();
+    num.className = 'diff-num';
+    num.textContent = i + 1;
+    // Si només canvien els espais, es fan visibles amb «·»
+    var onlySpaces = e !== undefined && a !== undefined && e !== a && e.replace(/ /g, '') === a.replace(/ /g, '');
+    _diffCell(row.insertCell(), e, onlySpaces);
+    _diffCell(row.insertCell(), a, onlySpaces);
+  }
+  fb.appendChild(table);
+
+  if (n > DIFF_MAX_LINES) {
+    var more = document.createElement('div');
+    more.className = 'diff-stdin';
+    more.textContent = '… (' + (n - DIFF_MAX_LINES) + ' línies més)';
+    fb.appendChild(more);
+  }
+}
+
+function _diffCell(td, text, showSpaces) {
+  if (text === undefined) {
+    td.className = 'diff-missing';
+    td.textContent = '(no hi és)';
+  } else if (text === '') {
+    td.className = 'diff-missing';
+    td.textContent = '(línia buida)';
+  } else {
+    td.textContent = showSpaces ? text.replace(/ /g, '·') : text;
+  }
+}
 
 // Refresca la sidebar actual (detecta si estem en un capítol o repte)
 function _refreshSidebar() {

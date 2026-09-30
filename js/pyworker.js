@@ -136,11 +136,12 @@ class _LiveStdout:
 class _LiveStderr:
     def __init__(self):
         self._all = []
+    # No s'envia en temps real: si hi ha un error, Pyodide hi escriu el
+    # traceback (amb fitxers interns) i la consola ja en mostra una
+    # explicació. Es buida al final (vegeu _emitStderr a runCode).
     def write(self, text):
         if text:
             self._all.append(text)
-        if text and text.strip():
-            _jsSendStderr(text.rstrip('\\n'))
         return len(text) if text else 0
     def flush(self):
         pass
@@ -183,6 +184,15 @@ builtins.input = _batch_input
 }
 
 
+// ── Envia el text d'stderr al main, línia a línia ────────
+function _emitStderr(text) {
+  if (!text) return;
+  var lines = text.split('\n').filter(function(l) { return l.trim(); });
+  for (var j = 0; j < lines.length; j++) {
+    postMessage({ type: 'stderr', text: lines[j] });
+  }
+}
+
 // ── Execució de codi ─────────────────────────────────────
 async function runCode(code, stdin, interactive, sharedBuffer) {
   if (!pyodide) {
@@ -219,6 +229,7 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
       // Mode interactiu: flush qualsevol sortida pendent
       try { pyodide.runPython('sys.stdout.flush()'); } catch(_) {}
       var stdout = pyodide.runPython('sys.stdout.getvalue()');
+      _emitStderr(pyodide.runPython('sys.stderr.getvalue()'));
       // Restaura
       pyodide.runPython(RESTORE_IO);
       postMessage({ type: 'done', elapsed: elapsed, output: stdout || '' });
@@ -235,12 +246,7 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
           postMessage({ type: 'stdout', text: lines[i] });
         }
       }
-      if (stderr) {
-        var lines = stderr.split('\n').filter(function(l) { return l; });
-        for (var j = 0; j < lines.length; j++) {
-          postMessage({ type: 'stderr', text: lines[j] });
-        }
-      }
+      _emitStderr(stderr);
       postMessage({ type: 'done', elapsed: elapsed, output: stdout || '' });
     }
 
@@ -269,6 +275,10 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
         }
       }
     } catch(_) {}
+
+    // El que l'alumne hagi escrit a stderr ABANS del traceback
+    var tbIdx = errText.indexOf('Traceback (most recent call last)');
+    _emitStderr(tbIdx >= 0 ? errText.slice(0, tbIdx) : '');
 
     // Restaura stdout/stderr/input
     try {

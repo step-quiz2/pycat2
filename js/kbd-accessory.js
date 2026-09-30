@@ -98,15 +98,9 @@
     var ch = e.currentTarget.getAttribute('data-char');
     if (!ch || !ta) return;
 
-    var start = ta.selectionStart;
-    var end   = ta.selectionEnd;
-
-    // Insereix el caràcter a la posició del cursor
-    ta.value = ta.value.substring(0, start) + ch + ta.value.substring(end);
-    ta.selectionStart = ta.selectionEnd = start + ch.length;
-
-    // Actualitza el ressaltat i guarda a localStorage
-    P.updateEditor();
+    // Insereix el caràcter a la posició del cursor (conserva l'historial
+    // de desfer; l'event 'input' actualitza el ressaltat i desa el codi)
+    P.editText(ta, ch);
 
     // Retorna el focus a l'editor
     ta.focus();
