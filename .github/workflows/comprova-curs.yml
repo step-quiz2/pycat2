@@ -1,0 +1,24 @@
+# Executa el test automàtic del curs a cada push i a cada pull request.
+# Si alguna solució de referència deixa de superar els casos de prova
+# d'un exercici, l'acció surt en vermell a la pestanya «Actions».
+name: Comprova el curs
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  comprova:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Sintaxi dels fitxers JS
+        run: for f in js/*.js curs/*.js tests/*.js tools/*.js footer.js sw.js; do node --check "$f" || exit 1; done
+      - name: Test del curs (solucions i casos de prova)
+        run: python3 tests/comprova-curs.py

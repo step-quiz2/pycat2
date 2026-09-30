@@ -19,6 +19,12 @@ print()
 print("Aprendrem Python junts!")
 `,
 
+  'cap-2-ex': `nom = "Ada"
+edat = 16
+llenguatge = "Python"
+print(f"Em dic {nom}, tinc {edat} anys i estic aprenent {llenguatge}")
+`,
+
   'cap-3-ex': `a = int(input())
 b = int(input())
 print("Suma:", a + b)
@@ -77,6 +83,11 @@ print(sum(numeros) / len(numeros))
     return True
 `,
 
+  'cap-10-ex': `puntuacions = {"Anna": 85, "Bernat": 92, "Carla": 78}
+for nom, punts in puntuacions.items():
+    print(f"{nom}: {punts} punts")
+`,
+
   // ── Reptes ──
 
   'repte-1': `print("Hola, món!")
@@ -130,17 +141,16 @@ for i in range(1, 11):
     print(n, "x", i, "=", n * i)
 `,
 
-  'repte-10': `n = int(input())
-for i in range(1, n + 1):
-    print("*" * i)
+  'repte-10': `frase = input("Escriu una frase: ")
+paraules = frase.split()
+print("Paraules:", len(paraules))
 `,
 
-  'repte-11': `text = input()
-comptador = 0
-for c in text.lower():
-    if c in "aeiou":
-        comptador += 1
-print("Vocals:", comptador)
+  'repte-11': `def saluda(nom):
+    return f"Hola, {nom}! Benvingut/da a Python."
+
+nom = input("Com et dius? ")
+print(saluda(nom))
 `,
 
   'repte-12': `paraula = input()

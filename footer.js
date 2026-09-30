@@ -6,7 +6,7 @@
 
   // Detecta si estem dins de la carpeta curs/ o a l'arrel
   var isCurs = window.location.pathname.includes('/curs/');
-  var imgPath = isCurs ? '../img/cc-by-nc-nd.png' : 'img/cc-by-nc-nd.png';
+  var root = isCurs ? '../' : '';
 
   // Estils del footer
   var style = document.createElement('style');
@@ -32,11 +32,6 @@
     '  line-height: 1.4;',
     '  background: var(--bg, #fff);',
     '}',
-    '.karel-footer img {',
-    '  height: 22px;',
-    '  width: auto;',
-    '  flex-shrink: 0;',
-    '}',
     '.karel-footer a {',
     '  color: inherit;',
     '}',
@@ -47,16 +42,14 @@
   ].join('\n');
   document.head.appendChild(style);
 
-  // HTML del footer — modifica aquí per canviar el text
+  // HTML del footer — modifica aquí per canviar el text.
+  // Llicència: vegeu LICENSE i LLICENCIA.md (contingut CC BY-NC-SA 4.0, codi MIT).
   var footer = document.createElement('footer');
   footer.className = 'karel-footer';
   footer.innerHTML =
-    '<img src="' + imgPath + '" alt="CC BY-NC-ND 4.0">' +
-    '<span>' +
-    '© 2026 <strong>[DAVID ARSO CIVIL]</strong>. ' +
-    'Ús educatiu lliure. Prohibida la comercialització i la modificació ' +
-    '(<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a>).' +
-    '</span>';
+    '<span>© 2026 <strong>David Arso Civil</strong> · INS Miquel Tarradell.</span>' +
+    '<span>Contingut: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>' +
+    ' · Codi: <a href="' + root + 'LICENSE" target="_blank" rel="noopener">llicència MIT</a></span>';
 
   document.body.appendChild(footer);
 })();

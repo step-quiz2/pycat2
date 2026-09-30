@@ -27,7 +27,7 @@
 //     { "h2": "Simulador", "body": "<p>...</p>", "simulador": {
 //         "goalId":"repte-6", "code":"...", "tests":[{"stdin":"","expected":""}],
 //         "expected":"...", "stdin":"...", "testcode":"...",
-//         "readonly":false, "height":320
+//         "readonly":false, "interactive":false, "height":320
 //     } },
 //     ...
 //   ]
@@ -104,6 +104,9 @@ function renderSimulador(sim) {
   }
   if (sim.readonly) {
     parts.push('           data-readonly="true"');
+  }
+  if (sim.interactive) {
+    parts.push('           data-interactive="true"');
   }
   if (sim.goalId) {
     parts.push('           data-goal-id="' + escAttr(sim.goalId) + '"');
@@ -187,13 +190,14 @@ function renderScripts(page) {
   const renderFn = isCapitol ? 'renderSidebar' : 'renderReptesSidebar';
   return `<script src="glossari-data.js"></script>
 <script src="capitols.js"></script>
-<script src="../js/sw-register.js"></script>
 <script>
   injectCursLogo();
   ${renderFn}(${page.num});
   renderSimuladors();
   initSidebarToggle();
-</script>`;
+</script>
+
+<script src="../footer.js"></script>`;
 }
 
 // ── Genera la pàgina HTML completa ───────────────────────
@@ -201,9 +205,8 @@ function renderPage(page) {
   const isCapitol = page.type === 'capitol';
   const label     = isCapitol ? 'Capítol ' + page.num : 'Repte ' + page.num;
   const title     = label + ' — ' + page.titol + ' | PyCat';
-  const headerTitle = label + ' — ' + page.titol;
-  const navCapitolsClass = isCapitol ? ' class="active"' : '';
-  const navReptesClass   = isCapitol ? '' : ' class="active"';
+  const navCapitolsActive = isCapitol ? ' active' : '';
+  const navReptesActive   = isCapitol ? '' : ' active';
   const sidebarLabel = isCapitol ? 'Capítols del curs' : 'Reptes del curs';
   const togglelabel  = isCapitol ? 'Mostra/amaga els capítols' : 'Mostra/amaga els reptes';
 
@@ -223,19 +226,18 @@ function renderPage(page) {
 </head>
 <body>
 
-<header class="curs-header">
+<header class="topbar">
   <button id="sidebar-toggle" aria-label="${togglelabel}" aria-expanded="false">☰</button>
-  <span class="curs-header-logo">
+  <div class="logo">
     <span class="logo-icon"></span>
-    PyCat
-  </span>
-  <nav class="curs-nav">
-    <a href="capitol-1.html"${navCapitolsClass}>Capítols</a>
-    <a href="repte-1.html"${navReptesClass}>Reptes</a>
-    <a href="../index.html">Simulador</a>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link${navCapitolsActive}">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link${navReptesActive}">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
   </nav>
-  <span class="curs-header-title">${headerTitle}</span>
-  <div class="curs-header-actions"></div>
+  <div class="topbar-actions"></div>
 </header>
 
 <div class="curs-layout">

@@ -88,7 +88,13 @@ Per als detalls d'implementació, llegiu directament el codi (ben comentat) i `T
 
 ## Tests
 
-Veure [`tests/README.md`](tests/README.md).
+Després de qualsevol canvi en un exercici, executa el test automàtic (només cal Python 3):
+
+```bash
+python3 tests/comprova-curs.py
+```
+
+Comprova que la solució de referència de cada exercici (`tests/solutions.js`) supera tots els casos de prova de la pàgina i que el codi inicial no els supera. A GitHub s'executa sol a cada push i a cada pull request (pestanya «Actions»). Més detalls a [`tests/README.md`](tests/README.md).
 
 ## Tasques pendents
 
